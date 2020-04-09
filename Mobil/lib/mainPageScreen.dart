@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'anasayfa.dart';
 import 'arama.dart';
-import 'pageview.dart';
+import 'profile.dart';
 import 'bildirim.dart';
 import 'mesajlar.dart';
 
@@ -15,7 +15,7 @@ class _MainPageScreen extends State<MainPageScreen> {
   List<Widget> tumSayfalar;
   Anasayfa sayfaAna;
   AramaSayfasi sayfaArama;
-  PageViewOrnek pageViewOrnek;
+  Profile profile;
   Bildirim bildirim;
   Mesajlar mesajlar;
   
@@ -27,19 +27,28 @@ class _MainPageScreen extends State<MainPageScreen> {
     super.initState();
     sayfaAna = Anasayfa(keyAnasayfa);
     sayfaArama = AramaSayfasi(keyArama);
-    pageViewOrnek = PageViewOrnek();
+    profile = Profile();
     bildirim = Bildirim();
     mesajlar = Mesajlar();
-    tumSayfalar=[sayfaAna,sayfaArama,pageViewOrnek,bildirim,mesajlar];
+    tumSayfalar=[sayfaAna,sayfaArama,profile,bildirim,mesajlar];
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("FindHomemate"),
-      ),
+      /*appBar: AppBar(
+        title: Text(tumSayfalar[secilenMenuItem].toString()),
+        actions: <Widget>[
+            // action button
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                Navigator.pushNamed(context, "/settings");
+              },
+            ),
+        ],
+      ),*/
       body: tumSayfalar[secilenMenuItem],
       bottomNavigationBar: bottomNavMenu(),
     );
@@ -48,7 +57,7 @@ class _MainPageScreen extends State<MainPageScreen> {
   Theme bottomNavMenu() {
     return Theme(
       data: ThemeData(
-        canvasColor: Colors.amber,
+        canvasColor: Colors.white24,
         primaryColor: Colors.green,
       ),
       child: BottomNavigationBar(
@@ -59,25 +68,25 @@ class _MainPageScreen extends State<MainPageScreen> {
               backgroundColor: Colors.amber),
           BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              activeIcon: Icon(Icons.account_circle),
+              //activeIcon: Icon(Icons.account_circle),
               title: Text("Ara"),
               backgroundColor: Colors.red),
           BottomNavigationBarItem(
-              icon: Icon(Icons.add),
+              icon: Icon(Icons.account_circle),
               title: Text("Profil"),
               backgroundColor: Colors.teal),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_box),
+              icon: Icon(Icons.notifications),
               title: Text("Bildirimler"),
               backgroundColor: Colors.green),
               BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.email),
               title: Text("Mesajlar"),
               backgroundColor: Colors.amber),
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: secilenMenuItem,
-        fixedColor: Colors.indigo,
+        fixedColor: Colors.blue,
         onTap: (index) {
           setState(() {
             secilenMenuItem = index;
