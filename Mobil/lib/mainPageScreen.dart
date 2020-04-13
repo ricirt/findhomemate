@@ -25,7 +25,7 @@ class _MainPageScreen extends State<MainPageScreen> {
   @override
   void initState(){
     super.initState();
-    sayfaAna = Anasayfa(keyAnasayfa);
+    sayfaAna = Anasayfa();
     sayfaArama = AramaSayfasi(keyArama);
     profile = Profile();
     bildirim = Bildirim();
