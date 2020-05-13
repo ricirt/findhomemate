@@ -4,6 +4,8 @@ import 'loginScreen.dart';
 import 'registerScreen.dart';
 import 'mainPageScreen.dart';
 import 'Widgets/features.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 void main() {
   runApp(
     MaterialApp(

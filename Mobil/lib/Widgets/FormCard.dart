@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class FormCard extends StatelessWidget {
   @override
@@ -11,7 +11,7 @@ class FormCard extends StatelessWidget {
           child: Text("",
               style: TextStyle(
                   fontFamily: "Poppins-Medium",
-                  fontSize: ScreenUtil.getInstance().setSp(26))),
+                  fontSize: 20)),
         ),
         Container(
           width:  double.infinity /2,
@@ -37,7 +37,7 @@ class FormCard extends StatelessWidget {
           child: Text("",
               style: TextStyle(
                   fontFamily: "Poppins-Medium",
-                  fontSize: ScreenUtil.getInstance().setSp(26))),
+                  fontSize: 220)),
         ),
         Container(
           width:  double.infinity /2,
