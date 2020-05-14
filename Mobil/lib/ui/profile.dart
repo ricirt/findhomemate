@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
-import 'Widgets/features.dart';
+import 'package:deneme/Widgets/features.dart';
 
 class Profile extends StatefulWidget {
   @override

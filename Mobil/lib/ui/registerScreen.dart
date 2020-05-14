@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -8,14 +9,14 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleAuth = GoogleSignIn();
   final _mailController = TextEditingController();
   final _passwordController = TextEditingController();
   String mesaj = "";
   String _mail;
   String _sifre;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Container(
             child: Center(
               child: Text(
-                "Kaydol",
+                "Kayıt Ol",
                 style: TextStyle(fontSize: 36, color: Colors.teal),
               ),
             ),
@@ -66,15 +67,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: "Doğum tarihi",
                   ),
                 ),
-                
                 Container(
-                  margin: EdgeInsets.only(top:20),
+                  margin: EdgeInsets.only(top: 20),
                   width: 300,
                   child: FlatButton(
                     onPressed: () {
                       _emailveSifreCreateUser();
                     },
-                    child: Text("Kaydol"),
+                    child: Text("Kayıt Ol"),
                     color: Colors.grey,
                   ),
                 ),
@@ -85,6 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+
   void _emailveSifreCreateUser() async {
     String _mail = _mailController.text;
     String _sifre = _passwordController.text;
@@ -106,8 +107,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       debugPrint(
           "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email} mailOnayi : ${firebaseUser.user.isEmailVerified}");
     } else {
-      mesaj = "bu mail zaten var";
+      Fluttertoast.showToast(
+        msg: "Bu mail zaten var",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 }
-

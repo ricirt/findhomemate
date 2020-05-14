@@ -1,8 +1,8 @@
-import 'package:deneme/anasayfa.dart';
+import 'package:deneme/ui/anasayfa.dart';
 import 'package:flutter/material.dart';
-import 'loginScreen.dart';
-import 'registerScreen.dart';
-import 'mainPageScreen.dart';
+import 'ui/loginScreen.dart';
+import 'ui/registerScreen.dart';
+import 'ui/mainPageScreen.dart';
 import 'Widgets/features.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

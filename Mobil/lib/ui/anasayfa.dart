@@ -1,6 +1,8 @@
-import 'package:deneme/ilanDetay.dart';
+import 'package:deneme/ui/ilanDetay.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'Widgets/features.dart';
+import 'package:deneme/Widgets/features.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Anasayfa extends StatefulWidget {
   @override
@@ -13,7 +15,6 @@ class AnasayfaState extends State<Anasayfa> {
   @override
   void initState() {
     super.initState();
-    
   }
 
   @override
@@ -21,15 +22,23 @@ class AnasayfaState extends State<Anasayfa> {
     return Scaffold(body: HomePage());
   }
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleAuth = GoogleSignIn();
+  final _mailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  String mesaj = "";
+  String _mail;
+  String _sifre;
   int itemSayisi = 1;
 
   Widget HomePage() {
     return InkWell(
-     onTap: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
           return ilanDetay();
         }));
-     },
+      },
       child: Container(
         margin: EdgeInsets.only(top: 35, left: 10, right: 10),
         child: Column(
@@ -40,9 +49,14 @@ class AnasayfaState extends State<Anasayfa> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(right: 10),
-                  child: Text(
-                    "Alaaddin Dağlı",
-                    style: TextStyle(fontSize: 15.0, color: Colors.black),
+                  child: InkWell(
+                    onTap: (){
+                      _cikisYap();
+                    },
+                    child: Text(
+                      "Alaaddin Dağlı",
+                      style: TextStyle(fontSize: 15.0, color: Colors.black),
+                    ),
                   ),
                 ),
                 Container(
@@ -57,7 +71,7 @@ class AnasayfaState extends State<Anasayfa> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                )
+                ),
               ],
             ),
             Padding(
@@ -155,5 +169,20 @@ class AnasayfaState extends State<Anasayfa> {
         ),
       ),
     );
+  }
+
+  void _cikisYap() async {
+    if (await _auth.currentUser() != null) {
+      _auth.signOut().then((data) {
+        _googleAuth.signOut();
+        Navigator.pushNamed(context, "/loginScreen");
+      }).catchError((hata) {
+        mesaj += "\nÇıkış yaparken hata oluştu $hata";
+      });
+    } else {
+      mesaj += "\nOturum açmış kullanıcı yok";
+    }
+
+    setState(() {});
   }
 }
