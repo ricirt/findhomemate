@@ -1,4 +1,5 @@
 import 'package:deneme/ui/ilanDetay.dart';
+import 'package:deneme/ui/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:deneme/Widgets/features.dart';
@@ -15,6 +16,9 @@ class AnasayfaState extends State<Anasayfa> {
   @override
   void initState() {
     super.initState();
+       ozellik = [
+      nitelikler(true, true, false, true,true,false,true,true,false,true,false,true),
+    ];
   }
 
   @override

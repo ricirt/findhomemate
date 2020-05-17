@@ -45,18 +45,36 @@ class _ilanDetayState extends State<ilanDetay> {
                         Icon(Icons.bookmark_border, color: Colors.purple),
                       ],
                     ),
-                    SizedBox(height:10),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        RaisedButton(onPressed: (){},color: Colors.purple.shade200,
-                        child: Text("Mesaj at ",style:TextStyle(color:Colors.white),),),
-                        RaisedButton(onPressed: (){},color: Colors.purple.shade200,
-                        child: Text("Alaadinin Profiline git ",style:TextStyle(color:Colors.white),),)
-
+                        RaisedButton(
+                          onPressed: () {},
+                          color: Colors.purple.shade200,
+                          child: Text(
+                            "Mesaj at ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        RaisedButton(
+                          onPressed: () {
+                            setState(() {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (BuildContext) {
+                                return ProfilePage();
+                              }));
+                            });                          
+                          },
+                          color: Colors.purple.shade200,
+                          child: Text(
+                            "Alaadinin Profiline git ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
                       ],
                     ),
-                    SizedBox(height:10),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
@@ -66,7 +84,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Sigara",
                               style: _style(),
                             ),
-                            Icon(ozellik[1].sigara == true
+                            Icon(ozellik[0].sigara == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -80,7 +98,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Alkol",
                               style: _style(),
                             ),
-                            Icon(ozellik[1].alkol == true
+                            Icon(ozellik[0].alkol == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -94,7 +112,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Evcil Hayvan",
                               style: _style(),
                             ),
-                            Icon(ozellik[1].evcilHayvan == true
+                            Icon(ozellik[0].evcilHayvan == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -108,7 +126,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Cinsiyet",
                               style: _style(),
                             ),
-                            Icon(ozellik[1].cinsiyet == true
+                            Icon(ozellik[0].cinsiyet == true
                                 ? Icons.pregnant_woman
                                 : Icons.cancel),
                           ],
@@ -130,7 +148,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Garaj",
                               style: _style(),
                             ),
-                            Icon(ozellik[3].sigara == true
+                            Icon(ozellik[0].garaj == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -144,7 +162,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Wifi",
                               style: _style(),
                             ),
-                            Icon(ozellik[3].alkol == true
+                            Icon(ozellik[0].wifi == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -158,7 +176,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "TV",
                               style: _style(),
                             ),
-                            Icon(ozellik[3].evcilHayvan == true
+                            Icon(ozellik[0].tv == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -172,7 +190,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Fatura ortaklığı",
                               style: _style(),
                             ),
-                            Icon(ozellik[3].cinsiyet == true
+                            Icon(ozellik[0].fatura == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -194,7 +212,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Doğalgaz",
                               style: _style(),
                             ),
-                            Icon(ozellik[2].sigara == true
+                            Icon(ozellik[0].dogalgaz == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -208,7 +226,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Eşya",
                               style: _style(),
                             ),
-                            Icon(ozellik[2].alkol == true
+                            Icon(ozellik[0].esya == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -219,11 +237,11 @@ class _ilanDetayState extends State<ilanDetay> {
                         Row(
                           children: <Widget>[
                             Text(
-                              "Tek kişi",
+                              "Misafir",
                               style: _style(),
                             ),
                             Icon(
-                              ozellik[2].evcilHayvan == true
+                              ozellik[0].misafir == true
                                   ? Icons.check
                                   : Icons.cancel,
                             ),
@@ -238,7 +256,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Depozito",
                               style: _style(),
                             ),
-                            Icon(ozellik[2].cinsiyet == true
+                            Icon(ozellik[0].depozito == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],

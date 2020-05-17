@@ -8,24 +8,14 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-List<Features> ozellik;
-
+List<nitelikler> ozellik;
+ 
 class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    ozellik = [
-      Features(true, true, false, true),
-      Features(true, false, true, true),
-      Features(true, true, false, true),
-      Features(false, false, true, false),
-      Features(true, true, true, true),
-      Features(true, true, false, false),
-      Features(false, true, true, true),
-      Features(true, false, false, true),
-      Features(true, true, false, true),
-      Features(false, true, false, false),
-      Features(true, false, false, true),
+   ozellik = [
+      nitelikler(true, true, false, true,true,false,true,true,false,true,false,true),
     ];
 
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -95,7 +85,7 @@ class ProfilePage extends StatelessWidget {
                   "Sigara",
                   style: _style(),
                 ),
-                Icon(ozellik[1].sigara == true ? Icons.check : Icons.cancel),
+                Icon(ozellik[0].sigara == true ? Icons.check : Icons.cancel),
               ],
             ),
             SizedBox(
@@ -108,7 +98,7 @@ class ProfilePage extends StatelessWidget {
                   "Alkol",
                   style: _style(),
                 ),
-                Icon(ozellik[1].alkol == true ? Icons.check : Icons.cancel),
+                Icon(ozellik[0].alkol == true ? Icons.check : Icons.cancel),
               ],
             ),
             SizedBox(
@@ -120,7 +110,7 @@ class ProfilePage extends StatelessWidget {
                   "Evcil Hayvan",
                   style: _style(),
                 ),
-                Icon(ozellik[1].evcilHayvan == true
+                Icon(ozellik[0].evcilHayvan == true
                     ? Icons.check
                     : Icons.cancel),
               ],
@@ -134,7 +124,7 @@ class ProfilePage extends StatelessWidget {
                   "Cinsiyet",
                   style: _style(),
                 ),
-                Icon(ozellik[1].cinsiyet == true ? Icons.check : Icons.cancel),
+                Icon(ozellik[0].cinsiyet == true ? Icons.pregnant_woman : Icons.face),
               ],
             ),
             SizedBox(
@@ -149,10 +139,10 @@ class ProfilePage extends StatelessWidget {
               Row(
               children: <Widget>[
                 Text(
-                  "Din",
+                  "Wifi",
                   style: _style(),
                 ),
-                Icon(ozellik[3].sigara == true ? Icons.check : Icons.cancel),
+                Icon(ozellik[0].wifi == true ? Icons.check : Icons.cancel),
               ],
             ),
             SizedBox(
@@ -160,12 +150,13 @@ class ProfilePage extends StatelessWidget {
             ),
 
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Politika",
+                  "TV",
                   style: _style(),
                 ),
-                Icon(ozellik[3].alkol == true ? Icons.check : Icons.cancel),
+                Icon(ozellik[0].tv == true ? Icons.check : Icons.cancel),
               ],
             ),
             SizedBox(
@@ -174,10 +165,10 @@ class ProfilePage extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  "Matematik",
+                  "fatura",
                   style: _style(),
                 ),
-                Icon(ozellik[3].evcilHayvan == true
+                Icon(ozellik[0].fatura == true
                     ? Icons.check
                     : Icons.cancel),
               ],
@@ -188,10 +179,10 @@ class ProfilePage extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  "Yazılım",
+                  "Eşya",
                   style: _style(),
                 ),
-                Icon(ozellik[3].cinsiyet == true ? Icons.check : Icons.cancel),
+                Icon(ozellik[0].esya == true ? Icons.check : Icons.cancel),
               ],
             ),
             SizedBox(
@@ -204,12 +195,13 @@ class ProfilePage extends StatelessWidget {
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Text(
-                  "Ofis",
+                  "Garaj",
                   style: _style(),
                 ),
-                Icon(ozellik[2].sigara == true ? Icons.check : Icons.cancel),
+                Icon(ozellik[0].garaj == true ? Icons.check : Icons.cancel),
               ],
             ),
             SizedBox(
@@ -219,10 +211,10 @@ class ProfilePage extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  "Teknoloji",
+                  "Doğal Gaz",
                   style: _style(),
                 ),
-                Icon(ozellik[2].alkol == true ? Icons.check : Icons.cancel),
+                Icon(ozellik[0].dogalgaz == true ? Icons.check : Icons.cancel),
               ],
             ),
             SizedBox(
@@ -231,10 +223,10 @@ class ProfilePage extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  "Bilim",
+                  "Depozito",
                   style: _style(),
                 ),
-                Icon(ozellik[2].evcilHayvan == true
+                Icon(ozellik[0].depozito == true
                     ? Icons.check
                     : Icons.cancel),
               ],
@@ -245,10 +237,10 @@ class ProfilePage extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  "Random",
+                  "Misafir",
                   style: _style(),
                 ),
-                Icon(ozellik[2].cinsiyet == true ? Icons.check : Icons.cancel),
+                Icon(ozellik[0].misafir == true ? Icons.check : Icons.cancel),
               ],
             ),
             SizedBox(
