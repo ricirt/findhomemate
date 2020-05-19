@@ -1,4 +1,7 @@
+import 'package:deneme/ui/mainPageScreen.dart';
 import 'package:flutter/material.dart';
+
+import 'anasayfa.dart';
 
 class Sorular extends StatefulWidget {
   @override
@@ -533,7 +536,7 @@ class _SorularState extends State<Sorular> {
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return Sorular();
+                  return MainPageScreen();
                 }));
               },
               textColor: Colors.white,

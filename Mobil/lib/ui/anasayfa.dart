@@ -16,8 +16,9 @@ class AnasayfaState extends State<Anasayfa> {
   @override
   void initState() {
     super.initState();
-       ozellik = [
-      nitelikler(true, true, false, true,true,false,true,true,false,true,false,true),
+    ozellik = [
+      nitelikler(true, true, false, true, true, false, true, true, false, true,
+          false, true),
     ];
   }
 
@@ -49,32 +50,50 @@ class AnasayfaState extends State<Anasayfa> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: InkWell(
-                    onTap: (){
-                      _cikisYap();
-                    },
-                    child: Text(
-                      "Alaaddin Dağlı",
-                      style: TextStyle(fontSize: 15.0, color: Colors.black),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Text(
+                        "Alaaddin Dağlı",
+                        style: TextStyle(fontSize: 15.0, color: Colors.black),
+                      ),
                     ),
-                  ),
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.purple,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.purple,
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
-                      fit: BoxFit.cover,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    InkWell(
+                      //*************************//////Exit BUTONU ***************************
+                      onTap: () {
+                        _cikisYap();
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Text("Çıkış Yap",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          Icon(Icons.exit_to_app),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
@@ -85,13 +104,15 @@ class AnasayfaState extends State<Anasayfa> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
               ),
             ),
-            Container(
-              width: double.infinity,
-              height: 400,
-              child: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (BuildContext ctxt, int index) =>
-                      _anasayfaGrid(ctxt, index)),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                height: 400,
+                child: ListView.builder(
+                    itemCount: 5,
+                    itemBuilder: (BuildContext ctxt, int index) =>
+                        _anasayfaGrid(ctxt, index)),
+              ),
             ),
           ],
         ),
