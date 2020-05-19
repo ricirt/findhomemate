@@ -1,9 +1,9 @@
 import 'package:deneme/ui/mainPageScreen.dart';
 import 'package:flutter/material.dart';
-
+import 'sorularOncesi.dart';
 import 'anasayfa.dart';
 
-class Sorular extends StatefulWidget {
+class Sorular extends StatefulWidget  {
   @override
   _SorularState createState() => _SorularState();
 }

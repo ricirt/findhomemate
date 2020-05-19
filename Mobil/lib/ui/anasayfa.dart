@@ -1,8 +1,8 @@
+import 'package:deneme/Widgets/evFeatures.dart';
 import 'package:deneme/ui/ilanDetay.dart';
 import 'package:deneme/ui/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:deneme/Widgets/features.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Anasayfa extends StatefulWidget {
@@ -11,14 +11,15 @@ class Anasayfa extends StatefulWidget {
     return new AnasayfaState();
   }
 }
-
+List<EvNitelikler> ozellik;
+ 
 class AnasayfaState extends State<Anasayfa> {
   @override
   void initState() {
     super.initState();
     ozellik = [
-      nitelikler(true, true, false, true, true, false, true, true, false, true,
-          false, true),
+      EvNitelikler(true, true, false, true, true, false, true, true, false, true,
+          false, true)
     ];
   }
 
@@ -37,22 +38,22 @@ class AnasayfaState extends State<Anasayfa> {
   int itemSayisi = 1;
 
   Widget HomePage() {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext context) {
-          return ilanDetay();
-        }));
-      },
-      child: Container(
-        margin: EdgeInsets.only(top: 35, left: 10, right: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
+    return Container(
+      margin: EdgeInsets.only(top: 35, left: 10, right: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return ProfilePage();
+                  }));
+                },
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Padding(
@@ -77,45 +78,45 @@ class AnasayfaState extends State<Anasayfa> {
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    InkWell(
-                      //*************************//////Exit BUTONU ***************************
-                      onTap: () {
-                        _cikisYap();
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Text("Çıkış Yap",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          Icon(Icons.exit_to_app),
-                        ],
-                      ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  InkWell(
+                    //*************************//////Exit BUTONU ***************************
+                    onTap: () {
+                      _cikisYap();
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        Text("Çıkış Yap",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Icon(Icons.exit_to_app),
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Text(
-                "Uygun Ev ilanları ",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  ),
+                ],
               ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: Text(
+              "Uygun Ev ilanları ",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                height: 400,
-                child: ListView.builder(
-                    itemCount: 5,
-                    itemBuilder: (BuildContext ctxt, int index) =>
-                        _anasayfaGrid(ctxt, index)),
-              ),
+          ),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              height: 400,
+              child: ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (BuildContext ctxt, int index) =>
+                      _anasayfaGrid(ctxt, index)),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -127,70 +128,78 @@ class AnasayfaState extends State<Anasayfa> {
   List<String> litems = ["1", "2", "Third", "4"];
 
   Widget _anasayfaGrid(BuildContext ctxt, int index) {
-    return Padding(
-      padding: EdgeInsetsDirectional.only(bottom: 10),
-      child: Container(
-        width: double.infinity,
-        height: 200,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 200,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+    return InkWell(
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return ilanDetay();
+        }));
+      },
+      child: Padding(
+        padding: EdgeInsetsDirectional.only(bottom: 10),
+        child: Container(
+          width: double.infinity,
+          height: 200,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                height: 200,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "http://www.kocerdemyapi.com/wp-content/uploads/2018/09/dMhgct-house-png-home-background-1.png"),
+                        fit: BoxFit.cover)),
+              ),
+              Positioned(
+                right: 1,
+                bottom: 10,
+                child: FloatingActionButton(
+                  heroTag: null,
+                  mini: true,
+                  onPressed: () {},
+                  child: Icon(
+                    Icons.chevron_right,
+                    color: Colors.white,
                   ),
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          "http://www.kocerdemyapi.com/wp-content/uploads/2018/09/dMhgct-house-png-home-background-1.png"),
-                      fit: BoxFit.cover)),
-            ),
-            Positioned(
-              right: 1,
-              bottom: 10,
-              child: FloatingActionButton(
-                heroTag: null,
-                mini: true,
-                onPressed: () {},
-                child: Icon(
-                  Icons.chevron_right,
-                  color: Colors.white,
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 40,
-              left: 10,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  //crossAxisAlignment:
+              Positioned(
+                bottom: 40,
+                left: 10,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    //crossAxisAlignment:
 
-                  Text(
-                    "Aile evi",
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "Eskişehir,Büyükdere",
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
-                      ),
-                      Icon(
-                        Icons.location_on,
-                        color: Colors.white,
-                      )
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
+                    Text(
+                      "Aile evi",
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          "Eskişehir,Büyükdere",
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(
+                          Icons.location_on,
+                          color: Colors.white,
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

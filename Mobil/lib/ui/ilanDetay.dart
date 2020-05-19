@@ -1,6 +1,7 @@
+import 'package:deneme/ui/anasayfa.dart';
 import 'package:flutter/material.dart';
 import 'profile.dart';
-import 'package:deneme/Widgets/features.dart';
+import 'package:deneme/ui/profile.dart';
 
 class ilanDetay extends StatefulWidget {
   @override

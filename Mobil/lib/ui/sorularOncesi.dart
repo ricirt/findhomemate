@@ -8,6 +8,8 @@ class SorularOncesi extends StatefulWidget {
 
 class _SorularOncesiState extends State<SorularOncesi> {
   String RadioTercih = "Tercih";
+  String RadioEv="Ev";
+  String RadioKisi="Kisi";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +58,7 @@ class _SorularOncesiState extends State<SorularOncesi> {
                     children: <Widget>[
                       Radio(
                           ///////////// Evine arkadaş arıyor
-                          value: "Ev ilani",
+                          value: RadioEv,
                           groupValue: RadioTercih,
                           onChanged: (T) {
                             setState(() {
@@ -73,7 +75,7 @@ class _SorularOncesiState extends State<SorularOncesi> {
                     children: <Widget>[
                       Radio(
                           //////////////////////////  kalabileceği bir ev arıyor
-                          value: "Ev arkadasi ilani",
+                          value: RadioKisi,
                           groupValue: RadioTercih,
                           onChanged: (T) {
                             setState(() {

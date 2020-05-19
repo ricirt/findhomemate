@@ -1,21 +1,22 @@
+import 'package:deneme/Widgets/evFeatures.dart';
+import 'package:deneme/Widgets/kisiFeatures.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
-import 'package:deneme/Widgets/features.dart';
 
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
 }
 
-List<nitelikler> ozellik;
- 
+List<KisiNitelikler> Profilozellik;
+
 class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-   ozellik = [
-      nitelikler(true, true, false, true,true,false,true,true,false,true,false,true),
+    Profilozellik = [
+      KisiNitelikler(true, false, true, false, false, "öğrenci", "19"),
     ];
 
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -40,218 +41,153 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-           
-            SizedBox(
-              height: 16,
-            ),
-            Text(
-              "Email",
-              style: _style(),
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            Text("addidagli@gmail.com"),
-            SizedBox(
-              height: 16,
-            ),
-            Text(
-              "Konum",
-              style: _style(),
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            Text("Büyükdere, Eskişehir"),
-            Divider(
-              height: 5,
-              color: Colors.grey,
-            ),
-            SizedBox(height: 10,),
-            Center(
-              child: Text("Kriterler",style: TextStyle(fontSize: 24),),
-            ),
-            SizedBox(height: 10,),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-              Row(
-              children: <Widget>[
-                Text(
-                  "Sigara",
-                  style: _style(),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Email",
+                style: _style(),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text("addidagli@gmail.com"),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Konum",
+                style: _style(),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text("Büyükdere, Eskişehir"),
+              SizedBox(
+                height: 16,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Meslek   ",
+                    style: _style(),
+                  ),
+                  Text(Profilozellik[0].meslek.toString()),
+                ],
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Center(
+                child: Text(
+                  "Kriterler",
+                  style: TextStyle(fontSize: 24),
                 ),
-                Icon(ozellik[0].sigara == true ? Icons.check : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-
-            Row(
-              children: <Widget>[
-                Text(
-                  "Alkol",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].alkol == true ? Icons.check : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  "Evcil Hayvan",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].evcilHayvan == true
-                    ? Icons.check
-                    : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  "Cinsiyet",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].cinsiyet == true ? Icons.pregnant_woman : Icons.face),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            ],),
-            SizedBox(
-              height: 4,
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-              Row(
-              children: <Widget>[
-                Text(
-                  "Wifi",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].wifi == true ? Icons.check : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "TV",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].tv == true ? Icons.check : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  "fatura",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].fatura == true
-                    ? Icons.check
-                    : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  "Eşya",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].esya == true ? Icons.check : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            ],),
-            SizedBox(
-              height: 4,
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text(
-                  "Garaj",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].garaj == true ? Icons.check : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-
-            Row(
-              children: <Widget>[
-                Text(
-                  "Doğal Gaz",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].dogalgaz == true ? Icons.check : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  "Depozito",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].depozito == true
-                    ? Icons.check
-                    : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  "Misafir",
-                  style: _style(),
-                ),
-                Icon(ozellik[0].misafir == true ? Icons.check : Icons.cancel),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            ],),
-            
-            Divider(
-              color: Colors.grey,
-            )
-          ],
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Sigara",
+                        style: _style(),
+                      ),
+                      Icon(Profilozellik[0].sigara == true
+                          ? Icons.check
+                          : Icons.cancel),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    
+                    children: <Widget>[
+                      Text(
+                        "Alkol",
+                        style: _style(),
+                      ),
+                      Icon(Profilozellik[0].alkol == true
+                          ? Icons.check
+                          : Icons.cancel),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Evcil Hayvan",
+                        style: _style(),
+                      ),
+                      Icon(Profilozellik[0].evcilHayvan == true
+                          ? Icons.check
+                          : Icons.cancel),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Cinsiyet",
+                        style: _style(),
+                      ),
+                      Icon(Profilozellik[0].cinsiyet == true
+                          ? Icons.pregnant_woman
+                          : Icons.face),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Misafir",
+                        style: _style(),
+                      ),
+                      Icon(Profilozellik[0].misafir == true
+                          ? Icons.check
+                          : Icons.cancel),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Column(
+                children: <Widget>[],
+              ),
+              Divider(
+                color: Colors.grey,
+              )
+            ],
+          ),
         ),
       ),
     );
