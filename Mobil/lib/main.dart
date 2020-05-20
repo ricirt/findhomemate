@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'ui/loginScreen.dart';
 import 'ui/registerScreen.dart';
 import 'ui/mainPageScreen.dart';
-import 'Widgets/features.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {

@@ -89,9 +89,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _emailveSifreCreateUser() async {
     String _mail = _mailController.text;
     String _sifre = _passwordController.text;
-
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------
     var firebaseUser = await _auth
-        .createUserWithEmailAndPassword(email: _mail, password: _sifre)
+        .createUserWithEmailAndPassword(email: _mail.trim(), password: _sifre)
         .catchError((e) => debugPrint("hata :" + e.toString()));
 
     if (firebaseUser != null) {

@@ -1,3 +1,5 @@
+import 'package:deneme/ui/sorular.dart';
+import 'package:deneme/ui/sorularOncesi.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _mail;
   String _sifre;
   bool _isSelected = false;
+  String soru = null;
 
   @override
   void initState() {
@@ -47,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
           child: Stack(
         children: <Widget>[
@@ -138,7 +142,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               SharedPrefsHelper.savePassword(
                                   _passwordController.text);
                             }*/
-                            _emailveSifreLogin();
+
+                            //kullnaıcıya soracagımız soruların bilgisi null sa
+                            if (soru != null) {
+                              _emailveSifreLogin();
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return SorularOncesi();
+                              }));
+                            }
                           },
                           child: Text("Giriş Yap"),
                           color: Colors.blueAccent,
