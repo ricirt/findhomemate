@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             Navigator.pushNamed(context, '/registerScreen');
                           },
-                          child: Text("Kaydıt Ol"),
+                          child: Text("Kayıt Ol"),
                           color: Colors.grey,
                         ),
                       ),
