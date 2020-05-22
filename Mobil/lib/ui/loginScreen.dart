@@ -144,14 +144,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             }*/
 
                             //kullnaıcıya soracagımız soruların bilgisi null sa
-                            if (soru != null) {
+                            /*if (soru != null) {
                               _emailveSifreLogin();
                             } else {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) {
                                 return SorularOncesi();
                               }));
-                            }
+                            }*/
+                            _emailveSifreLogin();
+
                           },
                           child: Text("Giriş Yap"),
                           color: Colors.blueAccent,

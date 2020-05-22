@@ -11,15 +11,16 @@ class Anasayfa extends StatefulWidget {
     return new AnasayfaState();
   }
 }
+
 List<EvNitelikler> ozellik;
- 
+
 class AnasayfaState extends State<Anasayfa> {
   @override
   void initState() {
     super.initState();
     ozellik = [
-      EvNitelikler(true, true, false, true, true, false, true, true, false, true,
-          false, true)
+      EvNitelikler(true, true, false, true, true, false, true, true, false,
+          true, false, true)
     ];
   }
 
@@ -206,8 +207,10 @@ class AnasayfaState extends State<Anasayfa> {
   }
 
   void _cikisYap() async {
+    
     if (await _auth.currentUser() != null) {
       _auth.signOut().then((data) {
+        setState(() {});
         _googleAuth.signOut();
         Navigator.pushNamed(context, "/loginScreen");
       }).catchError((hata) {

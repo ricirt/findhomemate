@@ -1,4 +1,5 @@
 import 'package:deneme/ui/anasayfa.dart';
+import 'package:deneme/ui/firestore.dart';
 import 'package:flutter/material.dart';
 import 'ui/loginScreen.dart';
 import 'ui/registerScreen.dart';
