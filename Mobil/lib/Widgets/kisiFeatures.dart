@@ -4,13 +4,27 @@ class KisiNitelikler{
   bool sigara; 
   bool alkol;
   bool evcilHayvan;
-  bool cinsiyet;
   bool misafir;
+}
+
+
+
+class Kisi{
+  String adSoyad;
+  String email;
   String meslek;
   String yas;
-  KisiNitelikler(this.sigara,this.alkol,this.evcilHayvan,this.cinsiyet
-  ,this.misafir,this.meslek,this.yas);  
-}/*pet
+  String cinsiyet;
+  String puan;
+  String oylayan;
+}
+
+
+
+
+
+
+/*pet
 sigara
 alkol
 cinsiyet

@@ -1,23 +1,31 @@
 import 'package:deneme/Widgets/evFeatures.dart';
 import 'package:deneme/Widgets/kisiFeatures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+Kisi kisi = Kisi();
+KisiNitelikler kisiNitelikler = KisiNitelikler();
+int yas, puan, oylayan;
+double sonuc;
 
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
 }
 
-List<KisiNitelikler> Profilozellik;
-
 class _ProfileState extends State<Profile> {
+  final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   void initState() {
     super.initState();
-    Profilozellik = [
-      KisiNitelikler(true, false, true, false, false, "öğrenci", "19"),
-    ];
+    _getInfo();
+    _getFeatures();
 
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
@@ -29,6 +37,51 @@ class _ProfileState extends State<Profile> {
       home: ProfilePage(),
       debugShowCheckedModeBanner: false,
     );
+  }
+
+  void _getInfo() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+
+    if (user != null) {
+      DocumentSnapshot documentSnapshot =
+          await _firestore.document("kullanicilar/$uid").get();
+
+      setState(() {
+        kisi.adSoyad = documentSnapshot.data['adSoyad'].toString();
+        kisi.email = documentSnapshot.data['email'].toString();
+        kisi.yas = documentSnapshot.data['dogumYili'].toString();
+        kisi.meslek = documentSnapshot.data['meslek'].toString();
+        kisi.puan = documentSnapshot.data['puan'].toString();
+        kisi.oylayan = documentSnapshot.data['oylayan'].toString();
+        kisi.cinsiyet = documentSnapshot.data['cinsiyet'].toString();
+
+        yas = int.parse(kisi.yas);
+        yas = 2020 - yas;
+        puan = int.parse(kisi.puan);
+
+        oylayan = int.parse(kisi.oylayan);
+        sonuc = puan / oylayan;
+      });
+    }
+  }
+
+  void _getFeatures() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+
+    if (user != null) {
+      DocumentSnapshot documentSnapshot = await _firestore
+          .document("kullanicilar/$uid/ozellikler/ozellik")
+          .get();
+
+      setState(() {
+        kisiNitelikler.alkol = documentSnapshot.data['alkol'];
+        kisiNitelikler.evcilHayvan = documentSnapshot.data['hayvan'];
+        kisiNitelikler.misafir = documentSnapshot.data['misafir'];
+        kisiNitelikler.sigara = documentSnapshot.data['sigara'];
+      });
+    }
   }
 }
 
@@ -57,7 +110,7 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                 height: 4,
               ),
-              Text("addidagli@gmail.com"),
+              Text(kisi.email),
               SizedBox(
                 height: 16,
               ),
@@ -72,18 +125,25 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                 height: 16,
               ),
-              Column(
-                children: <Widget>[
-                  Text(
-                    "Meslek   ",
-                    style: _style(),
-                  ),
-                  Text(Profilozellik[0].meslek.toString()),
-                ],
+              Text(
+                "Meslek",
+                style: _style(),
               ),
+              SizedBox(
+                height: 4,
+              ),
+              Text(kisi.meslek),
               SizedBox(
                 height: 16,
               ),
+              Text(
+                "Cinsiyet",
+                style: _style(),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text(kisi.cinsiyet),
               Center(
                 child: Text(
                   "Kriterler",
@@ -102,7 +162,7 @@ class ProfilePage extends StatelessWidget {
                         "Sigara",
                         style: _style(),
                       ),
-                      Icon(Profilozellik[0].sigara == true
+                      Icon(kisiNitelikler.sigara == true
                           ? Icons.check
                           : Icons.cancel),
                     ],
@@ -111,13 +171,12 @@ class ProfilePage extends StatelessWidget {
                     height: 4,
                   ),
                   Row(
-                    
                     children: <Widget>[
                       Text(
                         "Alkol",
                         style: _style(),
                       ),
-                      Icon(Profilozellik[0].alkol == true
+                      Icon(kisiNitelikler.alkol == true
                           ? Icons.check
                           : Icons.cancel),
                     ],
@@ -131,7 +190,7 @@ class ProfilePage extends StatelessWidget {
                         "Evcil Hayvan",
                         style: _style(),
                       ),
-                      Icon(Profilozellik[0].evcilHayvan == true
+                      Icon(kisiNitelikler.evcilHayvan == true
                           ? Icons.check
                           : Icons.cancel),
                     ],
@@ -153,9 +212,9 @@ class ProfilePage extends StatelessWidget {
                         "Cinsiyet",
                         style: _style(),
                       ),
-                      Icon(Profilozellik[0].cinsiyet == true
+                      /*Icon(Profilozellik[0].cinsiyet == true
                           ? Icons.pregnant_woman
-                          : Icons.face),
+                          : Icons.face),*/
                     ],
                   ),
                   SizedBox(
@@ -167,7 +226,7 @@ class ProfilePage extends StatelessWidget {
                         "Misafir",
                         style: _style(),
                       ),
-                      Icon(Profilozellik[0].misafir == true
+                      Icon(kisiNitelikler.misafir == true
                           ? Icons.check
                           : Icons.cancel),
                     ],
@@ -255,7 +314,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       height: 16,
                     ),
                     Text(
-                      "Alaattin Dağlı",
+                      kisi.adSoyad,
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     )
                   ],
@@ -267,7 +326,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                     Text(
-                      "23",
+                      yas.toString(),
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -287,7 +346,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       ],
                     ),
                     Text(
-                      "4.5/5",
+                      "$sonuc/5",
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -299,7 +358,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                     Text(
-                      "4",
+                      kisi.oylayan.toString(),
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],

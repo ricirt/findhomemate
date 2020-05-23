@@ -2,25 +2,31 @@ import 'package:deneme/ui/mainPageScreen.dart';
 import 'package:flutter/material.dart';
 import 'sorularOncesi.dart';
 import 'anasayfa.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Sorular extends StatefulWidget  {
+class Sorular extends StatefulWidget {
   @override
   _SorularState createState() => _SorularState();
 }
 
 class _SorularState extends State<Sorular> {
-  static String RadioHayvan = "Hayvan",
-      RadioSigara = "Sigara",
-      RadioAlkol = "Alkol",
-      RadioWifi = "Wifi",
-      RadioTv = "TV",
-      RadioFatura = "Fatura",
-      RadioEsya = "Esya",
-      RadioCinsiyet = "Cinsiyet",
-      RadioGaraj = "Garaj",
-      RadioDogalgaz = "Dogalgaz",
-      RadioDepozito = "Depozito",
-      RadioMisafir = "Misafir";
+  bool radioHayvan,
+      radioSigara,
+      radioAlkol,
+      radioWifi,
+      radiotv,
+      radioFatura,
+      radioEsya,
+      radioCinsiyet,
+      radioGaraj,
+      radioDogalgaz,
+      radioDepozito,
+      radioMisafir;
+
+     
+  final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +60,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioHayvan,
+                      value: true,
+                      groupValue: radioHayvan,
                       onChanged: (T) {
                         setState(() {
-                          RadioHayvan = T;
+                          radioHayvan = T;
                         });
                       }),
                   Text("Evet"),
@@ -67,11 +73,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioHayvan,
+                      value: false,
+                      groupValue: radioHayvan,
                       onChanged: (T) {
                         setState(() {
-                          RadioHayvan = T;
+                          radioHayvan = T;
                         });
                       }),
                   Text("Hayır"),
@@ -95,11 +101,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioSigara,
+                      value: true,
+                      groupValue: radioSigara,
                       onChanged: (T) {
                         setState(() {
-                          RadioSigara = T;
+                          radioSigara = T;
                         });
                       }),
                   Text("Evet"),
@@ -108,11 +114,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioSigara,
+                      value: false,
+                      groupValue: radioSigara,
                       onChanged: (T) {
                         setState(() {
-                          RadioSigara = T;
+                          radioSigara = T;
                         });
                       }),
                   Text("Hayır"),
@@ -136,11 +142,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioAlkol,
+                      value: true,
+                      groupValue: radioAlkol,
                       onChanged: (T) {
                         setState(() {
-                          RadioAlkol = T;
+                          radioAlkol = T;
                         });
                       }),
                   Text("Evet"),
@@ -149,11 +155,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioAlkol,
+                      value: false,
+                      groupValue: radioAlkol,
                       onChanged: (T) {
                         setState(() {
-                          RadioAlkol = T;
+                          radioAlkol = T;
                         });
                       }),
                   Text("Hayır"),
@@ -177,11 +183,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioWifi,
+                      value: true,
+                      groupValue: radioWifi,
                       onChanged: (T) {
                         setState(() {
-                          RadioWifi = T;
+                          radioWifi = T;
                         });
                       }),
                   Text("Evet"),
@@ -190,11 +196,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioWifi,
+                      value: false,
+                      groupValue: radioWifi,
                       onChanged: (T) {
                         setState(() {
-                          RadioWifi = T;
+                          radioWifi = T;
                         });
                       }),
                   Text("Hayır"),
@@ -218,11 +224,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioTv,
+                      value: true,
+                      groupValue: radiotv,
                       onChanged: (T) {
                         setState(() {
-                          RadioTv = T;
+                          radiotv = T;
                         });
                       }),
                   Text("Evet"),
@@ -231,11 +237,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioTv,
+                      value: false,
+                      groupValue: radiotv,
                       onChanged: (T) {
                         setState(() {
-                          RadioTv = T;
+                          radiotv = T;
                         });
                       }),
                   Text("Hayır"),
@@ -259,11 +265,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioFatura,
+                      value: true,
+                      groupValue: radioFatura,
                       onChanged: (T) {
                         setState(() {
-                          RadioFatura = T;
+                          radioFatura = T;
                         });
                       }),
                   Text("Evet"),
@@ -272,11 +278,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioFatura,
+                      value: false,
+                      groupValue: radioFatura,
                       onChanged: (T) {
                         setState(() {
-                          RadioFatura = T;
+                          radioFatura = T;
                         });
                       }),
                   Text("Hayır"),
@@ -300,11 +306,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioEsya,
+                      value: true,
+                      groupValue: radioEsya,
                       onChanged: (T) {
                         setState(() {
-                          RadioEsya = T;
+                          radioEsya = T;
                         });
                       }),
                   Text("Evet"),
@@ -313,11 +319,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioEsya,
+                      value: false,
+                      groupValue: radioEsya,
                       onChanged: (T) {
                         setState(() {
-                          RadioEsya = T;
+                          radioEsya = T;
                         });
                       }),
                   Text("Hayır"),
@@ -326,47 +332,7 @@ class _SorularState extends State<Sorular> {
             ],
           ),
           SizedBox(height: 40),
-          Text(
-            "Cinsiyetiniz Nedir?",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: <Widget>[
-                  Radio(
-                      value: "Kadın",
-                      groupValue: RadioCinsiyet,
-                      onChanged: (T) {
-                        setState(() {
-                          RadioCinsiyet = T;
-                        });
-                      }),
-                  Text("Kadın"),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Radio(
-                      value: "Erkek",
-                      groupValue: RadioCinsiyet,
-                      onChanged: (T) {
-                        setState(() {
-                          RadioCinsiyet = T;
-                        });
-                      }),
-                  Text("Erkek"),
-                ],
-              )
-            ],
-          ),
-          SizedBox(height: 40),
+          
           Text(
             "Evin Garajı olmaması sizin için sorun olur mu?",
             style: TextStyle(
@@ -382,11 +348,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioGaraj,
+                      value: true,
+                      groupValue: radioGaraj,
                       onChanged: (T) {
                         setState(() {
-                          RadioGaraj = T;
+                          radioGaraj = T;
                         });
                       }),
                   Text("Evet"),
@@ -395,11 +361,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioGaraj,
+                      value: false,
+                      groupValue: radioGaraj,
                       onChanged: (T) {
                         setState(() {
-                          RadioGaraj = T;
+                          radioGaraj = T;
                         });
                       }),
                   Text("Hayır"),
@@ -423,11 +389,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioDogalgaz,
+                      value: true,
+                      groupValue: radioDogalgaz,
                       onChanged: (T) {
                         setState(() {
-                          RadioDogalgaz = T;
+                          radioDogalgaz = T;
                         });
                       }),
                   Text("Evet"),
@@ -436,11 +402,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioDogalgaz,
+                      value: false,
+                      groupValue: radioDogalgaz,
                       onChanged: (T) {
                         setState(() {
-                          RadioDogalgaz = T;
+                          radioDogalgaz = T;
                         });
                       }),
                   Text("Hayır"),
@@ -464,11 +430,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioDepozito,
+                      value: true,
+                      groupValue: radioDepozito,
                       onChanged: (T) {
                         setState(() {
-                          RadioDepozito = T;
+                          radioDepozito = T;
                         });
                       }),
                   Text("Evet"),
@@ -477,11 +443,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioDepozito,
+                      value: false,
+                      groupValue: radioDepozito,
                       onChanged: (T) {
                         setState(() {
-                          RadioDepozito = T;
+                          radioDepozito = T;
                         });
                       }),
                   Text("Hayır"),
@@ -505,11 +471,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Evet",
-                      groupValue: RadioMisafir,
+                      value: true,
+                      groupValue: radioMisafir,
                       onChanged: (T) {
                         setState(() {
-                          RadioMisafir = T;
+                          radioMisafir = T;
                         });
                       }),
                   Text("Evet"),
@@ -518,11 +484,11 @@ class _SorularState extends State<Sorular> {
               Row(
                 children: <Widget>[
                   Radio(
-                      value: "Hayir",
-                      groupValue: RadioMisafir,
+                      value: false,
+                      groupValue: radioMisafir,
                       onChanged: (T) {
                         setState(() {
-                          RadioMisafir = T;
+                          radioMisafir = T;
                         });
                       }),
                   Text("Hayır"),
@@ -534,6 +500,7 @@ class _SorularState extends State<Sorular> {
           Center(
             child: RaisedButton(
               onPressed: () {
+                _ozellikEkle();
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return MainPageScreen();
@@ -556,9 +523,39 @@ class _SorularState extends State<Sorular> {
               ),
             ),
           ),
-          SizedBox(height:20),
+          SizedBox(height: 20),
         ],
       ),
     ));
+  }
+
+  void _ozellikEkle() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+
+    Map<String, bool> ozellik = Map();
+
+    ozellik["hayvan"] = radioHayvan;
+    ozellik["sigara"] = radioSigara;
+    ozellik["alkol"] = radioAlkol;
+    ozellik["wifi"] = radioWifi;
+    ozellik["tv"] = radiotv;
+    ozellik["fatura"] = radioFatura;
+    ozellik["esya"] = radioEsya;
+    ozellik["cinsiyet"] = radioCinsiyet;
+    ozellik["garaj"] = radioGaraj;
+    ozellik["dogalgaz"] = radioDogalgaz;
+    ozellik["depozşto"] = radioDepozito;
+    ozellik["misafir"] = radioMisafir;
+
+    if (user != null) {
+      debugPrint("uid = $uid");
+      _firestore
+          .collection('kullanicilar')
+          .document("$uid")
+          .collection("ozellikler")
+          .document("ozellik")
+          .setData(ozellik,merge: true);
+    }
   }
 }

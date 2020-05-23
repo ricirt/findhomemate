@@ -20,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _mail;
   String _sifre;
   bool _isSelected = false;
-  String soru = null;
+  bool soru = false;
 
   @override
   void initState() {
@@ -144,16 +144,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             }*/
 
                             //kullnaıcıya soracagımız soruların bilgisi null sa
-                            /*if (soru != null) {
-                              _emailveSifreLogin();
-                            } else {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                return SorularOncesi();
-                              }));
-                            }*/
-                            _emailveSifreLogin();
 
+                            _emailveSifreLogin();
                           },
                           child: Text("Giriş Yap"),
                           color: Colors.blueAccent,
@@ -274,7 +266,16 @@ class _LoginScreenState extends State<LoginScreen> {
         .signInWithEmailAndPassword(email: _mail, password: _sifre)
         .then((oturumAcmisKullanici) {
       if (oturumAcmisKullanici.user.isEmailVerified) {
-        Navigator.pushNamed(context, "/mainPageScreen");
+        soru = true;
+        if (soru == true) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return SorularOncesi();
+          }));
+        } else {
+          Navigator.pushNamed(context, "/mainPageScreen");
+        }
+        //Navigator.pushNamed(context, "/mainPageScreen");
       } else {
         Fluttertoast.showToast(
           msg: "Emailinizi onaylayın",

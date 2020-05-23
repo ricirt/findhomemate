@@ -18,9 +18,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _checkPasswordController = TextEditingController();
   final _adSoyadController = TextEditingController();
   final _dogumYiliController = TextEditingController();
+  final _meslekController = TextEditingController();
   String mesaj = "";
   String _mail;
   String _sifre;
+  int selectedRadio;
+
+  @override
+  void initState() {
+    super.initState();
+
+    selectedRadio = 0;
+  }
+
+  setSelectedRadio(int val) {
+    setState(() {
+      selectedRadio = val;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +90,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: "Doğum tarihi",
                   ),
                 ),
+                TextFormField(
+                  controller: _meslekController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.card_travel),
+                    hintText: "Meslek",
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Kadın"),
+                    Radio(
+                      groupValue: selectedRadio,
+                      value: 1,
+                      onChanged: (val) {
+                        setSelectedRadio(val);
+                        
+                      },
+                    ),
+                    Text("Erkek"),
+                    Radio(
+                      groupValue: selectedRadio,
+                      value: 2,
+                      onChanged: (val) {
+                        setSelectedRadio(val);
+                      },
+                    ),
+                  ],
+                ),
                 Container(
                   margin: EdgeInsets.only(top: 20),
                   width: 300,
@@ -100,6 +144,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String _adSoyad = _adSoyadController.text;
     String _checkPassword = _checkPasswordController.text;
     String _dogumYili = _dogumYiliController.text;
+    String _meslek = _meslekController.text;
+    String _cinsiyet = "";
+    if(selectedRadio == 1){
+      _cinsiyet = "kadın";
+    }
+    else if(selectedRadio == 2){
+      _cinsiyet = "erkek";
+    } 
+    
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------
 
@@ -107,7 +160,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _sifre != "" &&
         _mail != "" &&
         _checkPassword != "" &&
-        _dogumYili != "") {
+        _dogumYili != "" &&
+        _meslek != "" ) {
       if (_sifre == _checkPassword) {
         var firebaseUser = await _auth
             .createUserWithEmailAndPassword(email: _mail, password: _sifre)
@@ -123,11 +177,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email} mailOnayi : ${firebaseUser.user.isEmailVerified}\n Email gönderildi lütfen onaylayın";
           });
 
-          _firestore.collection("kullanicilar").add({
+          _firestore
+              .collection("kullanicilar")
+              .document("${firebaseUser.user.uid}")
+              .setData({
             "adSoyad": _adSoyad,
             "email": _mail,
             "sifre": _sifre,
-            "dogumYili": _dogumYili
+            "dogumYili": _dogumYili,
+            "meslek": _meslek,
+            "cinsiyet":_cinsiyet
           });
 
           Navigator.pushNamed(context, "/loginScreen");
