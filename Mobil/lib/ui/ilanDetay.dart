@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'profile.dart';
 import 'package:deneme/ui/profile.dart';
 
+String price;
 class ilanDetay extends StatefulWidget {
   @override
   _ilanDetayState createState() => _ilanDetayState();
@@ -69,7 +70,7 @@ class _ilanDetayState extends State<ilanDetay> {
                           },
                           color: Colors.purple.shade200,
                           child: Text(
-                            "Alaadinin Profiline git ",
+                            "${kisi.adSoyad}'in Profiline git ",
                             style: TextStyle(color: Colors.white),
                           ),
                         )

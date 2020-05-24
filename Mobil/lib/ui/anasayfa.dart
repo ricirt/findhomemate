@@ -148,16 +148,12 @@ class AnasayfaState extends State<Anasayfa> {
               Container(
                 width: double.infinity,
                 height: 200,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            "http://www.kocerdemyapi.com/wp-content/uploads/2018/09/dMhgct-house-png-home-background-1.png"),
-                        fit: BoxFit.cover)),
+                child: FadeInImage.assetNetwork(
+                    alignment: Alignment.center,
+                    fit: BoxFit.cover,
+                    placeholder: "assets/loading.gif",
+                    image:
+                        "http://www.kocerdemyapi.com/wp-content/uploads/2018/09/dMhgct-house-png-home-background-1.png"),
               ),
               Positioned(
                 right: 1,
