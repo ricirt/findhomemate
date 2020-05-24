@@ -12,7 +12,7 @@ Kisi kisi = Kisi();
 KisiNitelikler kisiNitelikler = KisiNitelikler();
 int yas, puan, oylayan;
 double sonuc;
-bool loading = false;
+bool loading = true;
 
 class Profile extends StatefulWidget {
   @override
@@ -25,11 +25,11 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
+   
     super.initState();
-
     _getInfo();
     _getFeatures();
-
+    
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
@@ -43,6 +43,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> _getInfo() async {
+     
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;
 
@@ -85,6 +86,7 @@ class _ProfileState extends State<Profile> {
         kisiNitelikler.sigara = documentSnapshot.data['sigara'];
       });
     }
+    loading = false;
   }
 }
 

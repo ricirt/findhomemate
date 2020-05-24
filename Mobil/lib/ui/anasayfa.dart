@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deneme/Widgets/evFeatures.dart';
 import 'package:deneme/ui/ilanDetay.dart';
 import 'package:deneme/ui/loading.dart';
@@ -5,6 +6,8 @@ import 'package:deneme/ui/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+bool loading = true;
 
 class Anasayfa extends StatefulWidget {
   @override
@@ -16,16 +19,14 @@ class Anasayfa extends StatefulWidget {
 List<EvNitelikler> ozellik;
 
 class AnasayfaState extends State<Anasayfa> {
-bool loading = false;
-
   @override
   void initState() {
     super.initState();
-    loading = false;
     ozellik = [
       EvNitelikler(true, true, false, true, true, false, true, true, false,
           true, false, true)
     ];
+    _getInfo();
   }
 
   @override
@@ -35,6 +36,7 @@ bool loading = false;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleAuth = GoogleSignIn();
+  final Firestore _firestore = Firestore.instance;
   final _mailController = TextEditingController();
   final _passwordController = TextEditingController();
   String mesaj = "";
@@ -43,87 +45,83 @@ bool loading = false;
   int itemSayisi = 1;
 
   Widget HomePage() {
-    return loading ? Loading() : Container(
-      margin: EdgeInsets.only(top: 35, left: 10, right: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              InkWell(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return ProfilePage();
-                  }));
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+    return loading
+        ? Loading()
+        : Container(
+            margin: EdgeInsets.only(top: 35, left: 10, right: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        "Alaaddin Dağlı",
-                        style: TextStyle(fontSize: 15.0, color: Colors.black),
-                      ),
-                    ),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.purple,
-                        image: DecorationImage(
-                          image: NetworkImage(
-                              "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
-                          fit: BoxFit.cover,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.purple,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(
+                            kisi.adSoyad,
+                            style:
+                                TextStyle(fontSize: 15.0, color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        InkWell(
+                          //*************************//////Exit BUTONU ***************************
+                          onTap: () {
+                            _cikisYap();
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Text("Çıkış Yap",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              Icon(Icons.exit_to_app),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  InkWell(
-                    //*************************//////Exit BUTONU ***************************
-                    onTap: () {
-                      _cikisYap();
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        Text("Çıkış Yap",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        Icon(Icons.exit_to_app),
-                      ],
-                    ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text(
+                    "Uygun Ev ilanları ",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
-                ],
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: Text(
-              "Uygun Ev ilanları ",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                ),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    height: 400,
+                    child: ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (BuildContext ctxt, int index) =>
+                            _anasayfaGrid(ctxt, index)),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              height: 400,
-              child: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (BuildContext ctxt, int index) =>
-                      _anasayfaGrid(ctxt, index)),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   Widget buildBody(BuildContext ctxt, int index) {
@@ -211,7 +209,6 @@ bool loading = false;
   }
 
   void _cikisYap() async {
-    
     if (await _auth.currentUser() != null) {
       _auth.signOut().then((data) {
         setState(() {});
@@ -226,5 +223,21 @@ bool loading = false;
     }
 
     setState(() {});
+  }
+
+  Future<void> _getInfo() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+    if (user != null) {
+      DocumentSnapshot documentSnapshot =
+          await _firestore.document("kullanicilar/$uid").get();
+
+      setState(() {
+        kisi.adSoyad = documentSnapshot.data['adSoyad'].toString();
+      });
+    }
+    setState(() {
+      loading = false;
+    });
   }
 }

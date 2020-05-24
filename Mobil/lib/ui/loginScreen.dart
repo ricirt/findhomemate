@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -19,38 +20,40 @@ class _LoginScreenState extends State<LoginScreen> {
   final Firestore _firestore = Firestore.instance;
   final _mailController = TextEditingController();
   final _passwordController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
+  var mySharedPrefences;
   String mesaj = "";
   String _mail;
   String _sifre;
   bool _isSelected = false;
   bool _soruDurum;
-  bool loading = false;
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
-    //_mailController.text = SharedPrefsHelper.getMailForRememberMe;
-    //_passwordController.text = SharedPrefsHelper.getPasswordForRememberMe;
-    _auth.onAuthStateChanged.listen((user) {
-      setState(() {
-        if (user != null) {
-          //mesaj = "\nListener tetiklendi kullanıcı oturum açtı";
-          SnackBar(content: Text("Listener tetiklendi kullanıcı oturum açtı"));
-        } else {
-          // mesaj = "\nListener tetiklendi kullanıcı oturum kapattı";
-          SnackBar(
-              content: Text("Listener tetiklendi kullanıcı oturum kapattı"));
-        }
-      });
+    SharedPreferences.getInstance().then((sf) {
+      mySharedPrefences = sf;
+      _mailController.text =
+          (mySharedPrefences as SharedPreferences).getString("myMail") ?? "";
+      _passwordController.text = (mySharedPrefences as SharedPreferences)
+              .getString("mySifre")
+              .toString() ??
+          "";
+    });
+
+    setState(() {
+      loading = false;
     });
   }
 
-
-
-  /*@override
-          void dispose() {
-            super.dispose();
-          }*/
+  @override
+  void dispose() {
+    (mySharedPrefences as SharedPreferences).remove("myMail");
+    (mySharedPrefences as SharedPreferences).remove("mySifre");
+    mySharedPrefences.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,57 +77,66 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: <Widget>[
-                          TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: _mailController,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.email),
-                              hintText: "Email giriniz",
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: <Widget>[
+                            TextFormField(
+                              onSaved: (deger) {
+                                _mail = deger;
+                              },
+                              keyboardType: TextInputType.emailAddress,
+                              controller: _mailController,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.email),
+                                hintText: "Email giriniz",
+                              ),
                             ),
-                          ),
-                          TextFormField(
-                            obscureText: true,
-                            controller: _passwordController,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.lock),
-                              hintText: "Şifre giriniz",
+                            TextFormField(
+                              onSaved: (deger) {
+                                _sifre = deger;
+                              },
+                              obscureText: true,
+                              controller: _passwordController,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.lock),
+                                hintText: "Şifre giriniz",
+                              ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: Row(
-                              children: <Widget>[
-                                Text(
-                                  "Beni Hatırla",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                GestureDetector(
-                                  child: Checkbox(
-                                    value: _isSelected,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _isSelected = value;
-                                      });
-                                    },
-                                    activeColor: Colors.grey,
-                                    checkColor: Colors.black,
+                            Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    "Beni Hatırla",
+                                    style: TextStyle(fontSize: 16),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 50,
-                                ),
-                                InkWell(
-                                  child: Text("Şifremi unuttum !"),
-                                  onTap: () {
-                                    _sifremiUnuttum();
-                                  },
-                                ),
-                              ],
+                                  GestureDetector(
+                                    child: Checkbox(
+                                      value: _isSelected,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _isSelected = value;
+                                        });
+                                      },
+                                      activeColor: Colors.grey,
+                                      checkColor: Colors.black,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 50,
+                                  ),
+                                  InkWell(
+                                    child: Text("Şifremi unuttum !"),
+                                    onTap: () {
+                                      _sifremiUnuttum();
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -137,21 +149,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: double.infinity,
                               child: RaisedButton(
                                 onPressed: () {
-                                  /*if (_mailController.text.isNotEmpty &&
-                                        _passwordController.text.isNotEmpty) {
-                                      if (_isSelected) {
-                                        SharedPrefsHelper.saveMailForRememberMe(
-                                            _mailController.text);
-                                        SharedPrefsHelper.savePasswordForRememberMe(
-                                            _passwordController.text);
-                                      }
-                                      SharedPrefsHelper.saveMail(_mailController.text);
-                                      SharedPrefsHelper.savePassword(
-                                          _passwordController.text);
-                                    }*/
-
-                                  //kullnaıcıya soracagımız soruların bilgisi null sa
-
                                   _emailveSifreLogin();
                                 },
                                 child: Text("Giriş Yap"),
@@ -273,7 +270,18 @@ class _LoginScreenState extends State<LoginScreen> {
     _auth
         .signInWithEmailAndPassword(email: _mail, password: _sifre)
         .then((oturumAcmisKullanici) async {
+      setState(() {
+        loading = true;
+      });
+
       if (oturumAcmisKullanici.user.isEmailVerified) {
+        if (_isSelected == true) {
+          formKey.currentState.save();
+          await (mySharedPrefences as SharedPreferences)
+              .setString("myMail", _mail);
+          await (mySharedPrefences as SharedPreferences)
+              .setString("mySifre", _sifre);
+        }
         final FirebaseUser user = await _auth.currentUser();
         final String uid = user.uid;
 
@@ -285,7 +293,7 @@ class _LoginScreenState extends State<LoginScreen> {
             _soruDurum = documentSnapshot.data['soruDurum'];
           });
         }
-        debugPrint("sorunun durumuuuuu : " + _soruDurum.toString());
+
         if (_soruDurum == false) {
           setState(() {
             loading = true;
@@ -295,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
             return SorularOncesi();
           }));
         } else {
-            setState(() {
+          setState(() {
             loading = true;
           });
           Navigator.pushNamed(context, "/mainPageScreen");

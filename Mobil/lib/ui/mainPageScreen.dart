@@ -14,23 +14,21 @@ class _MainPageScreen extends State<MainPageScreen> {
   int secilenMenuItem = 0;
   List<Widget> tumSayfalar;
   Anasayfa sayfaAna;
-  AramaSayfasi sayfaArama;
   Profile profile;
   Bildirim bildirim;
   Mesajlar mesajlar;
   
   var keyAnasayfa = PageStorageKey("key_anasayfa");
-  var keyArama = PageStorageKey("key_arama");
+ 
 
   @override
   void initState(){
     super.initState();
     sayfaAna = Anasayfa();
-    sayfaArama = AramaSayfasi(keyArama);
     profile = Profile();
     bildirim = Bildirim();
     mesajlar = Mesajlar();
-    tumSayfalar=[sayfaAna,sayfaArama,profile,bildirim,mesajlar];
+    tumSayfalar=[sayfaAna,profile,bildirim,mesajlar];
   }
 
 
@@ -66,11 +64,6 @@ class _MainPageScreen extends State<MainPageScreen> {
               icon: Icon(Icons.home),
               title: Text("Anasayfa"),
               backgroundColor: Colors.amber),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              //activeIcon: Icon(Icons.account_circle),
-              title: Text("Ara"),
-              backgroundColor: Colors.red),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle),
               title: Text("Profil"),
