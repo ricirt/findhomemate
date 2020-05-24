@@ -1,5 +1,6 @@
 import 'package:deneme/Widgets/evFeatures.dart';
 import 'package:deneme/Widgets/kisiFeatures.dart';
+import 'package:deneme/ui/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'dart:math' as math;
@@ -11,6 +12,7 @@ Kisi kisi = Kisi();
 KisiNitelikler kisiNitelikler = KisiNitelikler();
 int yas, puan, oylayan;
 double sonuc;
+bool loading = false;
 
 class Profile extends StatefulWidget {
   @override
@@ -24,6 +26,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+
     _getInfo();
     _getFeatures();
 
@@ -39,7 +42,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  void _getInfo() async {
+  Future<void> _getInfo() async {
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;
 
@@ -66,7 +69,7 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  void _getFeatures() async {
+  Future _getFeatures() async {
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;
 
@@ -92,164 +95,166 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                "Email",
-                style: _style(),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(kisi.email),
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                "Konum",
-                style: _style(),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text("Büyükdere, Eskişehir"),
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                "Meslek",
-                style: _style(),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(kisi.meslek),
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                "Cinsiyet",
-                style: _style(),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(kisi.cinsiyet),
-              Center(
-                child: Text(
-                  "Kriterler",
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "Sigara",
-                        style: _style(),
+    return loading
+        ? Loading()
+        : Scaffold(
+            appBar: CustomAppBar(),
+            body: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      "Email",
+                      style: _style(),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text(kisi.email),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      "Konum",
+                      style: _style(),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text("Büyükdere, Eskişehir"),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      "Meslek",
+                      style: _style(),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text(kisi.meslek),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      "Cinsiyet",
+                      style: _style(),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text(kisi.cinsiyet),
+                    Center(
+                      child: Text(
+                        "Kriterler",
+                        style: TextStyle(fontSize: 24),
                       ),
-                      Icon(kisiNitelikler.sigara == true
-                          ? Icons.check
-                          : Icons.cancel),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "Alkol",
-                        style: _style(),
-                      ),
-                      Icon(kisiNitelikler.alkol == true
-                          ? Icons.check
-                          : Icons.cancel),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "Evcil Hayvan",
-                        style: _style(),
-                      ),
-                      Icon(kisiNitelikler.evcilHayvan == true
-                          ? Icons.check
-                          : Icons.cancel),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "Cinsiyet",
-                        style: _style(),
-                      ),
-                      /*Icon(Profilozellik[0].cinsiyet == true
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              "Sigara",
+                              style: _style(),
+                            ),
+                            Icon(kisiNitelikler.sigara == true
+                                ? Icons.check
+                                : Icons.cancel),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              "Alkol",
+                              style: _style(),
+                            ),
+                            Icon(kisiNitelikler.alkol == true
+                                ? Icons.check
+                                : Icons.cancel),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              "Evcil Hayvan",
+                              style: _style(),
+                            ),
+                            Icon(kisiNitelikler.evcilHayvan == true
+                                ? Icons.check
+                                : Icons.cancel),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              "Cinsiyet",
+                              style: _style(),
+                            ),
+                            /*Icon(Profilozellik[0].cinsiyet == true
                           ? Icons.pregnant_woman
                           : Icons.face),*/
-                    ],
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "Misafir",
-                        style: _style(),
-                      ),
-                      Icon(kisiNitelikler.misafir == true
-                          ? Icons.check
-                          : Icons.cancel),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                ],
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              "Misafir",
+                              style: _style(),
+                            ),
+                            Icon(kisiNitelikler.misafir == true
+                                ? Icons.check
+                                : Icons.cancel),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Column(
+                      children: <Widget>[],
+                    ),
+                    Divider(
+                      color: Colors.grey,
+                    )
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 40,
-              ),
-              Column(
-                children: <Widget>[],
-              ),
-              Divider(
-                color: Colors.grey,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }
 
@@ -346,7 +351,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       ],
                     ),
                     Text(
-                      "$sonuc/5",
+                      sonuc == null ? "0/5" : "$sonuc/5",
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -358,7 +363,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                     Text(
-                      kisi.oylayan.toString(),
+                      kisi.oylayan == null ? kisi.oylayan.toString() : "0",
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],

@@ -1,5 +1,6 @@
 import 'package:deneme/Widgets/evFeatures.dart';
 import 'package:deneme/ui/ilanDetay.dart';
+import 'package:deneme/ui/loading.dart';
 import 'package:deneme/ui/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,12 @@ class Anasayfa extends StatefulWidget {
 List<EvNitelikler> ozellik;
 
 class AnasayfaState extends State<Anasayfa> {
+bool loading = false;
+
   @override
   void initState() {
     super.initState();
+    loading = false;
     ozellik = [
       EvNitelikler(true, true, false, true, true, false, true, true, false,
           true, false, true)
@@ -39,7 +43,7 @@ class AnasayfaState extends State<Anasayfa> {
   int itemSayisi = 1;
 
   Widget HomePage() {
-    return Container(
+    return loading ? Loading() : Container(
       margin: EdgeInsets.only(top: 35, left: 10, right: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,6 +216,7 @@ class AnasayfaState extends State<Anasayfa> {
       _auth.signOut().then((data) {
         setState(() {});
         _googleAuth.signOut();
+        loading = true;
         Navigator.pushNamed(context, "/loginScreen");
       }).catchError((hata) {
         mesaj += "\nÇıkış yaparken hata oluştu $hata";

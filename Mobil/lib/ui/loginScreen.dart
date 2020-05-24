@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deneme/ui/loading.dart';
 import 'package:deneme/ui/sorular.dart';
 import 'package:deneme/ui/sorularOncesi.dart';
 import 'package:flutter/material.dart';
@@ -14,20 +16,21 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleAuth = GoogleSignIn();
+  final Firestore _firestore = Firestore.instance;
   final _mailController = TextEditingController();
   final _passwordController = TextEditingController();
   String mesaj = "";
   String _mail;
   String _sifre;
   bool _isSelected = false;
-  bool soru = false;
+  bool _soruDurum;
+  bool loading = false;
 
   @override
   void initState() {
     super.initState();
     //_mailController.text = SharedPrefsHelper.getMailForRememberMe;
     //_passwordController.text = SharedPrefsHelper.getPasswordForRememberMe;
-
     _auth.onAuthStateChanged.listen((user) {
       setState(() {
         if (user != null) {
@@ -42,145 +45,150 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+
+
   /*@override
-  void dispose() {
-    super.dispose();
-  }*/
+          void dispose() {
+            super.dispose();
+          }*/
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Container(
-          child: Stack(
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                child: Center(
-                  child: Text(
-                    "Giriş Yap",
-                    style: TextStyle(fontSize: 36, color: Colors.red),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
+    return loading
+        ? Loading()
+        : Scaffold(
+            resizeToAvoidBottomPadding: false,
+            body: Container(
+                child: Stack(
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: _mailController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email),
-                        hintText: "Email giriniz",
-                      ),
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        hintText: "Şifre giriniz",
+                    Container(
+                      child: Center(
+                        child: Text(
+                          "Giriş Yap",
+                          style: TextStyle(fontSize: 36, color: Colors.red),
+                        ),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 20),
-                      child: Row(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
                         children: <Widget>[
-                          Text(
-                            "Beni Hatırla",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          GestureDetector(
-                            child: Checkbox(
-                              value: _isSelected,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isSelected = value;
-                                });
-                              },
-                              activeColor: Colors.grey,
-                              checkColor: Colors.black,
+                          TextFormField(
+                            keyboardType: TextInputType.emailAddress,
+                            controller: _mailController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.email),
+                              hintText: "Email giriniz",
                             ),
                           ),
-                          SizedBox(
-                            width: 50,
+                          TextFormField(
+                            obscureText: true,
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.lock),
+                              hintText: "Şifre giriniz",
+                            ),
                           ),
-                          InkWell(
-                            child: Text("Şifremi unuttum !"),
-                            onTap: () {
-                              _sifremiUnuttum();
-                            },
+                          Container(
+                            margin: EdgeInsets.only(top: 20),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  "Beni Hatırla",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                GestureDetector(
+                                  child: Checkbox(
+                                    value: _isSelected,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _isSelected = value;
+                                      });
+                                    },
+                                    activeColor: Colors.grey,
+                                    checkColor: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 50,
+                                ),
+                                InkWell(
+                                  child: Text("Şifremi unuttum !"),
+                                  onTap: () {
+                                    _sifremiUnuttum();
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
+                    Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(horizontal: 50),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Container(
+                              width: double.infinity,
+                              child: RaisedButton(
+                                onPressed: () {
+                                  /*if (_mailController.text.isNotEmpty &&
+                                        _passwordController.text.isNotEmpty) {
+                                      if (_isSelected) {
+                                        SharedPrefsHelper.saveMailForRememberMe(
+                                            _mailController.text);
+                                        SharedPrefsHelper.savePasswordForRememberMe(
+                                            _passwordController.text);
+                                      }
+                                      SharedPrefsHelper.saveMail(_mailController.text);
+                                      SharedPrefsHelper.savePassword(
+                                          _passwordController.text);
+                                    }*/
+
+                                  //kullnaıcıya soracagımız soruların bilgisi null sa
+
+                                  _emailveSifreLogin();
+                                },
+                                child: Text("Giriş Yap"),
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.only(top: 20),
+                              child: FlatButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, '/registerScreen');
+                                },
+                                child: Text("Kayıt Ol"),
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.only(top: 20),
+                                child: GoogleSignInButton(
+                                  text: "Google ile Giriş Yap",
+                                  onPressed: () {
+                                    _googleGiris();
+                                  },
+                                  splashColor: Colors.white,
+                                  // setting splashColor to Colors.transparent will remove button ripple effect.
+                                )),
+                          ]),
+                    ),
+                    Text(mesaj),
                   ],
                 ),
-              ),
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 50),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        width: double.infinity,
-                        child: RaisedButton(
-                          onPressed: () {
-                            /*if (_mailController.text.isNotEmpty &&
-                                _passwordController.text.isNotEmpty) {
-                              if (_isSelected) {
-                                SharedPrefsHelper.saveMailForRememberMe(
-                                    _mailController.text);
-                                SharedPrefsHelper.savePasswordForRememberMe(
-                                    _passwordController.text);
-                              }
-                              SharedPrefsHelper.saveMail(_mailController.text);
-                              SharedPrefsHelper.savePassword(
-                                  _passwordController.text);
-                            }*/
-
-                            //kullnaıcıya soracagımız soruların bilgisi null sa
-
-                            _emailveSifreLogin();
-                          },
-                          child: Text("Giriş Yap"),
-                          color: Colors.blueAccent,
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.only(top: 20),
-                        child: FlatButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/registerScreen');
-                          },
-                          child: Text("Kayıt Ol"),
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.only(top: 20),
-                          child: GoogleSignInButton(
-                            text: "Google ile Giriş Yap",
-                            onPressed: () {
-                              _googleGiris();
-                            },
-                            splashColor: Colors.white,
-                            // setting splashColor to Colors.transparent will remove button ripple effect.
-                          )),
-                    ]),
-              ),
-              Text(mesaj),
-            ],
-          ),
-        ],
-      )),
-    );
+              ],
+            )),
+          );
   }
 
   void _googleGiris() {
@@ -264,15 +272,32 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _auth
         .signInWithEmailAndPassword(email: _mail, password: _sifre)
-        .then((oturumAcmisKullanici) {
+        .then((oturumAcmisKullanici) async {
       if (oturumAcmisKullanici.user.isEmailVerified) {
-        soru = true;
-        if (soru == true) {
+        final FirebaseUser user = await _auth.currentUser();
+        final String uid = user.uid;
+
+        if (user != null) {
+          DocumentSnapshot documentSnapshot =
+              await _firestore.document("kullanicilar/$uid").get();
+
+          setState(() {
+            _soruDurum = documentSnapshot.data['soruDurum'];
+          });
+        }
+        debugPrint("sorunun durumuuuuu : " + _soruDurum.toString());
+        if (_soruDurum == false) {
+          setState(() {
+            loading = true;
+          });
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return SorularOncesi();
           }));
         } else {
+            setState(() {
+            loading = true;
+          });
           Navigator.pushNamed(context, "/mainPageScreen");
         }
         //Navigator.pushNamed(context, "/mainPageScreen");

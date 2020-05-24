@@ -106,7 +106,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       value: 1,
                       onChanged: (val) {
                         setSelectedRadio(val);
-                        
                       },
                     ),
                     Text("Erkek"),
@@ -146,13 +145,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String _dogumYili = _dogumYiliController.text;
     String _meslek = _meslekController.text;
     String _cinsiyet = "";
-    if(selectedRadio == 1){
+    bool _soruDurum = false;
+    if (selectedRadio == 1) {
       _cinsiyet = "kadın";
-    }
-    else if(selectedRadio == 2){
+    } else if (selectedRadio == 2) {
       _cinsiyet = "erkek";
-    } 
-    
+    }
+
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------
 
@@ -161,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _mail != "" &&
         _checkPassword != "" &&
         _dogumYili != "" &&
-        _meslek != "" ) {
+        _meslek != "") {
       if (_sifre == _checkPassword) {
         var firebaseUser = await _auth
             .createUserWithEmailAndPassword(email: _mail, password: _sifre)
@@ -186,8 +185,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
             "sifre": _sifre,
             "dogumYili": _dogumYili,
             "meslek": _meslek,
-            "cinsiyet":_cinsiyet
+            "cinsiyet": _cinsiyet,
+            "soruDurum": _soruDurum
           });
+          Fluttertoast.showToast(
+          msg: "Kayıt Başarılı",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 2,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
 
           Navigator.pushNamed(context, "/loginScreen");
           debugPrint(

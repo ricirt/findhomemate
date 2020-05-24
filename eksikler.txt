@@ -1,0 +1,11 @@
+ilan ver sayfasinin yapilmasi ve database baglanmasi
+anasayfaya verilerin databaseden çekilmesi
+profil düzenle sayfasinin tasarlanmasi
+bildirim sayfasinin tasarlanmasi
+Profil ev arayan ve ev arkadasi arayan 2 tipede uygun olarak dönüstürülmesi
+Mesajlarin yapilmasi
+esyalar tablosunun olusturulmasi
+profile kullanici fotografinin yapilmasi
+sifremi unuttum sayfasinin tasarlanmasi
+Sayfalarin tasarimlarinin düzenlenmesi
+kullanicilara nasil puan verileceginin tasarlanmasi
