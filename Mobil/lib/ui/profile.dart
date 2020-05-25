@@ -74,7 +74,7 @@ class _ProfileState extends State<Profile> {
 
     if (user != null) {
       DocumentSnapshot documentSnapshot = await _firestore
-          .document("kullanicilar/$uid/ozellikler/ozellik")
+          .document("kullanicilar/$uid/kullanici/ozellik")
           .get();
 
       setState(() {

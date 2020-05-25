@@ -261,7 +261,7 @@ class _SorularKisiState extends State<SorularKisi> {
       _firestore
           .collection('kullanicilar')
           .document("$uid")
-          .collection("ozellikler")
+          .collection("kullanici")
           .document("ozellik")
           .setData(ozellik, merge: true);
     }

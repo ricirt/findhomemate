@@ -310,7 +310,7 @@ class _IlanDetayState extends State<IlanDetay> {
 
     if (user != null) {
       DocumentSnapshot documentSnapshot =
-          await _firestore.document("ev/$uid").get();
+          await _firestore.document("kullanicilar/$uid/ev/ozellik").get();
 
 
       setState(() {
@@ -328,7 +328,7 @@ class _IlanDetayState extends State<IlanDetay> {
 
       if (user != null) {
         DocumentSnapshot documentSnapshot = await _firestore
-            .document("kullanicilar/$uid/ozellikler/ozellik")
+            .document("kullanicilar/$uid/kullanici/ozellik")
             .get();
 
         setState(() {

@@ -182,7 +182,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             "dogumYili": _dogumYili,
             "meslek": _meslek,
             "cinsiyet": _cinsiyet,
-            "soruDurum": _soruDurum
+            "soruDurum": _soruDurum,
+            "puan": "0",
+            "oylayan": "0",
           });
           Fluttertoast.showToast(
           msg: "Kayıt Başarılı",

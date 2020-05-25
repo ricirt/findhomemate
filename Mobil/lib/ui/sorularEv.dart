@@ -416,11 +416,14 @@ class _SorularEvState extends State<SorularEv> {
     ozellik["garaj"] = radioGaraj;
     ozellik["dogalgaz"] = radioDogalgaz;
 
+
     if (user != null) {
       debugPrint("uid = $uid");
       _firestore
-          .collection('ev')
+          .collection('kullanicilar')
           .document("$uid")
+          .collection("ev")
+          .document("ozellik")
           .setData(ozellik, merge: true);
     }
   }
