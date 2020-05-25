@@ -13,7 +13,6 @@ class _SorularOncesiState extends State<SorularOncesi> {
   final Firestore _firestore = Firestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
- 
   var _isim = "";
 
   int selectedRadio;
@@ -48,16 +47,18 @@ class _SorularOncesiState extends State<SorularOncesi> {
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(70),
-                    color: Colors.blue.shade200),
+                    color: Colors.blue.shade100),
                 padding: EdgeInsets.only(left: 10),
-                child: Center(
-                  child: Text(
-                    "Merhaba " +
-                        _isim +
-                        ", Bizi Tercih Ettiğin İçin Teşekkürler! Şimdi Seni Biraz Tanımak İçin Sorular Soracağiz.Lütfen Soruları eksiksiz Cevaplayın !",
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
+                child: Expanded(
+                  child: Center(
+                    child: Text(
+                      "Merhaba " +
+                          _isim +
+                          ", Bizi Tercih Ettiğin İçin Teşekkürler! Şimdi Seni Biraz Tanımak İçin Sorular Soracağiz.Lütfen Soruları eksiksiz Cevaplayın !",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -66,18 +67,14 @@ class _SorularOncesiState extends State<SorularOncesi> {
             SizedBox(
               height: 30,
             ),
-            SizedBox(height: 40),
             Text(
-              "TERCİH",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              "Nasıl bir arkadaş arıyorsun ?",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
-                    height: 10,
-                  ),
                   Row(
                     children: <Widget>[
                       Radio(

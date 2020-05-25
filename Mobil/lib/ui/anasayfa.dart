@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deneme/ui/ilanDetay.dart';
+import 'package:deneme/ui/ilanVermeEv.dart';
 import 'package:deneme/ui/loading.dart';
 import 'package:deneme/ui/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,25 +16,56 @@ class Anasayfa extends StatefulWidget {
   }
 }
 
-
-class AnasayfaState extends State<Anasayfa> {
-  @override
-  void initState() {
-    super.initState();
-    
-    _getInfo();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: homePage());
-  }
-
+class AnasayfaState extends State<Anasayfa>
+    with SingleTickerProviderStateMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleAuth = GoogleSignIn();
   final Firestore _firestore = Firestore.instance;
   String mesaj = "";
   int itemSayisi = 1;
+  TabController tabController;
+  @override
+  void initState() {
+    super.initState();
+    _getInfo();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Container(
+            color: Colors.blue,
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Expanded(child: Container()),
+                  TabBar(
+                    tabs: [Icon(Icons.home), Icon(Icons.people)],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) {
+              return Ilanverme();
+            }));
+          },
+          child: Icon(Icons.add),
+        ),
+        body: TabBarView(
+          children: <Widget>[homePage(), homePageKisi()],
+        ),
+      ),
+    );
+  }
 
   Widget homePage() {
     return loading
@@ -95,9 +127,14 @@ class AnasayfaState extends State<Anasayfa> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 20),
-                  child: Text(
-                    "Uygun Ev ilanları ",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        "Uygun Ev ilanları ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 24),
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
@@ -115,12 +152,6 @@ class AnasayfaState extends State<Anasayfa> {
           );
   }
 
-  Widget buildBody(BuildContext ctxt, int index) {
-    return new Text(litems[index]);
-  }
-
-  List<String> litems = ["1", "2", "Third", "4"];
-
   Widget _anasayfaGrid(BuildContext ctxt, int index) {
     return InkWell(
       onTap: () {
@@ -134,44 +165,43 @@ class AnasayfaState extends State<Anasayfa> {
         child: Container(
           width: double.infinity,
           height: 200,
-          child: Stack(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                height: 200,
-                child: FadeInImage.assetNetwork(
-                    alignment: Alignment.center,
-                    fit: BoxFit.cover,
-                    placeholder: "assets/loading.gif",
-                    image:
-                        "http://www.kocerdemyapi.com/wp-content/uploads/2018/09/dMhgct-house-png-home-background-1.png"),
-              ),
-              Positioned(
-                right: 1,
-                bottom: 10,
-                child: FloatingActionButton(
-                  heroTag: null,
-                  mini: true,
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.chevron_right,
-                    color: Colors.white,
+          child: Expanded(
+            child: Column(
+              children: <Widget>[
+                Stack(children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    height: 140,
+                    child: FadeInImage.assetNetwork(
+                        alignment: Alignment.center,
+                        fit: BoxFit.cover,
+                        placeholder: "assets/loading.gif",
+                        image:
+                            "http://www.kocerdemyapi.com/wp-content/uploads/2018/09/dMhgct-house-png-home-background-1.png"),
                   ),
-                ),
-              ),
-              Positioned(
-                bottom: 40,
-                left: 10,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    //crossAxisAlignment:
-
-                    Text(
-                      "Aile evi",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+                  Positioned(
+                    right: 1,
+                    bottom: 10,
+                    child: FloatingActionButton(
+                      heroTag: null,
+                      mini: true,
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return IlanDetay();
+                        }));
+                      },
+                      child: Icon(
+                        Icons.chevron_right,
+                        color: Colors.white,
+                      ),
                     ),
+                  ),
+                ]),
+                SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
                     Row(
                       children: <Widget>[
                         Text(
@@ -181,14 +211,21 @@ class AnasayfaState extends State<Anasayfa> {
                         ),
                         Icon(
                           Icons.location_on,
-                          color: Colors.white,
-                        )
+                          color: Colors.blue,
+                        ),
                       ],
-                    )
+                    ),
+                    Text(
+                      "\$ ${ev.fiyat}",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24),
+                    ),
                   ],
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -226,5 +263,151 @@ class AnasayfaState extends State<Anasayfa> {
     setState(() {
       loading = false;
     });
+  }
+
+  Widget homePageKisi() {
+    return loading
+        ? Loading()
+        : Container(
+            margin: EdgeInsets.only(top: 35, left: 10, right: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.purple,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(
+                            kisi.adSoyad,
+                            style:
+                                TextStyle(fontSize: 15.0, color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        InkWell(
+                          //*************************//////Exit BUTONU ***************************
+                          onTap: () {
+                            _cikisYap();
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              Text("Çıkış Yap",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              Icon(Icons.exit_to_app),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        "Uygun Ev ilanları ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 24),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    height: 400,
+                    child: ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (BuildContext ctxt, int index) =>
+                            _anasayfaGridKisi(ctxt, index)),
+                  ),
+                ),
+              ],
+            ),
+          );
+  }
+
+  Widget _anasayfaGridKisi(BuildContext ctxt, int index) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return IlanDetay();
+        }));
+      },
+      child: Padding(
+        padding: EdgeInsetsDirectional.only(bottom: 10),
+        child: Container(
+          width: double.infinity,
+          height: 200,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                height: 140,
+                child: FadeInImage.assetNetwork(
+                    alignment: Alignment.center,
+                    fit: BoxFit.cover,
+                    placeholder: "assets/loading.gif",
+                    image:
+                        "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
+              ),
+              Positioned(
+                bottom: 40,
+                left: 10,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    //crossAxisAlignment:
+
+                    Text(
+                      " Kisi Adi",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          "Konumu",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(
+                          Icons.location_on,
+                          color: Colors.white,
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
