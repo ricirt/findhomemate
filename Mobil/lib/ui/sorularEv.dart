@@ -419,8 +419,10 @@ class _SorularEvState extends State<SorularEv> {
     if (user != null) {
       debugPrint("uid = $uid");
       _firestore
-          .collection('ev')
+          .collection('kullanicilar')
           .document("$uid")
+          .collection("ev")
+          .document("ozellik")
           .setData(ozellik, merge: true);
     }
   }

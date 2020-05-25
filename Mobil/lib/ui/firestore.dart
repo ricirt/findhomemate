@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:image_picker/image_picker.dart';
-
+import 'package:image_picker/image_picker.dart';
 class FirestoreIslemleri extends StatefulWidget {
   @override
   _FirestoreIslemleriState createState() => _FirestoreIslemleriState();
@@ -46,7 +45,7 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
               color: Colors.grey,
               onPressed: _veriSorgula,
             ),
-            /*RaisedButton(
+            RaisedButton(
               child: Text("Galeri Resim"),
               color: Colors.grey,
               onPressed: _galeriResim,
@@ -55,7 +54,7 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
               child: Text("Kamera Resim"),
               color: Colors.grey,
               onPressed: _kameraResim,
-            ),*/
+            ),
             RaisedButton(
               child: Text(
                 "deneme",
@@ -262,12 +261,12 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
                                 }*/
   }
 
-  /*void _galeriResim() async {
-   // var resim = await ImagePicker.pickImage(source: ImageSource.gallery);
+  void _galeriResim() async {
+    var resim = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
-   // _secilenResim = resim;  
+    _secilenResim = resim;  
     });
   }
 
-  void _kameraResim() {}*/
+  void _kameraResim() {}
 }

@@ -36,99 +36,102 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Container(
-            child: Center(
-              child: Text(
-                "Kayıt Ol",
-                style: TextStyle(fontSize: 36, color: Colors.teal),
+      resizeToAvoidBottomPadding: false,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              child: Center(
+                child: Text(
+                  "Kayıt Ol",
+                  style: TextStyle(fontSize: 36, color: Colors.teal),
+                ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  controller: _adSoyadController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.account_circle),
-                    hintText: "Ad-soyad",
-                  ),
-                ),
-                TextFormField(
-                  controller: _mailController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    hintText: "Email",
-                  ),
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    hintText: "Şifre",
-                  ),
-                ),
-                TextFormField(
-                  controller: _checkPasswordController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    hintText: "Şifre Tekrar",
-                  ),
-                ),
-                TextFormField(
-                  controller: _dogumYiliController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.date_range),
-                    hintText: "Doğum tarihi",
-                  ),
-                ),
-                TextFormField(
-                  controller: _meslekController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.card_travel),
-                    hintText: "Meslek",
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Kadın"),
-                    Radio(
-                      groupValue: selectedRadio,
-                      value: 1,
-                      onChanged: (val) {
-                        setSelectedRadio(val);
-                      },
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    controller: _adSoyadController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.account_circle),
+                      hintText: "Ad-soyad",
                     ),
-                    Text("Erkek"),
-                    Radio(
-                      groupValue: selectedRadio,
-                      value: 2,
-                      onChanged: (val) {
-                        setSelectedRadio(val);
-                      },
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  width: 300,
-                  child: FlatButton(
-                    onPressed: () {
-                      _emailveSifreCreateUser();
-                    },
-                    child: Text("Kayıt Ol"),
-                    color: Colors.grey,
                   ),
-                ),
-              ],
+                  TextFormField(
+                    controller: _mailController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.email),
+                      hintText: "Email",
+                    ),
+                  ),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
+                      hintText: "Şifre",
+                    ),
+                  ),
+                  TextFormField(
+                    controller: _checkPasswordController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
+                      hintText: "Şifre Tekrar",
+                    ),
+                  ),
+                  TextFormField(
+                    controller: _dogumYiliController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.date_range),
+                      hintText: "Doğum tarihi",
+                    ),
+                  ),
+                  TextFormField(
+                    controller: _meslekController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.card_travel),
+                      hintText: "Meslek",
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Kadın"),
+                      Radio(
+                        groupValue: selectedRadio,
+                        value: 1,
+                        onChanged: (val) {
+                          setSelectedRadio(val);
+                        },
+                      ),
+                      Text("Erkek"),
+                      Radio(
+                        groupValue: selectedRadio,
+                        value: 2,
+                        onChanged: (val) {
+                          setSelectedRadio(val);
+                        },
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    width: 300,
+                    child: FlatButton(
+                      onPressed: () {
+                        _emailveSifreCreateUser();
+                      },
+                      child: Text("Kayıt Ol"),
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -159,7 +162,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _meslek != "") {
       if (_sifre == _checkPassword) {
         var firebaseUser = await _auth
-            .createUserWithEmailAndPassword(email: _mail, password: _sifre)
+            .createUserWithEmailAndPassword(
+                email: _mail.trim(), password: _sifre)
             .catchError((e) => debugPrint("hata :" + e.toString()));
 
         if (firebaseUser != null) {
@@ -182,17 +186,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
             "dogumYili": _dogumYili,
             "meslek": _meslek,
             "cinsiyet": _cinsiyet,
-            "soruDurum": _soruDurum
+            "soruDurum": _soruDurum,
+            "puan": "10",
+            "oylayan": "5"
           });
           Fluttertoast.showToast(
-          msg: "Kayıt Başarılı",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 2,
-          backgroundColor: Colors.blue,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+            msg: "Kayıt Başarılı",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 2,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
 
           Navigator.pushNamed(context, "/loginScreen");
           debugPrint(
