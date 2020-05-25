@@ -1,8 +1,6 @@
-import 'package:deneme/Widgets/evFeatures.dart';
-import 'package:deneme/Widgets/kisiFeatures.dart';
+import 'package:deneme/Classes/kisi.dart';
 import 'package:deneme/ui/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,7 +40,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Future<void> _getInfo() async {
+  Future _getInfo() async {
      
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;

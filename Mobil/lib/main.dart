@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'ui/loginScreen.dart';
 import 'ui/registerScreen.dart';
 import 'ui/mainPageScreen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(
@@ -15,11 +14,10 @@ void main() {
         '/loginScreen': (context) => LoginScreen(),
         '/registerScreen': (context) => RegisterScreen(),
         '/mainPageScreen': (context) => MainPageScreen(),
-        '/homePageScreen':(context)=>Anasayfa(),
-
+        '/homePageScreen': (context) => Anasayfa(),
       },
       debugShowCheckedModeBanner: false,
-     
+
       //home: NavigasyonIslemleri()
     ),
   );

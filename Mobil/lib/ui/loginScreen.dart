@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deneme/ui/loading.dart';
-import 'package:deneme/ui/sorular.dart';
 import 'package:deneme/ui/sorularOncesi.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:image_picker/image_picker.dart';
 
 class FirestoreIslemleri extends StatefulWidget {
   @override
@@ -8,6 +10,8 @@ class FirestoreIslemleri extends StatefulWidget {
 
 class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
   final Firestore _firestore = Firestore.instance;
+  File _secilenResim;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +46,16 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
               color: Colors.grey,
               onPressed: _veriSorgula,
             ),
+            /*RaisedButton(
+              child: Text("Galeri Resim"),
+              color: Colors.grey,
+              onPressed: _galeriResim,
+            ),
+            RaisedButton(
+              child: Text("Kamera Resim"),
+              color: Colors.grey,
+              onPressed: _kameraResim,
+            ),*/
             RaisedButton(
               child: Text(
                 "deneme",
@@ -50,6 +64,11 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
               color: Colors.black,
               onPressed: _deneme,
             ),
+            Center(
+              child: _secilenResim == null
+                  ? Text("Resim Yok")
+                  : Image.file(_secilenResim),
+            )
           ],
         ),
       ),
@@ -232,14 +251,23 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
   }
 
   void _deneme() async {
-    var dokumanlar = await _firestore
+    /* var dokumanlar = await _firestore
         .collection("kullanicilar")
-        .where("email", isEqualTo: "addidagli@gmail.com").getDocuments();
-        
+        .where("email", isEqualTo: "addidagli@gmail.com")
+        .getDocuments();
 
-    /*for (var dokuman in dokumanlar.documents) {
-      if(dokuman.data['email'] == _mail)
-      debugPrint(dokuman.data['email'].toString());
-    }*/
+    for (var dokuman in dokumanlar.documents) {
+                                  if(dokuman.data['email'] == _mail)
+                                  debugPrint(dokuman.data['email'].toString());
+                                }*/
   }
+
+  /*void _galeriResim() async {
+   // var resim = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+   // _secilenResim = resim;  
+    });
+  }
+
+  void _kameraResim() {}*/
 }

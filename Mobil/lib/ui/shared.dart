@@ -16,7 +16,6 @@ class _SharedPrefKullanimiState extends State<SharedPrefKullanimi> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     SharedPreferences.getInstance().then((sf) {
       myShared = sf;

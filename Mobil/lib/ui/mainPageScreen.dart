@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'anasayfa.dart';
-import 'arama.dart';
 import 'profile.dart';
 import 'bildirim.dart';
 import 'mesajlar.dart';
@@ -17,36 +16,34 @@ class _MainPageScreen extends State<MainPageScreen> {
   Profile profile;
   Bildirim bildirim;
   Mesajlar mesajlar;
-  
+
   var keyAnasayfa = PageStorageKey("key_anasayfa");
- 
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     sayfaAna = Anasayfa();
     profile = Profile();
     bildirim = Bildirim();
     mesajlar = Mesajlar();
-    tumSayfalar=[sayfaAna,profile,bildirim,mesajlar];
+    tumSayfalar = [sayfaAna, profile, bildirim, mesajlar];
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       /*appBar: AppBar(
-        title: Text(tumSayfalar[secilenMenuItem].toString()),
-        actions: <Widget>[
-            // action button
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                Navigator.pushNamed(context, "/settings");
-              },
-            ),
-        ],
-      ),*/
+            title: Text(tumSayfalar[secilenMenuItem].toString()),
+            actions: <Widget>[
+                // action button
+                IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/settings");
+                  },
+                ),
+            ],
+          ),*/
       body: tumSayfalar[secilenMenuItem],
       bottomNavigationBar: bottomNavMenu(),
     );
@@ -72,7 +69,7 @@ class _MainPageScreen extends State<MainPageScreen> {
               icon: Icon(Icons.notifications),
               title: Text("Bildirimler"),
               backgroundColor: Colors.green),
-              BottomNavigationBarItem(
+          BottomNavigationBarItem(
               icon: Icon(Icons.email),
               title: Text("Mesajlar"),
               backgroundColor: Colors.amber),
@@ -83,7 +80,6 @@ class _MainPageScreen extends State<MainPageScreen> {
         onTap: (index) {
           setState(() {
             secilenMenuItem = index;
-           
           });
         },
       ),

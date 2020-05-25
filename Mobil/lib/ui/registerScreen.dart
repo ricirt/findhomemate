@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -11,7 +10,6 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleAuth = GoogleSignIn();
   final Firestore _firestore = Firestore.instance;
   final _mailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -20,8 +18,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _dogumYiliController = TextEditingController();
   final _meslekController = TextEditingController();
   String mesaj = "";
-  String _mail;
-  String _sifre;
   int selectedRadio;
 
   @override

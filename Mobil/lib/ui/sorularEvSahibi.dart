@@ -1,35 +1,28 @@
 import 'package:deneme/ui/loading.dart';
-import 'package:deneme/ui/mainPageScreen.dart';
+import 'package:deneme/ui/sorularEv.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SorularKisi extends StatefulWidget {
+class Sorular extends StatefulWidget {
   @override
-  _SorularKisiState createState() => _SorularKisiState();
+  _SorularState createState() => _SorularState();
 }
 
-class _SorularKisiState extends State<SorularKisi> {
-  final Firestore _firestore = Firestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  bool radioHayvan;
-  bool radioSigara;
-  bool radioAlkol;
-  bool radioMisafir;
+class _SorularState extends State<Sorular> {
+  bool radioHayvan, radioSigara, radioAlkol, radioCinsiyet, radioMisafir;
   bool loading = false;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return loading
         ? Loading()
         : Scaffold(
-            body: Column(
+            body: SingleChildScrollView(
+            child: Column(
               children: <Widget>[
                 SizedBox(
                   height: 25,
@@ -43,7 +36,7 @@ class _SorularKisiState extends State<SorularKisi> {
                 ),
                 SizedBox(height: 40),
                 Text(
-                  "Evcil hayvaniniz var mı?",
+                  "Evcil hayvan kabul eder misiniz?",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -82,9 +75,9 @@ class _SorularKisiState extends State<SorularKisi> {
                     )
                   ],
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 40),
                 Text(
-                  "Evde sigara u?llanır mısınız",
+                  "Evde sigara içilmesi sizin için sorun olur mu?",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -123,11 +116,9 @@ class _SorularKisiState extends State<SorularKisi> {
                     )
                   ],
                 ),
-                SizedBox(
-                  height: 25,
-                ),
+                SizedBox(height: 40),
                 Text(
-                  "Evde Alkol Kullanır mısınız?",
+                  "Evde Alkol içilmesi sizin için sorun olur mu?",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -166,11 +157,8 @@ class _SorularKisiState extends State<SorularKisi> {
                     )
                   ],
                 ),
-                SizedBox(
-                  height: 25,
-                ),
                 Text(
-                  "Yatılı misafiriniz oluyor mu?",
+                  "Evde misafir getirilebilir mi?",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -205,6 +193,46 @@ class _SorularKisiState extends State<SorularKisi> {
                               });
                             }),
                         Text("Hayır"),
+                      ],
+                    )
+                  ],
+                ),
+                Text(
+                  "Ev arkadaşınızın cinsiyeti ne olmalı?",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Radio(
+                            value: true,
+                            groupValue: radioCinsiyet,
+                            onChanged: (T) {
+                              setState(() {
+                                radioCinsiyet = T;
+                              });
+                            }),
+                        Text("Erkek"),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Radio(
+                            value: false,
+                            groupValue: radioCinsiyet,
+                            onChanged: (T) {
+                              setState(() {
+                                radioCinsiyet = T;
+                              });
+                            }),
+                        Text("Kadın"),
                       ],
                     )
                   ],
@@ -213,10 +241,9 @@ class _SorularKisiState extends State<SorularKisi> {
                   child: RaisedButton(
                     onPressed: () {
                       _ozellikEkle();
-                      loading = true;
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return MainPageScreen();
+                        return SorularEv();
                       }));
                     },
                     textColor: Colors.white,
@@ -237,27 +264,26 @@ class _SorularKisiState extends State<SorularKisi> {
                     ),
                   ),
                 ),
+                SizedBox(height: 20),
               ],
             ),
-          );
+          ));
   }
 
   void _ozellikEkle() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+
     Map<String, bool> ozellik = Map();
 
     ozellik["hayvan"] = radioHayvan;
     ozellik["sigara"] = radioSigara;
     ozellik["alkol"] = radioAlkol;
+    ozellik["cinsiyet"] = radioCinsiyet;
     ozellik["misafir"] = radioMisafir;
 
-    final FirebaseUser user = await _auth.currentUser();
-    final String uid = user.uid;
-    _firestore
-        .collection("kullanicilar")
-        .document("$uid")
-        .setData({"soruDurum": true}, merge: true);
-
     if (user != null) {
+      debugPrint("uid = $uid");
       _firestore
           .collection('kullanicilar')
           .document("$uid")

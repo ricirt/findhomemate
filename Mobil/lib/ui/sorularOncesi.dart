@@ -1,4 +1,4 @@
-import 'package:deneme/ui/sorular.dart';
+import 'package:deneme/ui/sorularEvSahibi.dart';
 import 'package:deneme/ui/sorularKisi.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,9 +13,7 @@ class _SorularOncesiState extends State<SorularOncesi> {
   final Firestore _firestore = Firestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  String RadioTercih = "Tercih";
-  String RadioEv = "Ev";
-  String RadioKisi = "Kisi";
+ 
   var _isim = "";
 
   int selectedRadio;

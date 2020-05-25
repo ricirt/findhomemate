@@ -1,15 +1,29 @@
-import 'package:deneme/ui/anasayfa.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deneme/Classes/ev.dart';
+import 'package:deneme/Classes/evSahibi.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'profile.dart';
 import 'package:deneme/ui/profile.dart';
 
-String price;
-class ilanDetay extends StatefulWidget {
+Ev ev = Ev();
+EvSahibi evSahibi = EvSahibi();
+
+class IlanDetay extends StatefulWidget {
   @override
-  _ilanDetayState createState() => _ilanDetayState();
+  _IlanDetayState createState() => _IlanDetayState();
 }
 
-class _ilanDetayState extends State<ilanDetay> {
+class _IlanDetayState extends State<IlanDetay> {
+  final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  @override
+  void initState() {
+    super.initState();
+
+    _getHomeInfos();
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
@@ -38,7 +52,21 @@ class _ilanDetayState extends State<ilanDetay> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          "\$4,999",
+                          "\$ ${ev.fiyat}",
+                          style: TextStyle(
+                              color: Colors.purple,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24),
+                        ),
+                        Text(
+                          "kat :${ev.kat}",
+                          style: TextStyle(
+                              color: Colors.purple,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24),
+                        ),
+                        Text(
+                          "oda : ${ev.oda}",
                           style: TextStyle(
                               color: Colors.purple,
                               fontWeight: FontWeight.bold,
@@ -63,10 +91,10 @@ class _ilanDetayState extends State<ilanDetay> {
                           onPressed: () {
                             setState(() {
                               Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (BuildContext) {
+                                  MaterialPageRoute(builder: (buildContext) {
                                 return ProfilePage();
                               }));
-                            });                          
+                            });
                           },
                           color: Colors.purple.shade200,
                           child: Text(
@@ -86,7 +114,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Sigara",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].sigara == true
+                            Icon(evSahibi.sigara == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -100,7 +128,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Alkol",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].alkol == true
+                            Icon(evSahibi.alkol == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -114,7 +142,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Evcil Hayvan",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].evcilHayvan == true
+                            Icon(evSahibi.evcilHayvan == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -128,9 +156,9 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Cinsiyet",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].cinsiyet == true
+                            Icon(evSahibi.cinsiyet == true
                                 ? Icons.pregnant_woman
-                                : Icons.cancel),
+                                : Icons.accessibility_new),
                           ],
                         ),
                         SizedBox(
@@ -150,9 +178,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Garaj",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].garaj == true
-                                ? Icons.check
-                                : Icons.cancel),
+                            Icon(ev.garaj == true ? Icons.check : Icons.cancel),
                           ],
                         ),
                         SizedBox(
@@ -164,9 +190,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Wifi",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].wifi == true
-                                ? Icons.check
-                                : Icons.cancel),
+                            Icon(ev.wifi == true ? Icons.check : Icons.cancel),
                           ],
                         ),
                         SizedBox(
@@ -178,9 +202,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "TV",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].tv == true
-                                ? Icons.check
-                                : Icons.cancel),
+                            Icon(ev.tv == true ? Icons.check : Icons.cancel),
                           ],
                         ),
                         SizedBox(
@@ -192,9 +214,8 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Fatura ortaklığı",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].fatura == true
-                                ? Icons.check
-                                : Icons.cancel),
+                            Icon(
+                                ev.fatura == true ? Icons.check : Icons.cancel),
                           ],
                         ),
                         SizedBox(
@@ -214,7 +235,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Doğalgaz",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].dogalgaz == true
+                            Icon(ev.dogalgaz == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -228,9 +249,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Eşya",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].esya == true
-                                ? Icons.check
-                                : Icons.cancel),
+                            Icon(ev.esya == true ? Icons.check : Icons.cancel),
                           ],
                         ),
                         SizedBox(
@@ -243,7 +262,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               style: _style(),
                             ),
                             Icon(
-                              ozellik[0].misafir == true
+                              evSahibi.misafir == true
                                   ? Icons.check
                                   : Icons.cancel,
                             ),
@@ -258,7 +277,7 @@ class _ilanDetayState extends State<ilanDetay> {
                               "Depozito",
                               style: _style(),
                             ),
-                            Icon(ozellik[0].depozito == true
+                            Icon(ev.depozito == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -283,5 +302,43 @@ class _ilanDetayState extends State<ilanDetay> {
 
   TextStyle _style() {
     return TextStyle(fontWeight: FontWeight.bold);
+  }
+
+  Future _getHomeInfos() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+
+    if (user != null) {
+      DocumentSnapshot documentSnapshot =
+          await _firestore.document("ev/$uid").get();
+
+
+      setState(() {
+        ev.depozito = documentSnapshot.data['depozito'];
+        ev.dogalgaz = documentSnapshot.data['dogalgaz'];
+        ev.esya = documentSnapshot.data['esya'];
+        ev.fatura = documentSnapshot.data['fatura'];
+        ev.fiyat = documentSnapshot.data['fiyat'].toString();
+        ev.garaj = documentSnapshot.data['garaj'];
+        ev.kat = documentSnapshot.data['kat'].toString();
+        ev.oda = documentSnapshot.data['oda'].toString();
+        ev.tv = documentSnapshot.data['tv'];
+        ev.wifi = documentSnapshot.data['wifi'];
+      });
+
+      if (user != null) {
+        DocumentSnapshot documentSnapshot = await _firestore
+            .document("kullanicilar/$uid/ozellikler/ozellik")
+            .get();
+
+        setState(() {
+          evSahibi.alkol = documentSnapshot.data['alkol'];
+          evSahibi.sigara = documentSnapshot.data['sigara'];
+          evSahibi.cinsiyet = documentSnapshot.data['cinsiyet'];
+          evSahibi.evcilHayvan = documentSnapshot.data['hayvan'];
+          evSahibi.misafir = documentSnapshot.data['misafir'];
+        });
+      }
+    }
   }
 }

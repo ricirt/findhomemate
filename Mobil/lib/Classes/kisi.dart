@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 
 class KisiNitelikler{
   bool sigara; 
@@ -6,8 +5,6 @@ class KisiNitelikler{
   bool evcilHayvan;
   bool misafir;
 }
-
-
 
 class Kisi{
   String adSoyad;

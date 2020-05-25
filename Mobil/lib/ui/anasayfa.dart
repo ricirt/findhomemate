@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deneme/Widgets/evFeatures.dart';
 import 'package:deneme/ui/ilanDetay.dart';
 import 'package:deneme/ui/loading.dart';
 import 'package:deneme/ui/profile.dart';
@@ -16,35 +15,27 @@ class Anasayfa extends StatefulWidget {
   }
 }
 
-List<EvNitelikler> ozellik;
 
 class AnasayfaState extends State<Anasayfa> {
   @override
   void initState() {
     super.initState();
-    ozellik = [
-      EvNitelikler(true, true, false, true, true, false, true, true, false,
-          true, false, true)
-    ];
+    
     _getInfo();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: HomePage());
+    return Scaffold(body: homePage());
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleAuth = GoogleSignIn();
   final Firestore _firestore = Firestore.instance;
-  final _mailController = TextEditingController();
-  final _passwordController = TextEditingController();
   String mesaj = "";
-  String _mail;
-  String _sifre;
   int itemSayisi = 1;
 
-  Widget HomePage() {
+  Widget homePage() {
     return loading
         ? Loading()
         : Container(
@@ -135,7 +126,7 @@ class AnasayfaState extends State<Anasayfa> {
       onTap: () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
-          return ilanDetay();
+          return IlanDetay();
         }));
       },
       child: Padding(
@@ -221,7 +212,7 @@ class AnasayfaState extends State<Anasayfa> {
     setState(() {});
   }
 
-  Future<void> _getInfo() async {
+  Future _getInfo() async {
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;
     if (user != null) {

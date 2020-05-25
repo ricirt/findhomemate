@@ -4,13 +4,11 @@
  4-bildirim sayfasinin tasarlanmasi			-> fatih
  5-Profil ev arayan ve ev arkadasi arayan 2 tipede uygun olarak dönüstürülmesi -> fatih
  6-Mesajlarin yapilmasi					-> addi-fatih
- 7-esyalar tablosunun olusturulmasi			-> addi
+ +7-evler tablosunun olusturulmasi(yapildi düzenlenecek)-> addi
  8-profile kullanici fotografinin cekilmesi 		-> addi
  9-sifremi unuttum sayfasinin tasarlanmasi		-> fatih
  10-Sayfalarin tasarimlarinin düzenlenmesi		-> fatih-addi
  11-kullanicilara nasil puan verileceginin tasarlanmasi	-> fatih-addi
  12-resizeavoid registere eklenilecek			-> fatih
 + 13-beni hatirla (yapildi) 				-> addi
- 14-ilan verme						-> fatih
- 15-profil entegrasyonu					-> fatih
- 16-tab bar						-> fatih
+ 14-profil entegrasyonu					-> fatih
