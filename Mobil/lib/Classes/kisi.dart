@@ -1,11 +1,3 @@
-
-class KisiNitelikler{
-  bool sigara; 
-  bool alkol;
-  bool evcilHayvan;
-  bool misafir;
-}
-
 class Kisi{
   String adSoyad;
   String email;
@@ -14,6 +6,7 @@ class Kisi{
   String cinsiyet;
   String puan;
   String oylayan;
+  String profilResmi;
 }
 
 

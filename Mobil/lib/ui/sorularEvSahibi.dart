@@ -1,15 +1,16 @@
 import 'package:deneme/ui/loading.dart';
+import 'package:deneme/ui/mainPageScreen.dart';
 import 'package:deneme/ui/sorularEv.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Sorular extends StatefulWidget {
+class SorularEvSahibi extends StatefulWidget {
   @override
-  _SorularState createState() => _SorularState();
+  _SorularEvSahibiState createState() => _SorularEvSahibiState();
 }
 
-class _SorularState extends State<Sorular> {
+class _SorularEvSahibiState extends State<SorularEvSahibi> {
   bool radioHayvan, radioSigara, radioAlkol, radioCinsiyet, radioMisafir;
   bool loading = false;
 
@@ -243,7 +244,7 @@ class _SorularState extends State<Sorular> {
                       _ozellikEkle();
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return SorularEv();
+                        return MainPageScreen();
                       }));
                     },
                     textColor: Colors.white,
@@ -274,12 +275,17 @@ class _SorularState extends State<Sorular> {
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;
 
+    _firestore
+        .collection("kullanicilar")
+        .document("$uid")
+        .setData({"soruDurum": true}, merge: true);
+
     Map<String, bool> ozellik = Map();
 
     ozellik["hayvan"] = radioHayvan;
     ozellik["sigara"] = radioSigara;
     ozellik["alkol"] = radioAlkol;
-    ozellik["cinsiyet"] = radioCinsiyet;
+    ozellik["cinsiyetTercih"] = radioCinsiyet;
     ozellik["misafir"] = radioMisafir;
 
     if (user != null) {

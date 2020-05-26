@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FirestoreIslemleri extends StatefulWidget {
   @override
@@ -46,7 +47,7 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
               color: Colors.grey,
               onPressed: _veriSorgula,
             ),
-            /*RaisedButton(
+            RaisedButton(
               child: Text("Galeri Resim"),
               color: Colors.grey,
               onPressed: _galeriResim,
@@ -55,7 +56,7 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
               child: Text("Kamera Resim"),
               color: Colors.grey,
               onPressed: _kameraResim,
-            ),*/
+            ),
             RaisedButton(
               child: Text(
                 "deneme",
@@ -65,9 +66,13 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
               onPressed: _deneme,
             ),
             Center(
-              child: _secilenResim == null
-                  ? Text("Resim Yok")
-                  : Image.file(_secilenResim),
+              child: Container(
+                height: 200,
+                width: 200,
+                child: _secilenResim == null
+                    ? Text("Resim Yok")
+                    : Image.file(_secilenResim),
+              ),
             )
           ],
         ),
@@ -260,14 +265,39 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
                                   if(dokuman.data['email'] == _mail)
                                   debugPrint(dokuman.data['email'].toString());
                                 }*/
+
+   _firestore.collection("kullanicilar").getDocuments().then((querySnapshot) {
+      debugPrint(" kullanicilardaki döküman sayısı : " +
+          querySnapshot.documents.length.toString());
+
+      for (int i = 0; i < querySnapshot.documents.length; i++) {
+        debugPrint(querySnapshot.documents[i].data.toString());
+      }
+   });
   }
 
-  /*void _galeriResim() async {
-   // var resim = await ImagePicker.pickImage(source: ImageSource.gallery);
+  void _galeriResim() async {
+    var resim = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
-   // _secilenResim = resim;  
+      _secilenResim = resim;
+    });
+
+    StorageReference ref = FirebaseStorage.instance
+        .ref()
+        .child("ev")
+        .child("addi")
+        .child("ev.png");
+
+    StorageUploadTask uploadTask = await ref.putFile(_secilenResim);
+
+    var url = await (await uploadTask.onComplete).ref.getDownloadURL();
+    debugPrint("resmin url : " + url);
+  }
+
+  void _kameraResim() async {
+    var resim = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _secilenResim = resim;
     });
   }
-
-  void _kameraResim() {}*/
 }

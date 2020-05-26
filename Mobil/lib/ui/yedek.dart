@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deneme/Classes/ev.dart';
 import 'package:deneme/Classes/kisi.dart';
 import 'package:deneme/ui/ilanDetay.dart';
 import 'package:deneme/ui/ilanVer.dart';
@@ -29,9 +28,6 @@ class AnasayfaState extends State<Anasayfa>
 
   List<String> uidList = List();
   List<String> urlList = List();
-  List<String> fiyatList = List();
-  List<String> konumList = List();
-
   String mesaj = "";
   int itemSayisi = 1;
   TabController tabController;
@@ -101,7 +97,7 @@ class AnasayfaState extends State<Anasayfa>
                             color: Colors.purple,
                             image: DecorationImage(
                               image: NetworkImage(
-                                  kisi.profilResmi),
+                                  "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -154,7 +150,7 @@ class AnasayfaState extends State<Anasayfa>
                     width: double.infinity,
                     height: 400,
                     child: ListView.builder(
-                        itemCount: urlList.length,
+                        itemCount: 5,
                         itemBuilder: (BuildContext ctxt, int index) =>
                             _anasayfaGrid(ctxt, index)),
                   ),
@@ -188,7 +184,8 @@ class AnasayfaState extends State<Anasayfa>
                         alignment: Alignment.center,
                         fit: BoxFit.cover,
                         placeholder: "assets/loading.gif",
-                        image: "${urlList[index].toString()}"),
+                        image:
+                            "http://www.kocerdemyapi.com/wp-content/uploads/2018/09/dMhgct-house-png-home-background-1.png"),
                   ),
                   Positioned(
                     right: 1,
@@ -218,7 +215,7 @@ class AnasayfaState extends State<Anasayfa>
                     Row(
                       children: <Widget>[
                         Text(
-                          konumList[index].toString(),
+                          "Eskişehir,Büyükdere",
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
@@ -229,7 +226,7 @@ class AnasayfaState extends State<Anasayfa>
                       ],
                     ),
                     Text(
-                      "\$ ${fiyatList[index].toString()}",
+                      "\$ ${ev.fiyat}",
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -425,8 +422,7 @@ class AnasayfaState extends State<Anasayfa>
   }
 
   Future _getAll() async {
-    final FirebaseUser user = await _auth.currentUser();
-    final String uid = user.uid;
+    String at;
 
     var dokumanlar = await _firestore
         .collection("kullanicilar")
@@ -438,20 +434,15 @@ class AnasayfaState extends State<Anasayfa>
       uidList.add(dokuman.data['uid'].toString());
     }
 
-    if (user != null) {
-      for (int i = 0; i < uidList.length; i++) {
-        DocumentSnapshot documentSnapshot = await _firestore
-            .document("kullanicilar/${uidList[i]}/ev/ozellik")
-            .get();
+    for (int i = 0; i < uidList.length; i++) {
+      DocumentSnapshot documentSnapshot = await _firestore
+          .document("kullanicilar/${uidList[i]}/ev/ozellik")
+          .get();
 
-        urlList.add(documentSnapshot.data['url'].toString());
-        debugPrint("url :" + urlList[i].toString());
-        fiyatList.add(documentSnapshot.data['fiyat']);
-        konumList.add(documentSnapshot.data['konum']);
-
-        setState(() {
-        });
-      }
+      urlList.add(documentSnapshot.data['url'].toString());
+      debugPrint("url :" + documentSnapshot.data['url'].toString());
     }
+
+    setState(() {});
   }
 }

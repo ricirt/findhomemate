@@ -17,6 +17,7 @@ class _SorularKisiState extends State<SorularKisi> {
   bool radioSigara;
   bool radioAlkol;
   bool radioMisafir;
+  bool radioCinsiyetTercihi;
   bool loading = false;
 
   @override
@@ -84,7 +85,7 @@ class _SorularKisiState extends State<SorularKisi> {
                 ),
                 SizedBox(height: 30),
                 Text(
-                  "Evde sigara u?llanır mısınız",
+                  "Evde sigara kullanır mısınız",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -209,6 +210,46 @@ class _SorularKisiState extends State<SorularKisi> {
                     )
                   ],
                 ),
+                 Text(
+                  "Cinsiyet Tercihiniz ?",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Radio(
+                            value: true,
+                            groupValue: radioCinsiyetTercihi,
+                            onChanged: (T) {
+                              setState(() {
+                                radioCinsiyetTercihi = T;
+                              });
+                            }),
+                        Text("Kadın"),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Radio(
+                            value: false,
+                            groupValue: radioCinsiyetTercihi,
+                            onChanged: (T) {
+                              setState(() {
+                                radioCinsiyetTercihi = T;
+                              });
+                            }),
+                        Text("Erkek"),
+                      ],
+                    )
+                  ],
+                ),
                 Center(
                   child: RaisedButton(
                     onPressed: () {
@@ -249,6 +290,7 @@ class _SorularKisiState extends State<SorularKisi> {
     ozellik["sigara"] = radioSigara;
     ozellik["alkol"] = radioAlkol;
     ozellik["misafir"] = radioMisafir;
+    ozellik["cinsiyetTercihi"] = radioCinsiyetTercihi;
 
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;

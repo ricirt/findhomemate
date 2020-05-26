@@ -1,16 +1,20 @@
+import 'dart:io';
+
 import 'package:deneme/Classes/kisi.dart';
+import 'package:deneme/Classes/kisiNitelikleri.dart';
 import 'package:deneme/ui/loading.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 Kisi kisi = Kisi();
-KisiNitelikler kisiNitelikler = KisiNitelikler();
+KisiNitelikleri kisiNitelikler = KisiNitelikleri();
 int yas, puan, oylayan;
 double sonuc;
-bool loading = true;
 
 class Profile extends StatefulWidget {
   @override
@@ -23,11 +27,10 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-   
     super.initState();
     _getInfo();
     _getFeatures();
-    
+
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
@@ -41,7 +44,6 @@ class _ProfileState extends State<Profile> {
   }
 
   Future _getInfo() async {
-     
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;
 
@@ -57,12 +59,16 @@ class _ProfileState extends State<Profile> {
         kisi.puan = documentSnapshot.data['puan'].toString();
         kisi.oylayan = documentSnapshot.data['oylayan'].toString();
         kisi.cinsiyet = documentSnapshot.data['cinsiyet'].toString();
+        kisi.profilResmi = documentSnapshot.data['profilResmi'].toString();
+
+        debugPrint("resim :" +kisi.profilResmi);
 
         yas = int.parse(kisi.yas);
         yas = 2020 - yas;
         puan = int.parse(kisi.puan);
 
         oylayan = int.parse(kisi.oylayan);
+
         sonuc = puan / oylayan;
       });
     }
@@ -82,11 +88,16 @@ class _ProfileState extends State<Profile> {
         kisiNitelikler.evcilHayvan = documentSnapshot.data['hayvan'];
         kisiNitelikler.misafir = documentSnapshot.data['misafir'];
         kisiNitelikler.sigara = documentSnapshot.data['sigara'];
+        kisiNitelikler.cinsiyetTercih = documentSnapshot.data['cinsiyetTercih'];
       });
     }
-    loading = false;
   }
 }
+
+final Firestore _firestore = Firestore.instance;
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+File _secilenResim;
 
 class ProfilePage extends StatelessWidget {
   TextStyle _style() {
@@ -95,171 +106,167 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return loading
-        ? Loading()
-        : Scaffold(
-            appBar: CustomAppBar(),
-            body: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Email",
-                      style: _style(),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text(kisi.email),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Konum",
-                      style: _style(),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text("Büyükdere, Eskişehir"),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Meslek",
-                      style: _style(),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text(kisi.meslek),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Cinsiyet",
-                      style: _style(),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text(kisi.cinsiyet),
-                    Center(
-                      child: Text(
-                        "Kriterler",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "Sigara",
-                              style: _style(),
-                            ),
-                            Icon(kisiNitelikler.sigara == true
-                                ? Icons.check
-                                : Icons.cancel),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "Alkol",
-                              style: _style(),
-                            ),
-                            Icon(kisiNitelikler.alkol == true
-                                ? Icons.check
-                                : Icons.cancel),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "Evcil Hayvan",
-                              style: _style(),
-                            ),
-                            Icon(kisiNitelikler.evcilHayvan == true
-                                ? Icons.check
-                                : Icons.cancel),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "Cinsiyet",
-                              style: _style(),
-                            ),
-                            /*Icon(Profilozellik[0].cinsiyet == true
-                          ? Icons.pregnant_woman
-                          : Icons.face),*/
-                          ],
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "Misafir",
-                              style: _style(),
-                            ),
-                            Icon(kisiNitelikler.misafir == true
-                                ? Icons.check
-                                : Icons.cancel),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Column(
-                      children: <Widget>[],
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                    )
-                  ],
+    return Scaffold(
+      appBar: CustomAppBar(),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Email",
+                style: _style(),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text(kisi.email),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Konum",
+                style: _style(),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text("Büyükdere, Eskişehir"),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Meslek",
+                style: _style(),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text(kisi.meslek),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                "Cinsiyet",
+                style: _style(),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text(kisi.cinsiyet),
+              Center(
+                child: Text(
+                  "Kriterler",
+                  style: TextStyle(fontSize: 24),
                 ),
               ),
-            ),
-          );
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Sigara",
+                        style: _style(),
+                      ),
+                      Icon(kisiNitelikler.sigara == true
+                          ? Icons.check
+                          : Icons.cancel),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Alkol",
+                        style: _style(),
+                      ),
+                      Icon(kisiNitelikler.alkol == true
+                          ? Icons.check
+                          : Icons.cancel),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Evcil Hayvan",
+                        style: _style(),
+                      ),
+                      Icon(kisiNitelikler.evcilHayvan == true
+                          ? Icons.check
+                          : Icons.cancel),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Cinsiyet Tercihi",
+                        style: _style(),
+                      ),
+                      Icon(kisiNitelikler.cinsiyetTercih == true
+                          ? Icons.pregnant_woman
+                          : Icons.face),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Misafir",
+                        style: _style(),
+                      ),
+                      Icon(kisiNitelikler.misafir == true
+                          ? Icons.check
+                          : Icons.cancel),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Column(
+                children: <Widget>[],
+              ),
+              Divider(
+                color: Colors.grey,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
-final String url =
-    "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg";
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
@@ -307,13 +314,19 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.cover, image: NetworkImage(url))),
+                    InkWell(
+                      onTap: () {
+                        debugPrint(" de bakalim");
+                        _resimSec();
+                      },
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                fit: BoxFit.cover, image: NetworkImage(kisi.profilResmi))),
+                      ),
                     ),
                     SizedBox(
                       height: 16,
@@ -351,7 +364,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       ],
                     ),
                     Text(
-                      sonuc == null ? "0/5" : "$sonuc/5",
+                      sonuc == null ? "0/5" : "2/5",
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -363,7 +376,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                     Text(
-                      kisi.oylayan == null ? kisi.oylayan.toString() : "0",
+                      kisi.oylayan == null ? "0" : kisi.oylayan.toString(),
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -437,6 +450,33 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
       ),
     );
+  }
+
+  void _resimSec() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+    var url;
+
+    var resim = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _secilenResim = resim;
+
+    StorageReference ref = FirebaseStorage.instance
+        .ref()
+        .child("kullanicilar")
+        .child("$uid")
+        .child("profil.png");
+
+    StorageUploadTask uploadTask = ref.putFile(_secilenResim);
+
+    url = await (await uploadTask.onComplete).ref.getDownloadURL();
+    debugPrint("resmin url : " + url);
+
+    if (user != null) {
+      _firestore
+          .collection('kullanicilar')
+          .document("$uid")
+          .setData({"profilResmi": url}, merge: true);
+    }
   }
 }
 

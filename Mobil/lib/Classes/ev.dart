@@ -10,4 +10,5 @@ class Ev{
   String fiyat;
   String oda;
   String kat;
+  String konum;
 }

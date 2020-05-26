@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deneme/Classes/ev.dart';
-import 'package:deneme/Classes/evSahibi.dart';
+import 'package:deneme/Classes/kisiNitelikleri.dart';
+import 'package:deneme/Classes/kisiNitelikleri.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'profile.dart';
 import 'package:deneme/ui/profile.dart';
 
 Ev ev = Ev();
-EvSahibi evSahibi = EvSahibi();
+KisiNitelikleri kisiNitelikleri = KisiNitelikleri();
 
 class IlanDetay extends StatefulWidget {
   @override
@@ -114,7 +115,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Sigara",
                               style: _style(),
                             ),
-                            Icon(evSahibi.sigara == true
+                            Icon(kisiNitelikleri.sigara == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -128,7 +129,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Alkol",
                               style: _style(),
                             ),
-                            Icon(evSahibi.alkol == true
+                            Icon(kisiNitelikleri.alkol == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -142,7 +143,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Evcil Hayvan",
                               style: _style(),
                             ),
-                            Icon(evSahibi.evcilHayvan == true
+                            Icon(kisiNitelikleri.evcilHayvan == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -156,7 +157,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Cinsiyet",
                               style: _style(),
                             ),
-                            Icon(evSahibi.cinsiyet == true
+                            Icon(kisiNitelikleri.cinsiyetTercih == true
                                 ? Icons.pregnant_woman
                                 : Icons.accessibility_new),
                           ],
@@ -262,7 +263,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               style: _style(),
                             ),
                             Icon(
-                              evSahibi.misafir == true
+                              kisiNitelikleri.misafir == true
                                   ? Icons.check
                                   : Icons.cancel,
                             ),
@@ -332,11 +333,11 @@ class _IlanDetayState extends State<IlanDetay> {
             .get();
 
         setState(() {
-          evSahibi.alkol = documentSnapshot.data['alkol'];
-          evSahibi.sigara = documentSnapshot.data['sigara'];
-          evSahibi.cinsiyet = documentSnapshot.data['cinsiyet'];
-          evSahibi.evcilHayvan = documentSnapshot.data['hayvan'];
-          evSahibi.misafir = documentSnapshot.data['misafir'];
+          kisiNitelikleri.alkol = documentSnapshot.data['alkol'];
+          kisiNitelikleri.sigara = documentSnapshot.data['sigara'];
+          kisiNitelikleri.cinsiyetTercih = documentSnapshot.data['cinsiyetTercih'];
+          kisiNitelikleri.evcilHayvan = documentSnapshot.data['hayvan'];
+          kisiNitelikleri.misafir = documentSnapshot.data['misafir'];
         });
       }
     }

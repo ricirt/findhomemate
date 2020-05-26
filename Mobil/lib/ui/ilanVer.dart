@@ -1,15 +1,23 @@
-import 'package:deneme/ui/mainPageScreen.dart';
-import 'package:flutter/material.dart';
-import 'anasayfa.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deneme/ui/mainPageScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
-class SorularEv extends StatefulWidget {
+class IlanVer extends StatefulWidget {
   @override
-  _SorularEvState createState() => _SorularEvState();
+  _IlanVerState createState() => _IlanVerState();
 }
 
-class _SorularEvState extends State<SorularEv> {
+class _IlanVerState extends State<IlanVer> {
+  final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  File _secilenResim;
+
   bool radioWifi;
   bool radioTv;
   bool radioDepozito;
@@ -18,11 +26,10 @@ class _SorularEvState extends State<SorularEv> {
   bool radioGaraj;
   bool radioDogalgaz;
 
-  final Firestore _firestore = Firestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final _fiyatController = TextEditingController();
   final _odaController = TextEditingController();
   final _katController = TextEditingController();
+  final _konumController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +52,25 @@ class _SorularEvState extends State<SorularEv> {
             margin: EdgeInsets.symmetric(horizontal: 50),
             child: Column(
               children: <Widget>[
+                Center(
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    child: _secilenResim == null
+                        ? Text("Resim Seçilmedi")
+                        : Image.file(_secilenResim),
+                  ),
+                ),
+                RaisedButton(
+                  child: Text("Galeriden Resim Yukle"),
+                  color: Colors.blueAccent,
+                  onPressed: _galeriResim,
+                ),
+                RaisedButton(
+                  child: Text("Kameradan Resim Yukle"),
+                  color: Colors.blueAccent,
+                  onPressed: _kameraResim,
+                ),
                 TextFormField(
                   controller: _fiyatController,
                   decoration: InputDecoration(
@@ -64,6 +90,13 @@ class _SorularEvState extends State<SorularEv> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.format_list_numbered_rtl),
                     hintText: "Kat",
+                  ),
+                ),
+                TextFormField(
+                  controller: _konumController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.place),
+                    hintText: "Konum",
                   ),
                 ),
               ],
@@ -360,7 +393,16 @@ class _SorularEvState extends State<SorularEv> {
           Center(
             child: RaisedButton(
               onPressed: () {
-                loading = true;
+                _ozellikEkle();
+                Fluttertoast.showToast(
+                  msg: "İlan başarıyla tamamlandı",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIos: 2,
+                  backgroundColor: Colors.blue,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return MainPageScreen();
@@ -389,5 +431,71 @@ class _SorularEvState extends State<SorularEv> {
     ));
   }
 
-  
+  void _ozellikEkle() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+    var url;
+
+    String _fiyat = _fiyatController.text;
+    String _oda = _odaController.text;
+    String _kat = _katController.text;
+    String _konum = _konumController.text;
+
+    Map<String, dynamic> ozellik = Map();
+
+    ozellik["fiyat"] = _fiyat.toString();
+    ozellik["oda"] = _oda.toString();
+    ozellik["kat"] = _kat.toString();
+    ozellik["konum"] = _konum.toString();
+    ozellik["wifi"] = radioWifi;
+    ozellik["tv"] = radioTv;
+    ozellik["depozito"] = radioDepozito;
+    ozellik["fatura"] = radioFatura;
+    ozellik["esya"] = radioEsya;
+    ozellik["garaj"] = radioGaraj;
+    ozellik["dogalgaz"] = radioDogalgaz;
+
+    if (user != null) {
+      debugPrint("uid = $uid");
+      _firestore
+          .collection('kullanicilar')
+          .document("$uid")
+          .collection("ev")
+          .document("ozellik")
+          .setData(ozellik, merge: true);
+    }
+    StorageReference ref = FirebaseStorage.instance
+        .ref()
+        .child("ev")
+        .child("$uid")
+        .child("ev.png");
+
+    StorageUploadTask uploadTask = ref.putFile(_secilenResim);
+
+    url = await (await uploadTask.onComplete).ref.getDownloadURL();
+    debugPrint("resmin url : " + url);
+
+    if (user != null) {
+      _firestore
+          .collection('kullanicilar')
+          .document("$uid")
+          .collection("ev")
+          .document("ozellik")
+          .setData({"url": url}, merge: true);
+    }
+  }
+
+  void _galeriResim() async {
+    var resim = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _secilenResim = resim;
+    });
+  }
+
+  void _kameraResim() async {
+    var resim = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _secilenResim = resim;
+    });
+  }
 }

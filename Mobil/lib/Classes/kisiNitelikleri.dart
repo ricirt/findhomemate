@@ -1,8 +1,7 @@
-class EvSahibi{
+class KisiNitelikleri{
   bool sigara; 
   bool alkol;
   bool evcilHayvan;
-  bool cinsiyet;
   bool misafir;
-  
+  bool cinsiyetTercih;
 }
