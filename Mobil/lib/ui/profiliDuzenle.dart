@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class RegisterScreen extends StatefulWidget {
+class ProfilDuzenle extends StatefulWidget {
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  _ProfilDuzenleState createState() => _ProfilDuzenleState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _ProfilDuzenleState extends State<ProfilDuzenle> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _firestore = Firestore.instance;
   final _mailController = TextEditingController();
@@ -123,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 20),
-                    width: 300,
+                    width: double.infinity,
                     child: FlatButton(
                       onPressed: () {
                         _emailveSifreCreateUser();

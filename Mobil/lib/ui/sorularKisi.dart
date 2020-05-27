@@ -83,7 +83,7 @@ class _SorularKisiState extends State<SorularKisi> {
                     )
                   ],
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 20),
                 Text(
                   "Evde sigara kullanır mısınız",
                   style: TextStyle(
@@ -125,7 +125,7 @@ class _SorularKisiState extends State<SorularKisi> {
                   ],
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 20,
                 ),
                 Text(
                   "Evde Alkol Kullanır mısınız?",
@@ -168,7 +168,7 @@ class _SorularKisiState extends State<SorularKisi> {
                   ],
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 20,
                 ),
                 Text(
                   "Yatılı misafiriniz oluyor mu?",

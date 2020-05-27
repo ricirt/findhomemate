@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:deneme/Classes/kisi.dart';
 import 'package:deneme/Classes/kisiNitelikleri.dart';
 import 'package:deneme/ui/loading.dart';
+import 'package:deneme/ui/profiliDuzenle.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -61,7 +62,7 @@ class _ProfileState extends State<Profile> {
         kisi.cinsiyet = documentSnapshot.data['cinsiyet'].toString();
         kisi.profilResmi = documentSnapshot.data['profilResmi'].toString();
 
-        debugPrint("resim :" +kisi.profilResmi);
+        debugPrint("resim :" + kisi.profilResmi);
 
         yas = int.parse(kisi.yas);
         yas = 2020 - yas;
@@ -267,7 +268,6 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => Size(double.infinity, 320);
@@ -305,7 +305,12 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                     Icons.settings,
                     color: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return ProfilDuzenle();
+                    }));
+                  },
                 )
               ],
             ),
@@ -325,7 +330,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                                fit: BoxFit.cover, image: NetworkImage(kisi.profilResmi))),
+                                fit: BoxFit.cover,
+                                image: NetworkImage(kisi.profilResmi))),
                       ),
                     ),
                     SizedBox(

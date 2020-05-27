@@ -1,15 +1,14 @@
 ++1-ilan ver sayfasinin yapilmasi ve database baglanmasi	-> fatih(tasarim)-addi(database)
 ++2-anasayfaya verilerin databaseden çekilmesi			-> addi
-  3-profil düzenle sayfasinin tasarlanmasi		-> fatih
-  4-bildirim sayfasinin tasarlanmasi			-> fatih
+  3-profil düzenle sayfasinin tasarlanmasi			-> fatih
+  4-bildirim sayfasinin tasarlanmasi				-> fatih
   5-Profil ev arayan ve ev arkadasi arayan 2 tipede uygun olarak dönüstürülmesi -> fatih
-  6-Mesajlarin yapilmasi				-> addi-fatih
+  6-Mesajlarin yapilmasi					-> addi-fatih
 ++7-evler tablosunun olusturulmasi(yapildi düzenlenecek)	-> addi
 ++8-profile kullanici fotografinin cekilmesi 			-> addi
-  9-sifremi unuttum sayfasinin tasarlanmasi		-> fatih
-  10-Sayfalarin tasarimlarinin düzenlenmesi		-> fatih-addi
-  11-kullanicilara nasil puan verileceginin tasarlanmasi-> fatih-addi
+  9-sifremi unuttum sayfasinin tasarlanmasi			-> fatih
+  10-Sayfalarin tasarimlarinin düzenlenmesi			-> fatih-addi
+  11-kullanicilara nasil puan verileceginin tasarlanmasi	-> fatih-addi
 ++12-resizeavoid registere eklenilecek				-> fatih
 ++13-beni hatirla (yapildi) 					-> addi
-  14-profil entegrasyonu				-> fatih
-++15-Anasayfaya Tabbar yapýlmasý					-> fatih
+++14-Anasayfaya Tabbar yapýlmasý				-> fatih
