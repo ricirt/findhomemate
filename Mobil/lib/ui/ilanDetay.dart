@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deneme/Classes/ev.dart';
-import 'package:deneme/Classes/kisiNitelikleri.dart';
-import 'package:deneme/Classes/kisiNitelikleri.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:deneme/Classes/evSahibi.dart';
+import 'package:deneme/Classes/evSahibiNitelikleri.dart';
+import 'package:deneme/ui/evSahibiProfil.dart';
 import 'package:flutter/material.dart';
-import 'profile.dart';
-import 'package:deneme/ui/profile.dart';
+
 
 Ev ev = Ev();
-KisiNitelikleri kisiNitelikleri = KisiNitelikleri();
+EvSahibi evSahibi = EvSahibi();
+EvSahibiNitelikleri evSahibiNitelikleri = EvSahibiNitelikleri();
+int yas, puan, oylayan;
+double sonuc;
 
 class IlanDetay extends StatefulWidget {
   @override
@@ -17,11 +19,10 @@ class IlanDetay extends StatefulWidget {
 
 class _IlanDetayState extends State<IlanDetay> {
   final Firestore _firestore = Firestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
     super.initState();
-
+  
     _getHomeInfos();
   }
 
@@ -35,7 +36,7 @@ class _IlanDetayState extends State<IlanDetay> {
             height: screenHeight * 0.6,
             width: double.infinity,
             child: Image.network(
-              "http://www.kocerdemyapi.com/wp-content/uploads/2018/09/dMhgct-house-png-home-background-1.png",
+              ev.url,
               fit: BoxFit.cover,
             ),
           ),
@@ -93,13 +94,13 @@ class _IlanDetayState extends State<IlanDetay> {
                             setState(() {
                               Navigator.of(context).push(
                                   MaterialPageRoute(builder: (buildContext) {
-                                return ProfilePage();
+                                return EvSahibiProfile();
                               }));
                             });
                           },
                           color: Colors.purple.shade200,
                           child: Text(
-                            "${kisi.adSoyad}'in Profiline git ",
+                            "${evSahibi.adSoyad}'in Profiline git ",
                             style: TextStyle(color: Colors.white),
                           ),
                         )
@@ -115,7 +116,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Sigara",
                               style: _style(),
                             ),
-                            Icon(kisiNitelikleri.sigara == true
+                            Icon(evSahibiNitelikleri.sigara == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -129,7 +130,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Alkol",
                               style: _style(),
                             ),
-                            Icon(kisiNitelikleri.alkol == true
+                            Icon(evSahibiNitelikleri.alkol == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -143,7 +144,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Evcil Hayvan",
                               style: _style(),
                             ),
-                            Icon(kisiNitelikleri.evcilHayvan == true
+                            Icon(evSahibiNitelikleri.evcilHayvan == true
                                 ? Icons.check
                                 : Icons.cancel),
                           ],
@@ -157,7 +158,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Cinsiyet",
                               style: _style(),
                             ),
-                            Icon(kisiNitelikleri.cinsiyetTercih == true
+                            Icon(evSahibiNitelikleri.cinsiyetTercih == true
                                 ? Icons.pregnant_woman
                                 : Icons.accessibility_new),
                           ],
@@ -263,7 +264,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               style: _style(),
                             ),
                             Icon(
-                              kisiNitelikleri.misafir == true
+                              evSahibiNitelikleri.misafir == true
                                   ? Icons.check
                                   : Icons.cancel,
                             ),
@@ -306,40 +307,72 @@ class _IlanDetayState extends State<IlanDetay> {
   }
 
   Future _getHomeInfos() async {
-    final FirebaseUser user = await _auth.currentUser();
-    final String uid = user.uid;
+    DocumentSnapshot documentSnapshot = await _firestore
+        .document("kullanicilar/${evSahibi.uid}/ev/ozellik")
+        .get();
 
-    if (user != null) {
-      DocumentSnapshot documentSnapshot =
-          await _firestore.document("kullanicilar/$uid/ev/ozellik").get();
+    setState(() {
+      ev.depozito = documentSnapshot.data['depozito'];
+      ev.dogalgaz = documentSnapshot.data['dogalgaz'];
+      ev.esya = documentSnapshot.data['esya'];
+      ev.fatura = documentSnapshot.data['fatura'];
+      ev.fiyat = documentSnapshot.data['fiyat'].toString();
+      ev.garaj = documentSnapshot.data['garaj'];
+      ev.kat = documentSnapshot.data['kat'].toString();
+      ev.oda = documentSnapshot.data['oda'].toString();
+      ev.tv = documentSnapshot.data['tv'];
+      ev.wifi = documentSnapshot.data['wifi'];
+      ev.url = documentSnapshot.data['url'];
+    });
 
+    DocumentSnapshot documentSnapshot2 = await _firestore
+        .document("kullanicilar/${evSahibi.uid}/kullanici/ozellik")
+        .get();
 
-      setState(() {
-        ev.depozito = documentSnapshot.data['depozito'];
-        ev.dogalgaz = documentSnapshot.data['dogalgaz'];
-        ev.esya = documentSnapshot.data['esya'];
-        ev.fatura = documentSnapshot.data['fatura'];
-        ev.fiyat = documentSnapshot.data['fiyat'].toString();
-        ev.garaj = documentSnapshot.data['garaj'];
-        ev.kat = documentSnapshot.data['kat'].toString();
-        ev.oda = documentSnapshot.data['oda'].toString();
-        ev.tv = documentSnapshot.data['tv'];
-        ev.wifi = documentSnapshot.data['wifi'];
-      });
+    setState(() {
+      evSahibiNitelikleri.alkol = documentSnapshot2.data['alkol'];
+      evSahibiNitelikleri.sigara = documentSnapshot2.data['sigara'];
+      evSahibiNitelikleri.cinsiyetTercih =
+          documentSnapshot2.data['cinsiyetTercih'];
+      evSahibiNitelikleri.evcilHayvan = documentSnapshot2.data['hayvan'];
+      evSahibiNitelikleri.misafir = documentSnapshot2.data['misafir'];
+    });
 
-      if (user != null) {
-        DocumentSnapshot documentSnapshot = await _firestore
-            .document("kullanicilar/$uid/kullanici/ozellik")
-            .get();
+    debugPrint(evSahibiNitelikleri.alkol.toString());
+    debugPrint(evSahibiNitelikleri.sigara.toString());
+    debugPrint(evSahibiNitelikleri.cinsiyetTercih.toString());
+    debugPrint(evSahibiNitelikleri.evcilHayvan.toString());
+    debugPrint(evSahibiNitelikleri.misafir.toString());
 
-        setState(() {
-          kisiNitelikleri.alkol = documentSnapshot.data['alkol'];
-          kisiNitelikleri.sigara = documentSnapshot.data['sigara'];
-          kisiNitelikleri.cinsiyetTercih = documentSnapshot.data['cinsiyetTercih'];
-          kisiNitelikleri.evcilHayvan = documentSnapshot.data['hayvan'];
-          kisiNitelikleri.misafir = documentSnapshot.data['misafir'];
-        });
-      }
-    }
+    DocumentSnapshot documentSnapshot3 =
+        await _firestore.document("kullanicilar/${evSahibi.uid}").get();
+
+    setState(() {
+      evSahibi.adSoyad = documentSnapshot3.data['adSoyad'];
+      evSahibi.cinsiyet = documentSnapshot3.data['cinsiyet'];
+      evSahibi.email = documentSnapshot3.data['email'];
+      evSahibi.meslek = documentSnapshot3.data['meslek'];
+      evSahibi.oylayan = documentSnapshot3.data['oylayan'];
+      evSahibi.profilResmi = documentSnapshot3.data['profilResmi'];
+      evSahibi.puan = documentSnapshot3.data['puan'];
+      evSahibi.yas = documentSnapshot3.data['dogumYili'];
+      evSahibi.uid = documentSnapshot3.data['uid'];
+      yas = int.parse(evSahibi.yas);
+      yas = 2020 - yas;
+      evSahibi.yas = yas.toString();
+      debugPrint("yasssss : " + evSahibi.yas);
+
+     
+
+      
+    });
+    debugPrint(evSahibi.adSoyad.toString());
+    debugPrint(evSahibi.cinsiyet.toString());
+    debugPrint(evSahibi.email.toString());
+    debugPrint(evSahibi.oylayan.toString());
+    debugPrint(evSahibi.profilResmi.toString());
+    debugPrint(evSahibi.puan.toString());
+    debugPrint(evSahibi.yas.toString());
+    debugPrint(evSahibi.uid.toString());
   }
 }

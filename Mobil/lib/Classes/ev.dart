@@ -11,4 +11,5 @@ class Ev{
   String oda;
   String kat;
   String konum;
+  String url;
 }

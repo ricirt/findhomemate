@@ -1,4 +1,4 @@
-class Kisi{
+class EvSahibi{
   String adSoyad;
   String email;
   String meslek;
@@ -8,18 +8,5 @@ class Kisi{
   String oylayan;
   String profilResmi;
   String uid;
+
 }
-
-
-
-
-
-
-/*pet
-sigara
-alkol
-cinsiyet
-Meslek
-yaş
-misafir
-verebileceği ücret */

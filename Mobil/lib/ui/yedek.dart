@@ -422,7 +422,6 @@ class AnasayfaState extends State<Anasayfa>
   }
 
   Future _getAll() async {
-    String at;
 
     var dokumanlar = await _firestore
         .collection("kullanicilar")

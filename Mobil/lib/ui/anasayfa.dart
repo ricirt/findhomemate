@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deneme/Classes/ev.dart';
 import 'package:deneme/Classes/kisi.dart';
 import 'package:deneme/ui/ilanDetay.dart';
 import 'package:deneme/ui/ilanVer.dart';
@@ -38,7 +37,6 @@ class AnasayfaState extends State<Anasayfa>
   @override
   void initState() {
     super.initState();
-    _getInfo();
     _getAll();
   }
 
@@ -100,8 +98,7 @@ class AnasayfaState extends State<Anasayfa>
                             shape: BoxShape.circle,
                             color: Colors.purple,
                             image: DecorationImage(
-                              image: NetworkImage(
-                                  kisi.profilResmi),
+                              image: NetworkImage(kisi.profilResmi),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -167,10 +164,7 @@ class AnasayfaState extends State<Anasayfa>
   Widget _anasayfaGrid(BuildContext ctxt, int index) {
     return InkWell(
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext context) {
-          return IlanDetay();
-        }));
+        _ilanaGit(index);
       },
       child: Padding(
         padding: EdgeInsetsDirectional.only(bottom: 10),
@@ -197,10 +191,7 @@ class AnasayfaState extends State<Anasayfa>
                       heroTag: null,
                       mini: true,
                       onPressed: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return IlanDetay();
-                        }));
+                        _ilanaGit(index);
                       },
                       child: Icon(
                         Icons.chevron_right,
@@ -245,6 +236,66 @@ class AnasayfaState extends State<Anasayfa>
     );
   }
 
+  void _ilanaGit(con) {
+    debugPrint("index : " + con.toString());
+    evSahibi.uid = uidList[con].toString();
+    debugPrint("kisi id : " + evSahibi.uid);
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return IlanDetay();
+    }));
+  }
+
+  Future _getInfo() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+
+    if (user != null) {
+      DocumentSnapshot documentSnapshot =
+          await _firestore.document("kullanicilar/$uid").get();
+
+      setState(() {
+        kisi.adSoyad = documentSnapshot.data['adSoyad'].toString();
+        kisi.email = documentSnapshot.data['email'].toString();
+        kisi.meslek = documentSnapshot.data['meslek'].toString();
+        kisi.cinsiyet = documentSnapshot.data['cinsiyet'].toString();
+        kisi.profilResmi = documentSnapshot.data['profilResmi'].toString();
+      });
+      debugPrint("ikinci");
+    }
+  }
+
+  Future _getAll() async {
+    final FirebaseUser user = await _auth.currentUser();
+
+    var dokumanlar = await _firestore
+        .collection("kullanicilar")
+        .where("evSahibi", isEqualTo: true)
+        .getDocuments();
+
+    for (var dokuman in dokumanlar.documents) {
+      uidList.add(dokuman.data['uid'].toString());
+    }
+
+    if (user != null) {
+      for (int i = 0; i < uidList.length; i++) {
+        DocumentSnapshot documentSnapshot = await _firestore
+            .document("kullanicilar/${uidList[i]}/ev/ozellik")
+            .get();
+
+        urlList.add(documentSnapshot.data['url'].toString());
+        fiyatList.add(documentSnapshot.data['fiyat']);
+        konumList.add(documentSnapshot.data['konum']);
+
+        setState(() {
+          loading = false;
+        });
+      }
+    }
+    _getInfo();
+  }
+
   void _cikisYap() async {
     if (await _auth.currentUser() != null) {
       _auth.signOut().then((data) {
@@ -260,22 +311,6 @@ class AnasayfaState extends State<Anasayfa>
     }
 
     setState(() {});
-  }
-
-  Future _getInfo() async {
-    final FirebaseUser user = await _auth.currentUser();
-    final String uid = user.uid;
-    if (user != null) {
-      DocumentSnapshot documentSnapshot =
-          await _firestore.document("kullanicilar/$uid").get();
-
-      setState(() {
-        kisi.adSoyad = documentSnapshot.data['adSoyad'].toString();
-      });
-    }
-    setState(() {
-      loading = false;
-    });
   }
 
   Widget homePageKisi() {
@@ -422,36 +457,5 @@ class AnasayfaState extends State<Anasayfa>
         ),
       ),
     );
-  }
-
-  Future _getAll() async {
-    final FirebaseUser user = await _auth.currentUser();
-    final String uid = user.uid;
-
-    var dokumanlar = await _firestore
-        .collection("kullanicilar")
-        .where("evSahibi", isEqualTo: true)
-        .getDocuments();
-
-    for (var dokuman in dokumanlar.documents) {
-      debugPrint(dokuman.data['uid'].toString());
-      uidList.add(dokuman.data['uid'].toString());
-    }
-
-    if (user != null) {
-      for (int i = 0; i < uidList.length; i++) {
-        DocumentSnapshot documentSnapshot = await _firestore
-            .document("kullanicilar/${uidList[i]}/ev/ozellik")
-            .get();
-
-        urlList.add(documentSnapshot.data['url'].toString());
-        debugPrint("url :" + urlList[i].toString());
-        fiyatList.add(documentSnapshot.data['fiyat']);
-        konumList.add(documentSnapshot.data['konum']);
-
-        setState(() {
-        });
-      }
-    }
   }
 }

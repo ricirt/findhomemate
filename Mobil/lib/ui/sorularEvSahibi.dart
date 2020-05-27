@@ -1,6 +1,5 @@
 import 'package:deneme/ui/loading.dart';
 import 'package:deneme/ui/mainPageScreen.dart';
-import 'package:deneme/ui/sorularEv.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

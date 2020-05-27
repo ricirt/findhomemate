@@ -288,7 +288,7 @@ class _FirestoreIslemleriState extends State<FirestoreIslemleri> {
         .child("addi")
         .child("ev.png");
 
-    StorageUploadTask uploadTask = await ref.putFile(_secilenResim);
+    StorageUploadTask uploadTask = ref.putFile(_secilenResim);
 
     var url = await (await uploadTask.onComplete).ref.getDownloadURL();
     debugPrint("resmin url : " + url);

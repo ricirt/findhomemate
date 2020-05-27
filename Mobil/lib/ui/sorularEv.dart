@@ -1,8 +1,7 @@
 import 'package:deneme/ui/mainPageScreen.dart';
 import 'package:flutter/material.dart';
 import 'anasayfa.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class SorularEv extends StatefulWidget {
   @override
@@ -18,8 +17,7 @@ class _SorularEvState extends State<SorularEv> {
   bool radioGaraj;
   bool radioDogalgaz;
 
-  final Firestore _firestore = Firestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final _fiyatController = TextEditingController();
   final _odaController = TextEditingController();
   final _katController = TextEditingController();

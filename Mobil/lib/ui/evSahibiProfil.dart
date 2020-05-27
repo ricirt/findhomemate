@@ -1,100 +1,95 @@
-import 'dart:io';
-
-import 'package:deneme/Classes/kisi.dart';
-import 'package:deneme/Classes/kisiNitelikleri.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:deneme/Classes/evSahibi.dart';
+import 'package:deneme/Classes/evSahibiNitelikleri.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_picker/image_picker.dart';
 
-Kisi kisi = Kisi();
-KisiNitelikleri kisiNitelikler = KisiNitelikleri();
+
+
+EvSahibi evSahibi = EvSahibi();
+EvSahibiNitelikleri evSahibiNitelikleri = EvSahibiNitelikleri();
 int yas, puan, oylayan;
 double sonuc;
 
-class Profile extends StatefulWidget {
+class EvSahibiProfile extends StatefulWidget {
   @override
-  _ProfileState createState() => _ProfileState();
+  _EvSahibiProfileState createState() => _EvSahibiProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _EvSahibiProfileState extends State<EvSahibiProfile> {
   final Firestore _firestore = Firestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   @override
   void initState() {
     super.initState();
-    _getInfo();
-    _getFeatures();
-
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    debugPrint("başla");
+    _getInfos();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Profile",
-      home: ProfilePage(),
+      home: EvSahibiProfilePage(),
       debugShowCheckedModeBanner: false,
     );
   }
 
-  Future _getInfo() async {
-    final FirebaseUser user = await _auth.currentUser();
-    final String uid = user.uid;
+  Future _getInfos() async {
+    
 
-    if (user != null) {
-      DocumentSnapshot documentSnapshot =
-          await _firestore.document("kullanicilar/$uid").get();
+    DocumentSnapshot documentSnapshot2 = await _firestore
+        .document("kullanicilar/${evSahibi.uid}/kullanici/ozellik")
+        .get();
 
-      setState(() {
-        kisi.yas = documentSnapshot.data['dogumYili'].toString();
-        kisi.puan = documentSnapshot.data['puan'].toString();
-        kisi.oylayan = documentSnapshot.data['oylayan'].toString();
+    setState(() {
+      evSahibiNitelikleri.alkol = documentSnapshot2.data['alkol'];
+      evSahibiNitelikleri.sigara = documentSnapshot2.data['sigara'];
+      evSahibiNitelikleri.cinsiyetTercih =
+          documentSnapshot2.data['cinsiyetTercih'];
+      evSahibiNitelikleri.evcilHayvan = documentSnapshot2.data['hayvan'];
+      evSahibiNitelikleri.misafir = documentSnapshot2.data['misafir'];
+    });
 
-        debugPrint("resim :" +kisi.profilResmi);
+    debugPrint(evSahibiNitelikleri.alkol.toString());
+    debugPrint(evSahibiNitelikleri.sigara.toString());
+    debugPrint(evSahibiNitelikleri.cinsiyetTercih.toString());
+    debugPrint(evSahibiNitelikleri.evcilHayvan.toString());
+    debugPrint(evSahibiNitelikleri.misafir.toString());
 
-        yas = int.parse(kisi.yas);
-        yas = 2020 - yas;
-        puan = int.parse(kisi.puan);
+    DocumentSnapshot documentSnapshot3 =
+        await _firestore.document("kullanicilar/${evSahibi.uid}").get();
 
-        oylayan = int.parse(kisi.oylayan);
+    setState(() {
+      evSahibi.adSoyad = documentSnapshot3.data['adSoyad'];
+      evSahibi.cinsiyet = documentSnapshot3.data['cinsiyet'];
+      evSahibi.email = documentSnapshot3.data['email'];
+      evSahibi.meslek = documentSnapshot3.data['meslek'];
+      evSahibi.oylayan = documentSnapshot3.data['oylayan'];
+      evSahibi.profilResmi = documentSnapshot3.data['profilResmi'];
+      evSahibi.puan = documentSnapshot3.data['puan'];
+      evSahibi.yas = documentSnapshot3.data['dogumYili'];
+      evSahibi.uid = documentSnapshot3.data['uid'];
+      yas = int.parse(evSahibi.yas);
+      yas = 2020 - yas;
+      evSahibi.yas = yas.toString();
+      debugPrint("yasssss : " + evSahibi.yas);
+    });
+    debugPrint(evSahibi.adSoyad.toString());
+    debugPrint(evSahibi.cinsiyet.toString());
+    debugPrint(evSahibi.email.toString());
+    debugPrint(evSahibi.oylayan.toString());
+    debugPrint(evSahibi.profilResmi.toString());
+    debugPrint(evSahibi.puan.toString());
+    debugPrint(evSahibi.yas.toString());
+    debugPrint(evSahibi.uid.toString());
 
-        sonuc = puan / oylayan;
-      });
-      
-    }
+     debugPrint("fatih");
   }
 
-  Future _getFeatures() async {
-    final FirebaseUser user = await _auth.currentUser();
-    final String uid = user.uid;
-
-    if (user != null) {
-      DocumentSnapshot documentSnapshot = await _firestore
-          .document("kullanicilar/$uid/kullanici/ozellik")
-          .get();
-
-      setState(() {
-        kisiNitelikler.alkol = documentSnapshot.data['alkol'];
-        kisiNitelikler.evcilHayvan = documentSnapshot.data['hayvan'];
-        kisiNitelikler.misafir = documentSnapshot.data['misafir'];
-        kisiNitelikler.sigara = documentSnapshot.data['sigara'];
-        kisiNitelikler.cinsiyetTercih = documentSnapshot.data['cinsiyetTercih'];
-      });
-    }
-  }
+ 
 }
 
-final Firestore _firestore = Firestore.instance;
-final FirebaseAuth _auth = FirebaseAuth.instance;
-
-File _secilenResim;
-
-class ProfilePage extends StatelessWidget {
+class EvSahibiProfilePage extends StatelessWidget {
   TextStyle _style() {
     return TextStyle(fontWeight: FontWeight.bold);
   }
@@ -119,7 +114,7 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                 height: 4,
               ),
-              Text(kisi.email),
+              Text(evSahibi.email.toString()),
               SizedBox(
                 height: 16,
               ),
@@ -141,7 +136,7 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                 height: 4,
               ),
-              Text(kisi.meslek),
+              Text(evSahibi.meslek.toString()),
               SizedBox(
                 height: 16,
               ),
@@ -152,7 +147,7 @@ class ProfilePage extends StatelessWidget {
               SizedBox(
                 height: 4,
               ),
-              Text(kisi.cinsiyet),
+              Text(""),
               Center(
                 child: Text(
                   "Kriterler",
@@ -171,9 +166,6 @@ class ProfilePage extends StatelessWidget {
                         "Sigara",
                         style: _style(),
                       ),
-                      Icon(kisiNitelikler.sigara == true
-                          ? Icons.check
-                          : Icons.cancel),
                     ],
                   ),
                   SizedBox(
@@ -185,9 +177,6 @@ class ProfilePage extends StatelessWidget {
                         "Alkol",
                         style: _style(),
                       ),
-                      Icon(kisiNitelikler.alkol == true
-                          ? Icons.check
-                          : Icons.cancel),
                     ],
                   ),
                   SizedBox(
@@ -199,9 +188,6 @@ class ProfilePage extends StatelessWidget {
                         "Evcil Hayvan",
                         style: _style(),
                       ),
-                      Icon(kisiNitelikler.evcilHayvan == true
-                          ? Icons.check
-                          : Icons.cancel),
                     ],
                   ),
                   SizedBox(
@@ -221,9 +207,6 @@ class ProfilePage extends StatelessWidget {
                         "Cinsiyet Tercihi",
                         style: _style(),
                       ),
-                      Icon(kisiNitelikler.cinsiyetTercih == true
-                          ? Icons.pregnant_woman
-                          : Icons.face),
                     ],
                   ),
                   SizedBox(
@@ -235,9 +218,6 @@ class ProfilePage extends StatelessWidget {
                         "Misafir",
                         style: _style(),
                       ),
-                      Icon(kisiNitelikler.misafir == true
-                          ? Icons.check
-                          : Icons.cancel),
                     ],
                   ),
                   SizedBox(
@@ -261,7 +241,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
@@ -310,24 +289,23 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 Column(
                   children: <Widget>[
                     InkWell(
-                      onTap: () {
-                        debugPrint(" de bakalim");
-                        _resimSec();
-                      },
+                      onTap: () {},
                       child: Container(
                         width: 100,
                         height: 100,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                                fit: BoxFit.cover, image: NetworkImage(kisi.profilResmi))),
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"))),
                       ),
                     ),
                     SizedBox(
                       height: 16,
                     ),
                     Text(
-                      kisi.adSoyad,
+                      "",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     )
                   ],
@@ -339,7 +317,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                     Text(
-                      yas.toString(),
+                      "",
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -359,7 +337,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       ],
                     ),
                     Text(
-                      sonuc == null ? "0/5" : "2/5",
+                      "",
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -371,7 +349,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                     Text(
-                      kisi.oylayan == null ? "0" : kisi.oylayan.toString(),
+                      "",
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -445,33 +423,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
       ),
     );
-  }
-
-  void _resimSec() async {
-    final FirebaseUser user = await _auth.currentUser();
-    final String uid = user.uid;
-    var url;
-
-    var resim = await ImagePicker.pickImage(source: ImageSource.gallery);
-    _secilenResim = resim;
-
-    StorageReference ref = FirebaseStorage.instance
-        .ref()
-        .child("kullanicilar")
-        .child("$uid")
-        .child("profil.png");
-
-    StorageUploadTask uploadTask = ref.putFile(_secilenResim);
-
-    url = await (await uploadTask.onComplete).ref.getDownloadURL();
-    debugPrint("resmin url : " + url);
-
-    if (user != null) {
-      _firestore
-          .collection('kullanicilar')
-          .document("$uid")
-          .setData({"profilResmi": url}, merge: true);
-    }
   }
 }
 

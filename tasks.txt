@@ -13,3 +13,4 @@
 ++13-beni hatirla (yapildi) 					-> addi
   14-profil entegrasyonu				-> fatih
 ++15-Anasayfaya Tabbar yapılması					-> fatih
+  16-anasayfada hangi ilana tiklanirsa ilandetayda o açilacak ->addi 
