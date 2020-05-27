@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class RegisterScreen extends StatefulWidget {
+class ProfilDuzenle extends StatefulWidget {
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  _ProfilDuzenleState createState() => _ProfilDuzenleState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _ProfilDuzenleState extends State<ProfilDuzenle> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _firestore = Firestore.instance;
   final _mailController = TextEditingController();
@@ -42,10 +42,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(top:40),
+              padding: EdgeInsets.only(top: 40),
               child: Center(
                 child: Text(
-                  "Kayıt Ol",
+                  "Profili Güncelle",
                   style: TextStyle(fontSize: 36, color: Colors.teal),
                 ),
               ),
@@ -123,12 +123,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 20),
-                    width: 300,
+                    width: double.infinity,
                     child: FlatButton(
                       onPressed: () {
                         _emailveSifreCreateUser();
                       },
-                      child: Text("Kayıt Ol"),
+                      child: Text("Güncelle"),
                       color: Colors.grey,
                     ),
                   ),
@@ -156,85 +156,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _cinsiyet = "erkek";
     }
 
+    if (_sifre == _checkPassword) {
+      var firebaseUser = await _auth
+          .createUserWithEmailAndPassword(email: _mail.trim(), password: _sifre)
+          .catchError((e) => debugPrint("hata :" + e.toString()));
 
-    if (_adSoyad != "" &&
-        _sifre != "" &&
-        _mail != "" &&
-        _checkPassword != "" &&
-        _dogumYili != "" &&
-        _meslek != "") {
-      if (_sifre == _checkPassword) {
-        var firebaseUser = await _auth
-            .createUserWithEmailAndPassword(
-                email: _mail.trim(), password: _sifre)
-            .catchError((e) => debugPrint("hata :" + e.toString()));
+      _firestore
+          .collection("kullanicilar")
+          .document("${firebaseUser.user.uid}")
+          .setData({
+        "adSoyad": _adSoyad,
+        "email": _mail,
+        "sifre": _sifre,
+        "dogumYili": _dogumYili,
+        "meslek": _meslek,
+        "cinsiyet": _cinsiyet,
+        "soruDurum": _soruDurum,
+        "puan": "5",
+        "oylayan": "1",
+        "uid": firebaseUser.user.uid,
+      });
 
-        if (firebaseUser != null) {
-          firebaseUser.user.sendEmailVerification().then((data) {
-            _auth.signOut();
-          }).catchError((e) => debugPrint("Mail gönderilirken hata $e"));
-
-          setState(() {
-            mesaj =
-                "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email} mailOnayi : ${firebaseUser.user.isEmailVerified}\n Email gönderildi lütfen onaylayın";
-          });
-
-
-
-          _firestore
-              .collection("kullanicilar")
-              .document("${firebaseUser.user.uid}")
-              .setData({
-            "adSoyad": _adSoyad,
-            "email": _mail,
-            "sifre": _sifre,
-            "dogumYili": _dogumYili,
-            "meslek": _meslek,
-            "cinsiyet": _cinsiyet,
-            "soruDurum": _soruDurum,
-            "puan": "5",
-            "oylayan": "1",
-            "uid" : firebaseUser.user.uid,
-          });
-
-          Fluttertoast.showToast(
-            msg: "Kayıt Başarılı",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 2,
-            backgroundColor: Colors.blue,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-
-          Navigator.pushNamed(context, "/loginScreen");
-          debugPrint(
-              "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email} mailOnayi : ${firebaseUser.user.isEmailVerified}");
-        } else {
-          Fluttertoast.showToast(
-            msg: "Bu mail zaten var",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 2,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-        }
-      } else {
-        Fluttertoast.showToast(
-          msg: "Şifreler uyuşmuyor",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 2,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      }
+      Fluttertoast.showToast(
+        msg: "Bilgiler Güncellendi",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 2,
+        backgroundColor: Colors.blue,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     } else {
       Fluttertoast.showToast(
-        msg: "Lütfen tüm alanları doldurun",
+        msg: "Şifreler uyuşmuyor",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 2,

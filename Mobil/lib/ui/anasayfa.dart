@@ -61,15 +61,6 @@ class AnasayfaState extends State<Anasayfa>
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return IlanVer();
-            }));
-          },
-          child: Icon(Icons.add),
-        ),
         body: TabBarView(
           children: <Widget>[homePage(), homePageKisi()],
         ),
@@ -81,70 +72,41 @@ class AnasayfaState extends State<Anasayfa>
     return loading
         ? Loading()
         : Container(
-            margin: EdgeInsets.only(top: 35, left: 10, right: 10),
+            margin: EdgeInsets.only(top: 10, left: 10, right: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.purple,
-                            image: DecorationImage(
-                              image: NetworkImage(kisi.profilResmi),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Text(
-                            kisi.adSoyad,
-                            style:
-                                TextStyle(fontSize: 15.0, color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        InkWell(
-                          //*************************//////Exit BUTONU ***************************
-                          onTap: () {
-                            _cikisYap();
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              Text("Çıkış Yap",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Icon(Icons.exit_to_app),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        "Uygun Ev ilanları ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 24),
-                      ),
-                    ],
+                  padding: EdgeInsets.only(top: 0),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Uygun Ev ilanları ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Text("İlan Ver",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                            FloatingActionButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return IlanVer();
+                                }));
+                              },
+                              child: Icon(Icons.add),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Expanded(
                   child: Container(
@@ -334,8 +296,7 @@ class AnasayfaState extends State<Anasayfa>
                             shape: BoxShape.circle,
                             color: Colors.purple,
                             image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
+                              image: NetworkImage(kisi.profilResmi),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -456,6 +417,58 @@ class AnasayfaState extends State<Anasayfa>
           ),
         ),
       ),
+    );
+  }
+
+  ///////////////////   ANASAYFADAKİ   PROFİL VE ÇIKIŞYAP KISMI
+  /// İLERİDE KULLANILMAK İÇİN BURAYA KONULMUSTUR LÜTFEN SİLMEYİNİZ!
+  Widget _anasayfaCikisYap() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.purple,
+                image: DecorationImage(
+                  image: NetworkImage(kisi.profilResmi),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                kisi.adSoyad,
+                style: TextStyle(fontSize: 15.0, color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            InkWell(
+              //*************************//////Exit BUTONU ***************************
+              onTap: () {
+                _cikisYap();
+              },
+              child: Row(
+                children: <Widget>[
+                  Text("Çıkış Yap",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Icon(Icons.exit_to_app),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

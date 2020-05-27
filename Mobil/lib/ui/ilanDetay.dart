@@ -5,7 +5,6 @@ import 'package:deneme/Classes/evSahibiNitelikleri.dart';
 import 'package:deneme/ui/evSahibiProfil.dart';
 import 'package:flutter/material.dart';
 
-
 Ev ev = Ev();
 EvSahibi evSahibi = EvSahibi();
 EvSahibiNitelikleri evSahibiNitelikleri = EvSahibiNitelikleri();
@@ -22,7 +21,7 @@ class _IlanDetayState extends State<IlanDetay> {
   @override
   void initState() {
     super.initState();
-  
+
     _getHomeInfos();
   }
 
@@ -35,10 +34,11 @@ class _IlanDetayState extends State<IlanDetay> {
           Container(
             height: screenHeight * 0.6,
             width: double.infinity,
-            child: Image.network(
-              ev.url,
-              fit: BoxFit.cover,
-            ),
+            child: FadeInImage.assetNetwork(
+                alignment: Alignment.center,
+                fit: BoxFit.cover,
+                placeholder: "assets/loading.gif",
+                image: ev.url),
           ),
           Container(
             margin: EdgeInsets.only(top: screenHeight * 0.5),
@@ -361,10 +361,6 @@ class _IlanDetayState extends State<IlanDetay> {
       yas = 2020 - yas;
       evSahibi.yas = yas.toString();
       debugPrint("yasssss : " + evSahibi.yas);
-
-     
-
-      
     });
     debugPrint(evSahibi.adSoyad.toString());
     debugPrint(evSahibi.cinsiyet.toString());

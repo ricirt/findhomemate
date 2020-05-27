@@ -21,253 +21,263 @@ class _SorularEvSahibiState extends State<SorularEvSahibi> {
     return loading
         ? Loading()
         : Scaffold(
-            body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 25,
-                ),
-                Text(
-                  "Sorular",
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
+            body: Container(
+              height : MediaQuery.of(context).size.height,
+              width: double.infinity,
+              color: Colors.white,
+              child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 25,
                   ),
-                ),
-                SizedBox(height: 40),
-                Text(
-                  "Evcil hayvan kabul eder misiniz?",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                  
+                  Text(
+                    "Öncelikle Soruları cevaplayınız...",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 10,
+                  SizedBox(height: 40),
+                  Text(
+                    "Evcil hayvan kabul eder misiniz?",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
-                    Row(
-                      children: <Widget>[
-                        Radio(
-                            value: true,
-                            groupValue: radioHayvan,
-                            onChanged: (T) {
-                              setState(() {
-                                radioHayvan = T;
-                              });
-                            }),
-                        Text("Evet"),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Radio(
-                            value: false,
-                            groupValue: radioHayvan,
-                            onChanged: (T) {
-                              setState(() {
-                                radioHayvan = T;
-                              });
-                            }),
-                        Text("Hayır"),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(height: 40),
-                Text(
-                  "Evde sigara içilmesi sizin için sorun olur mu?",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Radio(
-                            value: true,
-                            groupValue: radioSigara,
-                            onChanged: (T) {
-                              setState(() {
-                                radioSigara = T;
-                              });
-                            }),
-                        Text("Evet"),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Radio(
-                            value: false,
-                            groupValue: radioSigara,
-                            onChanged: (T) {
-                              setState(() {
-                                radioSigara = T;
-                              });
-                            }),
-                        Text("Hayır"),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(height: 40),
-                Text(
-                  "Evde Alkol içilmesi sizin için sorun olur mu?",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Radio(
-                            value: true,
-                            groupValue: radioAlkol,
-                            onChanged: (T) {
-                              setState(() {
-                                radioAlkol = T;
-                              });
-                            }),
-                        Text("Evet"),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Radio(
-                            value: false,
-                            groupValue: radioAlkol,
-                            onChanged: (T) {
-                              setState(() {
-                                radioAlkol = T;
-                              });
-                            }),
-                        Text("Hayır"),
-                      ],
-                    )
-                  ],
-                ),
-                Text(
-                  "Evde misafir getirilebilir mi?",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Radio(
-                            value: true,
-                            groupValue: radioMisafir,
-                            onChanged: (T) {
-                              setState(() {
-                                radioMisafir = T;
-                              });
-                            }),
-                        Text("Evet"),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Radio(
-                            value: false,
-                            groupValue: radioMisafir,
-                            onChanged: (T) {
-                              setState(() {
-                                radioMisafir = T;
-                              });
-                            }),
-                        Text("Hayır"),
-                      ],
-                    )
-                  ],
-                ),
-                Text(
-                  "Ev arkadaşınızın cinsiyeti ne olmalı?",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Radio(
-                            value: true,
-                            groupValue: radioCinsiyet,
-                            onChanged: (T) {
-                              setState(() {
-                                radioCinsiyet = T;
-                              });
-                            }),
-                        Text("Erkek"),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Radio(
-                            value: false,
-                            groupValue: radioCinsiyet,
-                            onChanged: (T) {
-                              setState(() {
-                                radioCinsiyet = T;
-                              });
-                            }),
-                        Text("Kadın"),
-                      ],
-                    )
-                  ],
-                ),
-                Center(
-                  child: RaisedButton(
-                    onPressed: () {
-                      _ozellikEkle();
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return MainPageScreen();
-                      }));
-                    },
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: <Color>[
-                            Color(0xFF0D47A1),
-                            Color(0xFF1976D2),
-                            Color(0xFF42A5F5),
-                          ],
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
                       ),
-                      padding: const EdgeInsets.all(10.0),
-                      child: const Text('Devam Et ',
-                          style: TextStyle(fontSize: 20)),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                              value: true,
+                              groupValue: radioHayvan,
+                              onChanged: (T) {
+                                setState(() {
+                                  radioHayvan = T;
+                                });
+                              }),
+                          Text("Evet"),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                              value: false,
+                              groupValue: radioHayvan,
+                              onChanged: (T) {
+                                setState(() {
+                                  radioHayvan = T;
+                                });
+                              }),
+                          Text("Hayır"),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "Evde sigara içilmesi sizin için sorun olur mu?",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-          ));
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                              value: true,
+                              groupValue: radioSigara,
+                              onChanged: (T) {
+                                setState(() {
+                                  radioSigara = T;
+                                });
+                              }),
+                          Text("Evet"),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                              value: false,
+                              groupValue: radioSigara,
+                              onChanged: (T) {
+                                setState(() {
+                                  radioSigara = T;
+                                });
+                              }),
+                          Text("Hayır"),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "Evde Alkol içilmesi sizin için sorun olur mu?",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                              value: true,
+                              groupValue: radioAlkol,
+                              onChanged: (T) {
+                                setState(() {
+                                  radioAlkol = T;
+                                });
+                              }),
+                          Text("Evet"),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                              value: false,
+                              groupValue: radioAlkol,
+                              onChanged: (T) {
+                                setState(() {
+                                  radioAlkol = T;
+                                });
+                              }),
+                          Text("Hayır"),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20,),
+                  Text(
+                    "Evde misafir getirilebilir mi?",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                              value: true,
+                              groupValue: radioMisafir,
+                              onChanged: (T) {
+                                setState(() {
+                                  radioMisafir = T;
+                                });
+                              }),
+                          Text("Evet"),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                              value: false,
+                              groupValue: radioMisafir,
+                              onChanged: (T) {
+                                setState(() {
+                                  radioMisafir = T;
+                                });
+                              }),
+                          Text("Hayır"),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20,),
+                  Text(
+                    "Ev arkadaşınızın cinsiyeti ne olmalı?",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                              value: true,
+                              groupValue: radioCinsiyet,
+                              onChanged: (T) {
+                                setState(() {
+                                  radioCinsiyet = T;
+                                });
+                              }),
+                          Text("Erkek"),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Radio(
+                              value: false,
+                              groupValue: radioCinsiyet,
+                              onChanged: (T) {
+                                setState(() {
+                                  radioCinsiyet = T;
+                                });
+                              }),
+                          Text("Kadın"),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 15,),
+                  Center(
+                    child: RaisedButton(
+                      onPressed: () {
+                        _ozellikEkle();
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return MainPageScreen();
+                        }));
+                      },
+                      textColor: Colors.white,
+                      padding: const EdgeInsets.all(0.0),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: <Color>[
+                              Color(0xFF0D47A1),
+                              Color(0xFF1976D2),
+                              Color(0xFF42A5F5),
+                            ],
+                          ),
+                        ),
+                        padding: const EdgeInsets.all(10.0),
+                        child: const Text('Devam Et ',
+                            style: TextStyle(fontSize: 20)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
+          ),
+            ));
   }
 
   void _ozellikEkle() async {
