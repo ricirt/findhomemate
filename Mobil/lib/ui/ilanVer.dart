@@ -421,7 +421,7 @@ class _IlanVerState extends State<IlanVer> {
                   ),
                 ),
                 padding: const EdgeInsets.all(10.0),
-                child: const Text('Devam Et ', style: TextStyle(fontSize: 20)),
+                child: const Text('İlan Ver ', style: TextStyle(fontSize: 20)),
               ),
             ),
           ),
@@ -435,6 +435,11 @@ class _IlanVerState extends State<IlanVer> {
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;
     var url;
+
+    _firestore
+        .collection("kullanicilar")
+        .document("$uid")
+        .setData({"evSahibi": true}, merge: true);
 
     String _fiyat = _fiyatController.text;
     String _oda = _odaController.text;

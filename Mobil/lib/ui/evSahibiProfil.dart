@@ -56,6 +56,16 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
                 height: 16,
               ),
               Text(
+                "Durum",
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text("Ev arkadaşı arıyor"),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
                 "Meslek",
               ),
               SizedBox(

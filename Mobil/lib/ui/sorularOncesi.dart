@@ -156,10 +156,7 @@ class _SorularOncesiState extends State<SorularOncesi> {
     final String uid = user.uid;
 
     if (selectedRadio == 1) {
-      _firestore
-          .collection("kullanicilar")
-          .document("$uid")
-          .setData({"evSahibi": true}, merge: true);
+     
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (BuildContext context) {
         return SorularEvSahibi();

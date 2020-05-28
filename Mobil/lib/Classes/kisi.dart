@@ -8,6 +8,7 @@ class Kisi{
   String oylayan;
   String profilResmi;
   String uid;
+  bool evSahibimi;
 }
 
 

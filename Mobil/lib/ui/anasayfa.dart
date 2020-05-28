@@ -11,6 +11,7 @@ import 'dart:core';
 
 bool loading = true;
 
+
 class Anasayfa extends StatefulWidget {
   @override
   AnasayfaState createState() {
@@ -71,6 +72,7 @@ class AnasayfaState extends State<Anasayfa>
   }
 
   Widget homePage() {
+    bool ilan = false;
     return loading
         ? Loading()
         : Container(
@@ -89,19 +91,26 @@ class AnasayfaState extends State<Anasayfa>
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 24),
                         ),
-                        Column(
-                          children: <Widget>[
-                            Text("İlan Ver",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                            FloatingActionButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return IlanVer();
-                                }));
-                              },
-                              child: Icon(Icons.add),
-                            ),
-                          ],
+                        Visibility(
+                          visible: kisi.evSahibimi == false ? ilan : true,
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                "İlan Ver",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                              FloatingActionButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return IlanVer();
+                                  }));
+                                },
+                                child: Icon(Icons.add),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -207,7 +216,9 @@ class AnasayfaState extends State<Anasayfa>
 
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
-      return IlanDetay(ilanSahibiUserID: ilanSahibiID,);
+      return IlanDetay(
+        ilanSahibiUserID: ilanSahibiID,
+      );
     }));
   }
 
@@ -225,6 +236,7 @@ class AnasayfaState extends State<Anasayfa>
         kisi.meslek = documentSnapshot.data['meslek'].toString();
         kisi.cinsiyet = documentSnapshot.data['cinsiyet'].toString();
         kisi.profilResmi = documentSnapshot.data['profilResmi'].toString();
+        kisi.evSahibimi = documentSnapshot.data['evSahibi'];
       });
       debugPrint("ikinci");
     }

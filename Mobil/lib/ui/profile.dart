@@ -126,13 +126,13 @@ class ProfilePage extends StatelessWidget {
                 height: 16,
               ),
               Text(
-                "Konum",
+                "Durum",
                 style: _style(),
               ),
               SizedBox(
                 height: 4,
               ),
-              Text("Büyükdere, Eskişehir"),
+              Text(kisi.evSahibimi == true ? "Ev arakadaşı arıyor" : "Ev arıyor"),
               SizedBox(
                 height: 16,
               ),

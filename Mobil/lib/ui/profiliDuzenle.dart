@@ -155,8 +155,8 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     } else if (selectedRadio == 2) {
       _cinsiyet = "erkek";
     }
-
-    if (_sifre == _checkPassword) {
+    if(_sifre.length>=6){
+       if (_sifre == _checkPassword) {
       var firebaseUser = await _auth
           .createUserWithEmailAndPassword(email: _mail.trim(), password: _sifre)
           .catchError((e) => debugPrint("hata :" + e.toString()));
@@ -197,5 +197,17 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
         fontSize: 16.0,
       );
     }
+    }else{
+       Fluttertoast.showToast(
+        msg: "Şifre 6 karakterden az olamaz",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+   
   }
 }
