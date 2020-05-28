@@ -314,7 +314,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                   children: <Widget>[
                     InkWell(
                       onTap: () {
-                        debugPrint(" de bakalim");
                         _resimSec();
                       },
                       child: Container(
@@ -322,6 +321,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                         height: 100,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
+                            color: Colors.white,
+                            
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(kisi.profilResmi))),

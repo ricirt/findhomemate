@@ -135,7 +135,7 @@ class _IlanDetayState extends State<IlanDetay> {
                           },
                           color: Colors.purple.shade200,
                           child: Text(
-                            adSoyad + "'a git",
+                            "$adSoyad profiline git",
                             style: TextStyle(color: Colors.white),
                           ),
                         )
