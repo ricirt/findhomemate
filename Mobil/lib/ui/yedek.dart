@@ -28,13 +28,15 @@ class AnasayfaState extends State<Anasayfa>
 
   List<String> uidList = List();
   List<String> urlList = List();
+  List<String> fiyatList = List();
+  List<String> konumList = List();
+
   String mesaj = "";
   int itemSayisi = 1;
   TabController tabController;
   @override
   void initState() {
     super.initState();
-    _getInfo();
     _getAll();
   }
 
@@ -59,15 +61,6 @@ class AnasayfaState extends State<Anasayfa>
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return IlanVer();
-            }));
-          },
-          child: Icon(Icons.add),
-        ),
         body: TabBarView(
           children: <Widget>[homePage(), homePageKisi()],
         ),
@@ -79,78 +72,48 @@ class AnasayfaState extends State<Anasayfa>
     return loading
         ? Loading()
         : Container(
-            margin: EdgeInsets.only(top: 35, left: 10, right: 10),
+            margin: EdgeInsets.only(top: 10, left: 10, right: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.purple,
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Text(
-                            kisi.adSoyad,
-                            style:
-                                TextStyle(fontSize: 15.0, color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        InkWell(
-                          //*************************//////Exit BUTONU ***************************
-                          onTap: () {
-                            _cikisYap();
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              Text("Çıkış Yap",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Icon(Icons.exit_to_app),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        "Uygun Ev ilanları ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 24),
-                      ),
-                    ],
+                  padding: EdgeInsets.only(top: 0),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Uygun Ev ilanları ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Text("İlan Ver",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                            FloatingActionButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return IlanVer();
+                                }));
+                              },
+                              child: Icon(Icons.add),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Expanded(
                   child: Container(
                     width: double.infinity,
                     height: 400,
                     child: ListView.builder(
-                        itemCount: 5,
+                        itemCount: urlList.length,
                         itemBuilder: (BuildContext ctxt, int index) =>
                             _anasayfaGrid(ctxt, index)),
                   ),
@@ -163,10 +126,7 @@ class AnasayfaState extends State<Anasayfa>
   Widget _anasayfaGrid(BuildContext ctxt, int index) {
     return InkWell(
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext context) {
-          return IlanDetay();
-        }));
+        _ilanaGit(index);
       },
       child: Padding(
         padding: EdgeInsetsDirectional.only(bottom: 10),
@@ -184,8 +144,7 @@ class AnasayfaState extends State<Anasayfa>
                         alignment: Alignment.center,
                         fit: BoxFit.cover,
                         placeholder: "assets/loading.gif",
-                        image:
-                            "http://www.kocerdemyapi.com/wp-content/uploads/2018/09/dMhgct-house-png-home-background-1.png"),
+                        image: "${urlList[index].toString()}"),
                   ),
                   Positioned(
                     right: 1,
@@ -194,10 +153,7 @@ class AnasayfaState extends State<Anasayfa>
                       heroTag: null,
                       mini: true,
                       onPressed: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return IlanDetay();
-                        }));
+                        _ilanaGit(index);
                       },
                       child: Icon(
                         Icons.chevron_right,
@@ -215,7 +171,7 @@ class AnasayfaState extends State<Anasayfa>
                     Row(
                       children: <Widget>[
                         Text(
-                          "Eskişehir,Büyükdere",
+                          konumList[index].toString(),
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
@@ -226,7 +182,7 @@ class AnasayfaState extends State<Anasayfa>
                       ],
                     ),
                     Text(
-                      "\$ ${ev.fiyat}",
+                      "\$ ${fiyatList[index].toString()}",
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -240,6 +196,66 @@ class AnasayfaState extends State<Anasayfa>
         ),
       ),
     );
+  }
+
+  void _ilanaGit(con) {
+    debugPrint("index : " + con.toString());
+    evSahibi.uid = uidList[con].toString();
+    debugPrint("kisi id : " + evSahibi.uid);
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return IlanDetay();
+    }));
+  }
+
+  Future _getInfo() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+
+    if (user != null) {
+      DocumentSnapshot documentSnapshot =
+          await _firestore.document("kullanicilar/$uid").get();
+
+      setState(() {
+        kisi.adSoyad = documentSnapshot.data['adSoyad'].toString();
+        kisi.email = documentSnapshot.data['email'].toString();
+        kisi.meslek = documentSnapshot.data['meslek'].toString();
+        kisi.cinsiyet = documentSnapshot.data['cinsiyet'].toString();
+        kisi.profilResmi = documentSnapshot.data['profilResmi'].toString();
+      });
+      debugPrint("ikinci");
+    }
+  }
+
+  Future _getAll() async {
+    final FirebaseUser user = await _auth.currentUser();
+
+    var dokumanlar = await _firestore
+        .collection("kullanicilar")
+        .where("evSahibi", isEqualTo: true)
+        .getDocuments();
+
+    for (var dokuman in dokumanlar.documents) {
+      uidList.add(dokuman.data['uid'].toString());
+    }
+
+    if (user != null) {
+      for (int i = 0; i < uidList.length; i++) {
+        DocumentSnapshot documentSnapshot = await _firestore
+            .document("kullanicilar/${uidList[i]}/ev/ozellik")
+            .get();
+
+        urlList.add(documentSnapshot.data['url'].toString());
+        fiyatList.add(documentSnapshot.data['fiyat']);
+        konumList.add(documentSnapshot.data['konum']);
+
+        setState(() {
+          loading = false;
+        });
+      }
+    }
+    _getInfo();
   }
 
   void _cikisYap() async {
@@ -257,22 +273,6 @@ class AnasayfaState extends State<Anasayfa>
     }
 
     setState(() {});
-  }
-
-  Future _getInfo() async {
-    final FirebaseUser user = await _auth.currentUser();
-    final String uid = user.uid;
-    if (user != null) {
-      DocumentSnapshot documentSnapshot =
-          await _firestore.document("kullanicilar/$uid").get();
-
-      setState(() {
-        kisi.adSoyad = documentSnapshot.data['adSoyad'].toString();
-      });
-    }
-    setState(() {
-      loading = false;
-    });
   }
 
   Widget homePageKisi() {
@@ -296,8 +296,7 @@ class AnasayfaState extends State<Anasayfa>
                             shape: BoxShape.circle,
                             color: Colors.purple,
                             image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
+                              image: NetworkImage(kisi.profilResmi),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -421,27 +420,55 @@ class AnasayfaState extends State<Anasayfa>
     );
   }
 
-  Future _getAll() async {
-
-    var dokumanlar = await _firestore
-        .collection("kullanicilar")
-        .where("evSahibi", isEqualTo: true)
-        .getDocuments();
-
-    for (var dokuman in dokumanlar.documents) {
-      debugPrint(dokuman.data['uid'].toString());
-      uidList.add(dokuman.data['uid'].toString());
-    }
-
-    for (int i = 0; i < uidList.length; i++) {
-      DocumentSnapshot documentSnapshot = await _firestore
-          .document("kullanicilar/${uidList[i]}/ev/ozellik")
-          .get();
-
-      urlList.add(documentSnapshot.data['url'].toString());
-      debugPrint("url :" + documentSnapshot.data['url'].toString());
-    }
-
-    setState(() {});
+  ///////////////////   ANASAYFADAKİ   PROFİL VE ÇIKIŞYAP KISMI
+  /// İLERİDE KULLANILMAK İÇİN BURAYA KONULMUSTUR LÜTFEN SİLMEYİNİZ!
+  Widget _anasayfaCikisYap() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.purple,
+                image: DecorationImage(
+                  image: NetworkImage(kisi.profilResmi),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                kisi.adSoyad,
+                style: TextStyle(fontSize: 15.0, color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            InkWell(
+              //*************************//////Exit BUTONU ***************************
+              onTap: () {
+                _cikisYap();
+              },
+              child: Row(
+                children: <Widget>[
+                  Text("Çıkış Yap",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Icon(Icons.exit_to_app),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
