@@ -1,4 +1,5 @@
 import 'package:deneme/ui/anasayfa.dart';
+import 'package:deneme/ui/bildirim.dart';
 import 'package:deneme/ui/firestore.dart';
 import 'package:deneme/ui/profiliDuzenle.dart';
 import 'package:deneme/ui/sorularEv.dart';
@@ -14,7 +15,7 @@ void main() {
       initialRoute: "/loginScreen",
       routes: {
         '/': (context) => LoginScreen(),
-        '/loginScreen': (context) => LoginScreen(),
+        '/loginScreen': (context) => Bildirim(),
         '/editProfile': (context) => ProfilDuzenle(),
         '/registerScreen': (context) => RegisterScreen(),
         '/mainPageScreen': (context) => MainPageScreen(),
