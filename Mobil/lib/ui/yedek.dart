@@ -200,8 +200,8 @@ class AnasayfaState extends State<Anasayfa>
 
   void _ilanaGit(con) {
     debugPrint("index : " + con.toString());
-    evSahibi.uid = uidList[con].toString();
-    debugPrint("kisi id : " + evSahibi.uid);
+    //evSahibi.uid = uidList[con].toString();
+    //debugPrint("kisi id : " + evSahibi.uid);
 
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {

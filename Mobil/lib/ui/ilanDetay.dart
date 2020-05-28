@@ -5,8 +5,15 @@ import 'package:deneme/Classes/evSahibiNitelikleri.dart';
 import 'package:deneme/ui/evSahibiProfil.dart';
 import 'package:flutter/material.dart';
 
+/*future : kullanicilariGetir()
+    builder : (context,snpashot){
+      if(snapshot.ConnectionState == ConnectionState.waiting) {
+        return Center(chil)
+      }
+    }*/
+
 Ev ev = Ev();
-EvSahibi evSahibi = EvSahibi();
+//EvSahibi evSahibi = EvSahibi();
 EvSahibiNitelikleri evSahibiNitelikleri = EvSahibiNitelikleri();
 int yas, puan, oylayan;
 double sonuc;
@@ -14,14 +21,30 @@ double sonuc;
 class IlanDetay extends StatefulWidget {
   @override
   _IlanDetayState createState() => _IlanDetayState();
+  String ilanSahibiUserID;
+
+  IlanDetay({this.ilanSahibiUserID});
 }
 
 class _IlanDetayState extends State<IlanDetay> {
   final Firestore _firestore = Firestore.instance;
+
+  String adSoyad;
+  String cinsiyet;
+  String email;
+  String meslek;
+  String oylayan;
+  String profilResmi;
+  String puan;
+  String yas;
+  String uid;
+  String gelenId;
+
   @override
   void initState() {
     super.initState();
-
+    debugPrint("gelen id : " + widget.ilanSahibiUserID.toString());
+    gelenId = widget.ilanSahibiUserID;
     _getHomeInfos();
   }
 
@@ -93,14 +116,26 @@ class _IlanDetayState extends State<IlanDetay> {
                           onPressed: () {
                             setState(() {
                               Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (buildContext) {
-                                return EvSahibiProfile();
-                              }));
+                                MaterialPageRoute(
+                                  builder: (buildContext) => EvSahibiProfile(
+                                    EvSahibi(
+                                        adSoyad: adSoyad,
+                                        cinsiyet: cinsiyet,
+                                        email: email,
+                                        meslek: meslek,
+                                        oylayan: oylayan,
+                                        profilResmi: profilResmi,
+                                        puan: puan,
+                                        uid: gelenId,
+                                        yas: yas),
+                                  ),
+                                ),
+                              );
                             });
                           },
                           color: Colors.purple.shade200,
                           child: Text(
-                            "${evSahibi.adSoyad}'in Profiline git ",
+                            adSoyad + "'a git",
                             style: TextStyle(color: Colors.white),
                           ),
                         )
@@ -307,9 +342,8 @@ class _IlanDetayState extends State<IlanDetay> {
   }
 
   Future _getHomeInfos() async {
-    DocumentSnapshot documentSnapshot = await _firestore
-        .document("kullanicilar/${evSahibi.uid}/ev/ozellik")
-        .get();
+    DocumentSnapshot documentSnapshot =
+        await _firestore.document("kullanicilar/$gelenId/ev/ozellik").get();
 
     setState(() {
       ev.depozito = documentSnapshot.data['depozito'];
@@ -326,7 +360,7 @@ class _IlanDetayState extends State<IlanDetay> {
     });
 
     DocumentSnapshot documentSnapshot2 = await _firestore
-        .document("kullanicilar/${evSahibi.uid}/kullanici/ozellik")
+        .document("kullanicilar/$gelenId/kullanici/ozellik")
         .get();
 
     setState(() {
@@ -345,30 +379,30 @@ class _IlanDetayState extends State<IlanDetay> {
     debugPrint(evSahibiNitelikleri.misafir.toString());
 
     DocumentSnapshot documentSnapshot3 =
-        await _firestore.document("kullanicilar/${evSahibi.uid}").get();
+        await _firestore.document("kullanicilar/$gelenId").get();
 
     setState(() {
-      evSahibi.adSoyad = documentSnapshot3.data['adSoyad'];
-      evSahibi.cinsiyet = documentSnapshot3.data['cinsiyet'];
-      evSahibi.email = documentSnapshot3.data['email'];
-      evSahibi.meslek = documentSnapshot3.data['meslek'];
-      evSahibi.oylayan = documentSnapshot3.data['oylayan'];
-      evSahibi.profilResmi = documentSnapshot3.data['profilResmi'];
-      evSahibi.puan = documentSnapshot3.data['puan'];
-      evSahibi.yas = documentSnapshot3.data['dogumYili'];
-      evSahibi.uid = documentSnapshot3.data['uid'];
-      yas = int.parse(evSahibi.yas);
-      yas = 2020 - yas;
-      evSahibi.yas = yas.toString();
-      debugPrint("yasssss : " + evSahibi.yas);
+      adSoyad = documentSnapshot3.data['adSoyad'];
+      cinsiyet = documentSnapshot3.data['cinsiyet'];
+      email = documentSnapshot3.data['email'];
+      meslek = documentSnapshot3.data['meslek'];
+      oylayan = documentSnapshot3.data['oylayan'];
+      profilResmi = documentSnapshot3.data['profilResmi'];
+      puan = documentSnapshot3.data['puan'];
+      yas = documentSnapshot3.data['dogumYili'];
+      //uid = documentSnapshot3.data['uid'];
+      //yas = int.parse(evSahibi.yas);
+      //yas = 2020 - yas;
+      // evSahibi.yas = yas.toString();
+      //debugPrint("yasssss : " + evSahibi.yas);
     });
-    debugPrint(evSahibi.adSoyad.toString());
+    /*debugPrint(evSahibi.adSoyad.toString());
     debugPrint(evSahibi.cinsiyet.toString());
     debugPrint(evSahibi.email.toString());
     debugPrint(evSahibi.oylayan.toString());
     debugPrint(evSahibi.profilResmi.toString());
     debugPrint(evSahibi.puan.toString());
     debugPrint(evSahibi.yas.toString());
-    debugPrint(evSahibi.uid.toString());
+    debugPrint(evSahibi.uid.toString());*/
   }
 }

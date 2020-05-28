@@ -9,4 +9,5 @@ class EvSahibi{
   String profilResmi;
   String uid;
 
+  EvSahibi({this.adSoyad,this.email,this.meslek,this.yas,this.cinsiyet,this.puan,this.oylayan,this.profilResmi,this.uid});
 }

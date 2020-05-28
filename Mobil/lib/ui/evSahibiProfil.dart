@@ -4,100 +4,40 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-
-EvSahibi evSahibi = EvSahibi();
-EvSahibiNitelikleri evSahibiNitelikleri = EvSahibiNitelikleri();
-int yas, puan, oylayan;
-double sonuc;
+//EvSahibi evSahibi = EvSahibi();
+String uid;
 
 class EvSahibiProfile extends StatefulWidget {
+  final EvSahibi evSahibi;
+  EvSahibiProfile(this.evSahibi);
+
   @override
   _EvSahibiProfileState createState() => _EvSahibiProfileState();
 }
 
 class _EvSahibiProfileState extends State<EvSahibiProfile> {
   final Firestore _firestore = Firestore.instance;
+
+  EvSahibiNitelikleri evSahibiNitelikleri = EvSahibiNitelikleri();
+  int yas, puan, oylayan;
+  double sonuc;
   @override
   void initState() {
     super.initState();
     debugPrint("başla");
-    _getInfos();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Profile",
-      home: EvSahibiProfilePage(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-
-  Future _getInfos() async {
-    
-
-    DocumentSnapshot documentSnapshot2 = await _firestore
-        .document("kullanicilar/${evSahibi.uid}/kullanici/ozellik")
-        .get();
-
-    setState(() {
-      evSahibiNitelikleri.alkol = documentSnapshot2.data['alkol'];
-      evSahibiNitelikleri.sigara = documentSnapshot2.data['sigara'];
-      evSahibiNitelikleri.cinsiyetTercih =
-          documentSnapshot2.data['cinsiyetTercih'];
-      evSahibiNitelikleri.evcilHayvan = documentSnapshot2.data['hayvan'];
-      evSahibiNitelikleri.misafir = documentSnapshot2.data['misafir'];
-    });
-
-    debugPrint(evSahibiNitelikleri.alkol.toString());
-    debugPrint(evSahibiNitelikleri.sigara.toString());
-    debugPrint(evSahibiNitelikleri.cinsiyetTercih.toString());
-    debugPrint(evSahibiNitelikleri.evcilHayvan.toString());
-    debugPrint(evSahibiNitelikleri.misafir.toString());
-
-    DocumentSnapshot documentSnapshot3 =
-        await _firestore.document("kullanicilar/${evSahibi.uid}").get();
-
-    setState(() {
-      evSahibi.adSoyad = documentSnapshot3.data['adSoyad'];
-      evSahibi.cinsiyet = documentSnapshot3.data['cinsiyet'];
-      evSahibi.email = documentSnapshot3.data['email'];
-      evSahibi.meslek = documentSnapshot3.data['meslek'];
-      evSahibi.oylayan = documentSnapshot3.data['oylayan'];
-      evSahibi.profilResmi = documentSnapshot3.data['profilResmi'];
-      evSahibi.puan = documentSnapshot3.data['puan'];
-      evSahibi.yas = documentSnapshot3.data['dogumYili'];
-      evSahibi.uid = documentSnapshot3.data['uid'];
-      yas = int.parse(evSahibi.yas);
-      yas = 2020 - yas;
-      evSahibi.yas = yas.toString();
-      debugPrint("yasssss : " + evSahibi.yas);
-    });
-    debugPrint(evSahibi.adSoyad.toString());
-    debugPrint(evSahibi.cinsiyet.toString());
-    debugPrint(evSahibi.email.toString());
-    debugPrint(evSahibi.oylayan.toString());
-    debugPrint(evSahibi.profilResmi.toString());
-    debugPrint(evSahibi.puan.toString());
-    debugPrint(evSahibi.yas.toString());
-    debugPrint(evSahibi.uid.toString());
-
-     debugPrint("fatih");
-  }
-
- 
-}
-
-class EvSahibiProfilePage extends StatelessWidget {
-  TextStyle _style() {
-    return TextStyle(fontWeight: FontWeight.bold);
+    uid = widget.evSahibi.uid;
+    _getNitelik();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(
+          widget.evSahibi.profilResmi,
+          widget.evSahibi.yas,
+          widget.evSahibi.puan,
+          widget.evSahibi.oylayan,
+          widget.evSahibi.adSoyad),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16),
@@ -107,47 +47,31 @@ class EvSahibiProfilePage extends StatelessWidget {
               SizedBox(
                 height: 16,
               ),
-              Text(
-                "Email",
-                style: _style(),
-              ),
+              title('Email'),
               SizedBox(
                 height: 4,
               ),
-              Text(evSahibi.email.toString()),
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                "Konum",
-                style: _style(),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text("Büyükdere, Eskişehir"),
+              Text(" ${widget.evSahibi.email}"),
               SizedBox(
                 height: 16,
               ),
               Text(
                 "Meslek",
-                style: _style(),
               ),
               SizedBox(
                 height: 4,
               ),
-              Text(evSahibi.meslek.toString()),
+              Text(" ${widget.evSahibi.meslek}"),
               SizedBox(
                 height: 16,
               ),
               Text(
                 "Cinsiyet",
-                style: _style(),
               ),
               SizedBox(
                 height: 4,
               ),
-              Text(""),
+              Text(" ${widget.evSahibi.cinsiyet}"),
               Center(
                 child: Text(
                   "Kriterler",
@@ -164,19 +88,20 @@ class EvSahibiProfilePage extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         "Sigara",
-                        style: _style(),
                       ),
+                      Icon(evSahibiNitelikleri.sigara == true
+                          ? Icons.check
+                          : Icons.cancel),
                     ],
-                  ),
-                  SizedBox(
-                    height: 4,
                   ),
                   Row(
                     children: <Widget>[
                       Text(
                         "Alkol",
-                        style: _style(),
                       ),
+                      Icon(evSahibiNitelikleri.alkol == true
+                          ? Icons.check
+                          : Icons.cancel),
                     ],
                   ),
                   SizedBox(
@@ -186,8 +111,10 @@ class EvSahibiProfilePage extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         "Evcil Hayvan",
-                        style: _style(),
                       ),
+                      Icon(evSahibiNitelikleri.evcilHayvan == true
+                          ? Icons.check
+                          : Icons.cancel),
                     ],
                   ),
                   SizedBox(
@@ -205,8 +132,10 @@ class EvSahibiProfilePage extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         "Cinsiyet Tercihi",
-                        style: _style(),
                       ),
+                      Icon(evSahibiNitelikleri.cinsiyetTercih == true
+                          ? Icons.face
+                          : Icons.pregnant_woman),
                     ],
                   ),
                   SizedBox(
@@ -216,8 +145,10 @@ class EvSahibiProfilePage extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         "Misafir",
-                        style: _style(),
                       ),
+                      Icon(evSahibiNitelikleri.misafir == true
+                          ? Icons.check
+                          : Icons.cancel),
                     ],
                   ),
                   SizedBox(
@@ -240,11 +171,40 @@ class EvSahibiProfilePage extends StatelessWidget {
       ),
     );
   }
+
+  Widget title(String baslik) {
+    return Text(
+      baslik,
+      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+    );
+  }
+
+  void _getNitelik() async {
+    DocumentSnapshot documentSnapshot2 =
+        await _firestore.document("kullanicilar/$uid/kullanici/ozellik").get();
+
+    setState(() {
+      evSahibiNitelikleri.alkol = documentSnapshot2.data['alkol'];
+      evSahibiNitelikleri.sigara = documentSnapshot2.data['sigara'];
+      evSahibiNitelikleri.cinsiyetTercih =
+          documentSnapshot2.data['cinsiyetTercih'];
+      evSahibiNitelikleri.evcilHayvan = documentSnapshot2.data['hayvan'];
+      evSahibiNitelikleri.misafir = documentSnapshot2.data['misafir'];
+    });
+
+    debugPrint(evSahibiNitelikleri.alkol.toString());
+    debugPrint(evSahibiNitelikleri.sigara.toString());
+    debugPrint(evSahibiNitelikleri.cinsiyetTercih.toString());
+    debugPrint(evSahibiNitelikleri.evcilHayvan.toString());
+    debugPrint(evSahibiNitelikleri.misafir.toString());
+  }
 }
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Size get preferredSize => Size(double.infinity, 320);
+  String resimUrl, yas, puan, oylayan, adSoyad;
+  CustomAppBar(this.resimUrl, this.yas, this.puan, this.oylayan, this.adSoyad);
 
   @override
   Widget build(BuildContext context) {
@@ -297,15 +257,14 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"))),
+                                image: NetworkImage(resimUrl))),
                       ),
                     ),
                     SizedBox(
                       height: 16,
                     ),
                     Text(
-                      "",
+                      adSoyad,
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     )
                   ],
@@ -317,7 +276,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                     Text(
-                      "",
+                      yas.toString(),
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -337,7 +296,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       ],
                     ),
                     Text(
-                      "",
+                      puan.toString(),
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -349,7 +308,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                     Text(
-                      "",
+                      oylayan.toString(),
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],
@@ -392,33 +351,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             SizedBox(
               height: 8,
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, "/editProfile");
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 24, 16, 0),
-                  child: Transform.rotate(
-                    angle: (math.pi * 0.05),
-                    child: Container(
-                      width: 110,
-                      height: 32,
-                      child: Center(
-                        child: Text("Profili Düzenle"),
-                      ),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
-                          boxShadow: [
-                            BoxShadow(color: Colors.black12, blurRadius: 20)
-                          ]),
-                    ),
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),

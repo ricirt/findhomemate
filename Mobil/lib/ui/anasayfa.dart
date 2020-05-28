@@ -31,6 +31,8 @@ class AnasayfaState extends State<Anasayfa>
   List<String> fiyatList = List();
   List<String> konumList = List();
 
+  String ilanSahibiID;
+
   String mesaj = "";
   int itemSayisi = 1;
   TabController tabController;
@@ -200,12 +202,12 @@ class AnasayfaState extends State<Anasayfa>
 
   void _ilanaGit(con) {
     debugPrint("index : " + con.toString());
-    evSahibi.uid = uidList[con].toString();
-    debugPrint("kisi id : " + evSahibi.uid);
+    ilanSahibiID = uidList[con].toString();
+    debugPrint("ilan id : " + ilanSahibiID);
 
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
-      return IlanDetay();
+      return IlanDetay(ilanSahibiUserID: ilanSahibiID,);
     }));
   }
 

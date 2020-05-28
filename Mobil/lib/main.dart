@@ -1,9 +1,6 @@
 import 'package:deneme/ui/anasayfa.dart';
 import 'package:deneme/ui/bildirim.dart';
-import 'package:deneme/ui/firestore.dart';
 import 'package:deneme/ui/profiliDuzenle.dart';
-import 'package:deneme/ui/sorularEv.dart';
-import 'package:deneme/ui/sorularOncesi.dart';
 import 'package:flutter/material.dart';
 import 'ui/loginScreen.dart';
 import 'ui/registerScreen.dart';
@@ -15,7 +12,8 @@ void main() {
       initialRoute: "/loginScreen",
       routes: {
         '/': (context) => LoginScreen(),
-        '/loginScreen': (context) => Bildirim(),
+        '/loginScreen': (context) => LoginScreen(),
+        '/bildirim': (context) => Bildirim(),
         '/editProfile': (context) => ProfilDuzenle(),
         '/registerScreen': (context) => RegisterScreen(),
         '/mainPageScreen': (context) => MainPageScreen(),

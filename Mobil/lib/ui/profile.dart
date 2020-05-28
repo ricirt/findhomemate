@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
+//ses var mıhocam
 
 Kisi kisi = Kisi();
 KisiNitelikleri kisiNitelikler = KisiNitelikleri();
@@ -223,8 +224,8 @@ class ProfilePage extends StatelessWidget {
                         style: _style(),
                       ),
                       Icon(kisiNitelikler.cinsiyetTercih == true
-                          ? Icons.pregnant_woman
-                          : Icons.face),
+                          ? Icons.face
+                          : Icons.pregnant_woman),
                     ],
                   ),
                   SizedBox(
