@@ -1,20 +1,27 @@
 ++1-ilan ver sayfasinin yapilmasi ve database baglanmasi	-> fatih(tasarim)-addi(database)
 ++2-anasayfaya verilerin databaseden çekilmesi			-> addi
-  3-profil düzenle sayfasinin tasarlanmasi			-> fatih
-  4-bildirim sayfasinin tasarlanmasi				-> fatih
-  5-Profil ev arayan ve ev arkadasi arayan 2 tipede uygun olarak dönüstürülmesi -> fatih
-  6-Mesajlarin yapilmasi					-> addi-fatih
-++7-evler tablosunun olusturulmasi(yapildi düzenlenecek)	-> addi
+++3-profil düzenle sayfasinin tasarlanmasi			-> fatih
+++5-Profil ev arayan ve ev arkadasi arayan 2 tipede uygun olarak dönüstürülmesi -> fatih
+++7-evler tablosunun olusturulmasi				-> addi
 ++8-profile kullanici fotografinin cekilmesi 			-> addi
-  9-sifremi unuttum sayfasinin tasarlanmasi			-> fatih
-  10-Sayfalarin tasarimlarinin düzenlenmesi			-> fatih-addi
-  11-kullanicilara nasil puan verileceginin tasarlanmasi	-> fatih-addi
 ++12-resizeavoid registere eklenilecek				-> fatih
-++13-beni hatirla (yapildi) 					-> addi
+++13-beni hatirla 					-> addi
 <<<<<<< HEAD
-  14-profil entegrasyonu				-> fatih
-++15-Anasayfaya Tabbar yapýlmasý					-> fatih
-  16-anasayfada hangi ilana tiklanirsa ilandetayda o açilacak ->addi 
+++14-profil entegrasyonu				-> fatih
+++15-Anasayfaya Tabbar yapýlmasý				-> fatih
+++16-anasayfada hangi ilana tiklanirsa ilandetayda o açilacak ->addi 
 =======
 ++14-Anasayfaya Tabbar yapýlmasý				-> fatih
 >>>>>>> 5adaaebdd2e115f5d60c653ad87b05efa8d6106f
+
+  		1. ÖNCELIKLI TASKLAR
+  1-mesajlasma database olusturulmasi				->addi
+  2-mesajlasma sayfa tasarimi					->fatih
+  3-mesajlar entegrasyon					->addi-fatih
+
+
+		2. ÖNCELIKLI TASKLAR
+  4-bildirim sayfasinin tasarlanmasi				-> fatih
+  9-sifremi unuttum sayfasinin tasarlanmasi			-> fatih
+  10-Sayfalarin tasarimlarinin düzenlenmesi			-> fatih-addi
+  11-kullanicilara nasil puan verileceginin tasarlanmasi	-> fatih-addi
