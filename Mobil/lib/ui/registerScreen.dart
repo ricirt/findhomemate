@@ -150,6 +150,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String _meslek = _meslekController.text;
     String _cinsiyet = "";
     bool _soruDurum = false;
+    int yas;
+      yas = int.parse(_dogumYili);
+        yas = 2020 - yas;
+      _dogumYili = yas.toString();
+
     if (selectedRadio == 1) {
       _cinsiyet = "kadın";
     } else if (selectedRadio == 2) {

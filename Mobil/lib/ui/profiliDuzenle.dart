@@ -149,56 +149,52 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     String _dogumYili = _dogumYiliController.text;
     String _meslek = _meslekController.text;
     String _cinsiyet = "";
-    bool _soruDurum = false;
+    int yas;
+    yas = int.parse(_dogumYili);
+    yas = 2020 - yas;
+    _dogumYili = yas.toString();
+
     if (selectedRadio == 1) {
       _cinsiyet = "kadın";
     } else if (selectedRadio == 2) {
       _cinsiyet = "erkek";
     }
-    if(_sifre.length>=6){
-       if (_sifre == _checkPassword) {
-      var firebaseUser = await _auth
-          .createUserWithEmailAndPassword(email: _mail.trim(), password: _sifre)
-          .catchError((e) => debugPrint("hata :" + e.toString()));
+    if (_sifre.length >= 6) {
+      if (_sifre == _checkPassword) {
+        final FirebaseUser user = await _auth.currentUser();
+        final String uid = user.uid;
 
-      _firestore
-          .collection("kullanicilar")
-          .document("${firebaseUser.user.uid}")
-          .setData({
-        "adSoyad": _adSoyad,
-        "email": _mail,
-        "sifre": _sifre,
-        "dogumYili": _dogumYili,
-        "meslek": _meslek,
-        "cinsiyet": _cinsiyet,
-        "soruDurum": _soruDurum,
-        "puan": "5",
-        "oylayan": "1",
-        "uid": firebaseUser.user.uid,
-      });
+        _firestore.collection("kullanicilar").document("$uid").setData({
+          "adSoyad": _adSoyad,
+          "email": _mail,
+          "sifre": _sifre,
+          "dogumYili": _dogumYili,
+          "meslek": _meslek,
+          "cinsiyet": _cinsiyet,
+        }, merge: true);
 
-      Fluttertoast.showToast(
-        msg: "Bilgiler Güncellendi",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 2,
-        backgroundColor: Colors.blue,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+        Fluttertoast.showToast(
+          msg: "Bilgiler Güncellendi",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 2,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Şifreler uyuşmuyor",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 2,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
     } else {
       Fluttertoast.showToast(
-        msg: "Şifreler uyuşmuyor",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 2,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
-    }else{
-       Fluttertoast.showToast(
         msg: "Şifre 6 karakterden az olamaz",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
@@ -208,6 +204,5 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
         fontSize: 16.0,
       );
     }
-   
   }
 }

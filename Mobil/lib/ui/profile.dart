@@ -59,9 +59,6 @@ class _ProfileState extends State<Profile> {
         kisi.oylayan = documentSnapshot.data['oylayan'].toString();
 
         debugPrint("resim :" + kisi.profilResmi);
-
-        yas = int.parse(kisi.yas);
-        yas = 2020 - yas;
         puan = int.parse(kisi.puan);
 
         oylayan = int.parse(kisi.oylayan);
@@ -344,7 +341,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       style: TextStyle(color: Colors.white),
                     ),
                     Text(
-                      yas.toString(),
+                      kisi.yas,
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],

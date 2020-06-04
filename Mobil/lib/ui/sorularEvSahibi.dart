@@ -83,7 +83,7 @@ class _SorularEvSahibiState extends State<SorularEvSahibi> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    "Evde sigara içilmesi sizin için sorun olur mu?",
+                    "Evde sigara içilebilir mi?",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -124,7 +124,7 @@ class _SorularEvSahibiState extends State<SorularEvSahibi> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    "Evde Alkol içilmesi sizin için sorun olur mu?",
+                    "Evde Alkol içilebilir mi?",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
