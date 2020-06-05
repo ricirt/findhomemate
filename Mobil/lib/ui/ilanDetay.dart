@@ -3,6 +3,7 @@ import 'package:deneme/Classes/ev.dart';
 import 'package:deneme/Classes/evSahibi.dart';
 import 'package:deneme/Classes/evSahibiNitelikleri.dart';
 import 'package:deneme/ui/evSahibiProfil.dart';
+import 'package:deneme/ui/mesajlar.dart';
 import 'package:flutter/material.dart';
 
 /*future : kullanicilariGetir()
@@ -105,7 +106,13 @@ class _IlanDetayState extends State<IlanDetay> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (buildContext) => Mesajlar(),
+                                ),
+                              );
+                          },
                           color: Colors.purple.shade200,
                           child: Text(
                             "Mesaj at ",
