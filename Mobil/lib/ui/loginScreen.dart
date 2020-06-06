@@ -12,6 +12,17 @@ class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
+class EmailFieldValidator {
+  static String validate(String value) {
+    return value.isEmpty ? 'Bu alan boş kalamaz!!' : null;
+  }
+}
+
+class PasswordFieldValidator {
+  static String validate(String value) {
+    return value.isEmpty ? 'Bu alan boş kalamaz!!' : null;
+  }
+}
 
 class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -185,6 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             )),
           );
+    
   }
 
   void _googleGiris() {
