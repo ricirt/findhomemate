@@ -9,31 +9,34 @@ class _MesajlarDetayState extends State<MesajlarDetay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Hero(
-          tag: 'logo',
-          child: Container(
-            height: 40,
-            child: Image.asset("assets/logo.png"), // Kişinin resmi
+        appBar: AppBar(
+          leading: Hero(
+            tag: 'logo',
+            child: Container(
+              height: 40,
+              child: Image.asset("assets/logo.png"), // Kişinin resmi
+            ),
           ),
-        ),
-        //// Mesajlaştıgı kısının adı
-        title: InkWell(
-          child: Text("Kişinin Adı"),
-        ),
-        /*actions: <Widget>[
+          //// Mesajlaştıgı kısının adı
+          title: InkWell(
+            child: Text("Kişinin Adı"),
+          ),
+          /*actions: <Widget>[
         IconButton(icon: null, onPressed: null)
       ],*/
-      ),
-      body: Expanded(
-        child: Column(
-          children: <Widget>[
-            
-            
-          ],
         ),
-      ),
-    );
+        body: Column(
+          children: <Widget>[
+            ListView.builder(itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                  title: Align(
+                      alignment: index % 2 == 0
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
+                      child: Text("deneme")));
+            }),
+          ],
+        ));
   }
 }
 /*Expanded(

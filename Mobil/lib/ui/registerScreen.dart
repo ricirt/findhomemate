@@ -199,7 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               "oylayan": "1",
               "uid": firebaseUser.user.uid,
             });
-
+            
             Fluttertoast.showToast(
               msg: "Kayıt Başarılı",
               toastLength: Toast.LENGTH_SHORT,

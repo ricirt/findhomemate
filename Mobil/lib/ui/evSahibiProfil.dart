@@ -1,7 +1,6 @@
 import 'package:deneme/Classes/evSahibi.dart';
 import 'package:deneme/Classes/evSahibiNitelikleri.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 //EvSahibi evSahibi = EvSahibi();
