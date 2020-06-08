@@ -237,6 +237,7 @@ class AnasayfaState extends State<Anasayfa>
         kisi.cinsiyet = documentSnapshot.data['cinsiyet'].toString();
         kisi.profilResmi = documentSnapshot.data['profilResmi'].toString();
         kisi.evSahibimi = documentSnapshot.data['evSahibi'];
+        kisi.uid= documentSnapshot.data['uid'].toString();
       });
       debugPrint("ikinci");
     }

@@ -19,7 +19,6 @@ class _MesajlarState extends State<Mesajlar> {
   void initState() {
     super.initState();
     _getID();
-    debugPrint("userid : " + userid);
   }
 
   @override

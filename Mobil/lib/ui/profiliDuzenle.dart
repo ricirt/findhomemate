@@ -42,7 +42,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(top: 40),
+              padding: EdgeInsets.only(top: 60),
               child: Center(
                 child: Text(
                   "Profili Güncelle",
@@ -50,6 +50,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
                 ),
               ),
             ),
+            SizedBox(height: 60,),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               child: Column(

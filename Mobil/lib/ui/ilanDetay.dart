@@ -4,6 +4,8 @@ import 'package:deneme/Classes/evSahibi.dart';
 import 'package:deneme/Classes/evSahibiNitelikleri.dart';
 import 'package:deneme/ui/evSahibiProfil.dart';
 import 'package:deneme/ui/mesajlar.dart';
+import 'package:deneme/ui/mesajlarDetay.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 /*future : kullanicilariGetir()
@@ -29,6 +31,8 @@ class IlanDetay extends StatefulWidget {
 
 class _IlanDetayState extends State<IlanDetay> {
   final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
 
   String adSoyad;
   String cinsiyet;
@@ -40,6 +44,8 @@ class _IlanDetayState extends State<IlanDetay> {
   String yas;
   String uid;
   String gelenId;
+  String userid;
+
 
   @override
   void initState() {
@@ -47,6 +53,7 @@ class _IlanDetayState extends State<IlanDetay> {
     debugPrint("gelen id : " + widget.ilanSahibiUserID.toString());
     gelenId = widget.ilanSahibiUserID;
     _getHomeInfos();
+    _forid();
   }
 
   @override
@@ -107,11 +114,11 @@ class _IlanDetayState extends State<IlanDetay> {
                       children: <Widget>[
                         RaisedButton(
                           onPressed: () {
-                             Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (buildContext) => Mesajlar(),
-                                ),
-                              );
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (buildContext) => MesajDetay(conversationid:userid,aliciID: gelenId,),
+                              ),
+                            );
                           },
                           color: Colors.purple.shade200,
                           child: Text(
@@ -404,12 +411,26 @@ class _IlanDetayState extends State<IlanDetay> {
       //debugPrint("yasssss : " + evSahibi.yas);
     });
     /*debugPrint(evSahibi.adSoyad.toString());
-    debugPrint(evSahibi.cinsiyet.toString());
-    debugPrint(evSahibi.email.toString());
-    debugPrint(evSahibi.oylayan.toString());
-    debugPrint(evSahibi.profilResmi.toString());
-    debugPrint(evSahibi.puan.toString());
-    debugPrint(evSahibi.yas.toString());
-    debugPrint(evSahibi.uid.toString());*/
+        debugPrint(evSahibi.cinsiyet.toString());
+        debugPrint(evSahibi.email.toString());
+        debugPrint(evSahibi.oylayan.toString());
+        debugPrint(evSahibi.profilResmi.toString());
+        debugPrint(evSahibi.puan.toString());
+        debugPrint(evSahibi.yas.toString());
+        debugPrint(evSahibi.uid.toString());*/
+  }
+
+  void _forid() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
+
+    if (user != null) {
+      DocumentSnapshot documentSnapshot =
+          await _firestore.document("kullanicilar/$uid").get();
+
+      setState(() {
+        userid = documentSnapshot.data['uid'].toString();
+      });
+    }
   }
 }
