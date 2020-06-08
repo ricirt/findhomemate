@@ -19,7 +19,7 @@ class _MesajlarState extends State<Mesajlar> {
   void initState() {
     super.initState();
     _getID();
-    debugPrint("userid : " + userid);
+    
   }
 
   @override
@@ -59,7 +59,7 @@ class _MesajlarState extends State<Mesajlar> {
                             backgroundImage: NetworkImage(
                                 "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
                           ),
-                          title: Text('hi'),
+                          title: Text("hi"),
                           subtitle: Text("me"),
                           trailing: Column(
                             children: <Widget>[
@@ -83,10 +83,12 @@ class _MesajlarState extends State<Mesajlar> {
                             ],
                           ),
                           onTap: () {
+                            debugPrint("userid : " + userid);
+                            debugPrint("document id :" + doc.documentID);
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (BuildContext context) {
                               return MesajDetay(
-                                conversationid: doc.documentID,
+                                conversationid: userid,aliciID: doc.documentID,
                               );
                             }));
                           },
@@ -111,6 +113,8 @@ class _MesajlarState extends State<Mesajlar> {
       setState(() {
         userid = documentSnapshot.data['uid'].toString();
       });
+      
+
     }
   }
 }
