@@ -43,12 +43,10 @@ class _MesajlarState extends State<Mesajlar> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             /// eger snapshotta hata varsa
-            if (snapshot.hasError) {
-              return Text("Error: ${snapshot.error} ");
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
+            
+            if ( snapshot.hasError || snapshot.connectionState == ConnectionState.waiting) {
               /// Gif koyulabılır
-              return Text("loading...");
+              return Center(child: CircularProgressIndicator(),);
             }
             return ListView(
               ///// ---------Kimlerle mesajlastıgını gösteren sayfa.

@@ -60,8 +60,11 @@ class _MesajDetayState extends State<MesajDetay> {
             child: StreamBuilder(
                 stream: _ref.orderBy('time').snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  return !snapshot.hasData
-                      ? CircularProgressIndicator()
+                  return (!snapshot.hasData ||
+                          snapshot.connectionState == ConnectionState.waiting)
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
                       : ListView(
                           children: snapshot.data.documents
                               .map(
@@ -154,137 +157,135 @@ class _MesajDetayState extends State<MesajDetay> {
                     color: Colors.white,
                   ),
                   onPressed: () async {
-                    String saat,dakika;
+                    String saat, dakika;
                     saat = DateTime.now().hour.toString();
-                    dakika =  DateTime.now().minute.toString();
-                    lastMessageTime = saat+":"+dakika;
+                    dakika = DateTime.now().minute.toString();
+                    lastMessageTime = saat + ":" + dakika;
                     _addFeatures();
-                                        await _ref.add({
-                                          'senderid': widget.conversationid,
-                                          'aliciID': widget.aliciID,
-                                          'message': _editingController.text,
-                                          'time': DateTime.now(),
-                                          
-                                        });
-                                        lastMessage = _editingController.text;
-                                        await _ref2.add({
-                                          'senderid': widget.conversationid,
-                                          'aliciID': widget.aliciID,
-                                          'message': _editingController.text,
-                                          'time':  DateTime.now(),
-                                        });
-                                        _editingController.text = "";
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                    
-                      void _addMembers() async {
-                        final snapShot = await Firestore.instance
-                            .collection('chat')
-                            .document("${widget.conversationid}")
-                            .get();
-                    
-                        final snapShot2 = await Firestore.instance
-                            .collection('chat')
-                            .document("${widget.aliciID}")
-                            .get();
-                    
-                        debugPrint("snapshot exist : " + snapShot.exists.toString());
-                        debugPrint("snapshot null : " + snapShot.toString());
-                    
-                        if (snapShot != null) {
-                          _firestore
-                              .collection("chat")
-                              .document("${widget.conversationid}")
-                              .collection("yeni")
-                              .document("${widget.aliciID}")
-                              .setData({
-                            "members": [widget.conversationid, widget.aliciID],
-                      
-                          }, merge: true);
-                        }
-                    
-                        debugPrint("snapshot exist 2 : " + snapShot2.exists.toString());
-                        debugPrint("snapshot null 2 : " + snapShot2.toString());
-                        if (snapShot2 != null) {
-                          _firestore
-                              .collection("chat")
-                              .document("${widget.aliciID}")
-                              .collection("yeni")
-                              .document("${widget.conversationid}")
-                              .setData({
-                            "members": [widget.conversationid, widget.aliciID],
-           
-                          }, merge: true);
-                        }
-                      }
-                    
-                      void _getInfo() async {
-                        DocumentSnapshot documentSnapshot =
-                            await _firestore.document("kullanicilar/${widget.aliciID}").get();
-                    
-                        setState(() {
-                          adSoyad = documentSnapshot.data['adSoyad'];
-                          profilResmi = documentSnapshot.data['profilResmi'];
-                        });
-                    
-                          DocumentSnapshot documentSnapshot2 =
-                            await _firestore.document("kullanicilar/${widget.conversationid}").get();
-                    
-                        setState(() {
-                          benAdSoyad = documentSnapshot2.data['adSoyad'];
-                          benProfilResmi = documentSnapshot2.data['profilResmi'];
-                        });
-                        debugPrint("alici id : ${widget.aliciID}");
-                        debugPrint("conversa id : ${widget.conversationid}");
+                    await _ref.add({
+                      'senderid': widget.conversationid,
+                      'aliciID': widget.aliciID,
+                      'message': _editingController.text,
+                      'time': DateTime.now(),
+                    });
+                    lastMessage = _editingController.text;
+                    await _ref2.add({
+                      'senderid': widget.conversationid,
+                      'aliciID': widget.aliciID,
+                      'message': _editingController.text,
+                      'time': DateTime.now(),
+                    });
+                    _editingController.text = "";
+                  },
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
 
-                        debugPrint("ad : " +adSoyad);
-                        debugPrint("ben ad : " +benAdSoyad);
-                      }
-                    
-                      void _addFeatures() async {
-                          final snapShot = await Firestore.instance
-                            .collection('chat')
-                            .document("${widget.conversationid}")
-                            .get();
-                    
-                        final snapShot2 = await Firestore.instance
-                            .collection('chat')
-                            .document("${widget.aliciID}")
-                            .get();
-                    
-                        if (snapShot != null) {
-                          _firestore
-                              .collection("chat")
-                              .document("${widget.conversationid}")
-                              .collection("yeni")
-                              .document("${widget.aliciID}")
-                              .setData({
-                            "adSoyad": adSoyad,
-                            "profilResmi" : profilResmi,
-                            "lastMessage" : lastMessage,
-                            "lastMessageTime" : lastMessageTime,
-                          }, merge: true);
-                        }
-                    
-                        if (snapShot2 != null) {
-                          _firestore
-                              .collection("chat")
-                              .document("${widget.aliciID}")
-                              .collection("yeni")
-                              .document("${widget.conversationid}")
-                              .setData({
-                            "adSoyad" : benAdSoyad,
-                            "profilResmi" : benProfilResmi,
-                            "lastMessage" : lastMessage,
-                            "lastMessageTime" : lastMessageTime,
-                          }, merge: true);
-                        }
-                      }
+  void _addMembers() async {
+    final snapShot = await Firestore.instance
+        .collection('chat')
+        .document("${widget.conversationid}")
+        .get();
+
+    final snapShot2 = await Firestore.instance
+        .collection('chat')
+        .document("${widget.aliciID}")
+        .get();
+
+    debugPrint("snapshot exist : " + snapShot.exists.toString());
+    debugPrint("snapshot null : " + snapShot.toString());
+
+    if (snapShot != null) {
+      _firestore
+          .collection("chat")
+          .document("${widget.conversationid}")
+          .collection("yeni")
+          .document("${widget.aliciID}")
+          .setData({
+        "members": [widget.conversationid, widget.aliciID],
+      }, merge: true);
+    }
+
+    debugPrint("snapshot exist 2 : " + snapShot2.exists.toString());
+    debugPrint("snapshot null 2 : " + snapShot2.toString());
+    if (snapShot2 != null) {
+      _firestore
+          .collection("chat")
+          .document("${widget.aliciID}")
+          .collection("yeni")
+          .document("${widget.conversationid}")
+          .setData({
+        "members": [widget.conversationid, widget.aliciID],
+      }, merge: true);
+    }
+  }
+
+  void _getInfo() async {
+    DocumentSnapshot documentSnapshot =
+        await _firestore.document("kullanicilar/${widget.aliciID}").get();
+
+    setState(() {
+      adSoyad = documentSnapshot.data['adSoyad'];
+      profilResmi = documentSnapshot.data['profilResmi'];
+    });
+
+    DocumentSnapshot documentSnapshot2 = await _firestore
+        .document("kullanicilar/${widget.conversationid}")
+        .get();
+
+    setState(() {
+      benAdSoyad = documentSnapshot2.data['adSoyad'];
+      benProfilResmi = documentSnapshot2.data['profilResmi'];
+    });
+    debugPrint("alici id : ${widget.aliciID}");
+    debugPrint("conversa id : ${widget.conversationid}");
+
+    debugPrint("ad : " + adSoyad);
+    debugPrint("ben ad : " + benAdSoyad);
+  }
+
+  void _addFeatures() async {
+    final snapShot = await Firestore.instance
+        .collection('chat')
+        .document("${widget.conversationid}")
+        .get();
+
+    final snapShot2 = await Firestore.instance
+        .collection('chat')
+        .document("${widget.aliciID}")
+        .get();
+
+    if (snapShot != null) {
+      _firestore
+          .collection("chat")
+          .document("${widget.conversationid}")
+          .collection("yeni")
+          .document("${widget.aliciID}")
+          .setData({
+        "adSoyad": adSoyad,
+        "profilResmi": profilResmi,
+        "lastMessage": lastMessage,
+        "lastMessageTime": lastMessageTime,
+      }, merge: true);
+    }
+
+    if (snapShot2 != null) {
+      _firestore
+          .collection("chat")
+          .document("${widget.aliciID}")
+          .collection("yeni")
+          .document("${widget.conversationid}")
+          .setData({
+        "adSoyad": benAdSoyad,
+        "profilResmi": benProfilResmi,
+        "lastMessage": lastMessage,
+        "lastMessageTime": lastMessageTime,
+      }, merge: true);
+    }
+  }
 }
