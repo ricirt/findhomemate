@@ -9,17 +9,18 @@ class Mesajlar extends StatefulWidget {
   @override
   _MesajlarState createState() => _MesajlarState();
 }
-
+  
 class _MesajlarState extends State<Mesajlar> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _firestore = Firestore.instance;
   String userid;
 
+  List<String> userList = List();
+
   @override
   void initState() {
     super.initState();
     _getID();
-    
   }
 
   @override
@@ -32,12 +33,13 @@ class _MesajlarState extends State<Mesajlar> {
         color: Colors.white,
         child: StreamBuilder(
           //Fire baseye messaages bolumu eklendıkten sonra revize edilecek.
+          
           stream: Firestore.instance
               .collection('chat')
               .document('$userid')
               .collection('yeni')
-              .where('members',arrayContains: userid)
               .snapshots(),
+              
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             /// eger snapshotta hata varsa
@@ -57,13 +59,13 @@ class _MesajlarState extends State<Mesajlar> {
                           leading: CircleAvatar(
                             //Mesajlaşılanın kişinin fotografı
                             backgroundImage: NetworkImage(
-                                "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
+                                doc['profilResmi'] == null ? "" : doc['profilResmi']),
                           ),
-                          title: Text("hi"),
-                          subtitle: Text("me"),
+                          title: Text(doc['adSoyad'] == null ? "" : doc['adSoyad']),
+                          subtitle: Text(doc['lastMessage'] == null ? "" : doc['lastMessage'] ),
                           trailing: Column(
                             children: <Widget>[
-                              Text("19:30"),
+                              Text(doc['lastMessageTime']),
                               Container(
                                 height: 20,
                                 width: 20,
@@ -72,7 +74,7 @@ class _MesajlarState extends State<Mesajlar> {
                                     color: Theme.of(context).accentColor),
                                 child: Center(
                                   child: Text(
-                                    "16",
+                                    "2",
                                     textScaleFactor: 0.8,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -85,10 +87,13 @@ class _MesajlarState extends State<Mesajlar> {
                           onTap: () {
                             debugPrint("userid : " + userid);
                             debugPrint("document id :" + doc.documentID);
+                        
+
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (BuildContext context) {
                               return MesajDetay(
-                                conversationid: userid,aliciID: doc.documentID,
+                                conversationid: userid,
+                                aliciID: doc.documentID,
                               );
                             }));
                           },
@@ -113,8 +118,25 @@ class _MesajlarState extends State<Mesajlar> {
       setState(() {
         userid = documentSnapshot.data['uid'].toString();
       });
-      
 
+      var dokumanlar = await _firestore
+          .collection("chat")
+          .document("$uid")
+          .collection("yeni")
+          .getDocuments();
+
+      for (var dokuman in dokumanlar.documents) {
+        if (uid != dokuman.data["members"][0].toString()) {
+          if (!userList.contains(dokuman.data["members"][0].toString())) {
+            userList.add(dokuman.data["members"][0].toString());
+          }
+        } else {
+          if (!userList.contains(dokuman.data["members"][1].toString())) {
+            userList.add(dokuman.data["members"][1].toString());
+          }
+
+        }
+      }
     }
   }
 }

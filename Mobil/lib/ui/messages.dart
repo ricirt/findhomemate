@@ -14,6 +14,7 @@ class _MesajlarState extends State<Mesajlar> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _firestore = Firestore.instance;
   String userid;
+    List<String> userList = List();
 
   @override
   void initState() {
@@ -35,7 +36,9 @@ class _MesajlarState extends State<Mesajlar> {
               .collection('chat')
               .document('$userid')
               .collection('yeni')
-              .where('members',arrayContains: userid)
+              //.document('${userList[]}')
+              //.collection('messages')
+              .where('members', arrayContains: userid)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -58,7 +61,7 @@ class _MesajlarState extends State<Mesajlar> {
                             backgroundImage: NetworkImage(
                                 "https://pbs.twimg.com/profile_images/1197914578958651392/goaSDVjl_400x400.jpg"),
                           ),
-                          title: Text('hi'),
+                          title: Text(doc['']),
                           subtitle: Text("me"),
                           trailing: Column(
                             children: <Widget>[
@@ -82,10 +85,14 @@ class _MesajlarState extends State<Mesajlar> {
                             ],
                           ),
                           onTap: () {
+                            debugPrint("userid : " + userid);
+                            debugPrint("document id :" + doc.documentID);
+
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (BuildContext context) {
                               return MesajDetay(
-                                conversationid: doc.documentID,
+                                conversationid: userid,
+                                aliciID: doc.documentID,
                               );
                             }));
                           },
@@ -110,6 +117,19 @@ class _MesajlarState extends State<Mesajlar> {
       setState(() {
         userid = documentSnapshot.data['uid'].toString();
       });
+
+
+      var dokumanlar = await _firestore
+        .collection("chat")
+        .document("$uid")
+        .collection("yeni")
+        .getDocuments();
+
+    for (var dokuman in dokumanlar.documents) {
+      debugPrint("dokumannnn : "+ dokuman.data.toString());
+      userList.add(dokuman.data.toString());
+    }
+      
     }
   }
 }

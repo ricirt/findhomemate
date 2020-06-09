@@ -18,6 +18,10 @@ class _MesajDetayState extends State<MesajDetay> {
   final Firestore _firestore = Firestore.instance;
   String adSoyad;
   String profilResmi;
+  String benAdSoyad;
+  String benProfilResmi;
+  String lastMessage;
+  String lastMessageTime;
 
   @override
   void initState() {
@@ -30,199 +34,257 @@ class _MesajDetayState extends State<MesajDetay> {
     super.initState();
     _addMembers();
     _getInfo();
-      }
-    
-      @override
-      Widget build(BuildContext context) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right :8.0),
-                  child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          profilResmi)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text(adSoyad),
-                )
-              ],
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: CircleAvatar(backgroundImage: NetworkImage(profilResmi)),
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(adSoyad),
+            )
+          ],
+        ),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: StreamBuilder(
+                stream: _ref.orderBy('time').snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  return !snapshot.hasData
+                      ? CircularProgressIndicator()
+                      : ListView(
+                          children: snapshot.data.documents
+                              .map(
+                                (document) => ListTile(
+                                  title: Align(
+                                    alignment: widget.conversationid !=
+                                                document['senderid'] &&
+                                            widget.aliciID !=
+                                                document['aliciID']
+                                        ? Alignment.centerLeft
+                                        : Alignment.centerRight,
+                                    child: Container(
+                                        padding: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            borderRadius:
+                                                BorderRadius.horizontal(
+                                                    left: Radius.circular(10),
+                                                    right:
+                                                        Radius.circular(10))),
+                                        child: Text(
+                                          document['message'],
+                                          style: TextStyle(color: Colors.white),
+                                        )),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        );
+                }),
           ),
-          body: Column(
+          Row(
             children: <Widget>[
               Expanded(
-                child: StreamBuilder(
-                    stream: _ref.orderBy('timeStamp').snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                      return !snapshot.hasData
-                          ? CircularProgressIndicator()
-                          : ListView(
-                              children: snapshot.data.documents
-                                  .map(
-                                    (document) => ListTile(
-                                      title: Align(
-                                        alignment: widget.conversationid !=
-                                                    document['senderid'] &&
-                                                widget.aliciID !=
-                                                    document['aliciID']
-                                            ? Alignment.centerLeft
-                                            : Alignment.centerRight,
-                                        child: Container(
-                                            padding: EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                                color:
-                                                    Theme.of(context).primaryColor,
-                                                borderRadius:
-                                                    BorderRadius.horizontal(
-                                                        left: Radius.circular(10),
-                                                        right:
-                                                            Radius.circular(10))),
-                                            child: Text(
-                                              document['message'],
-                                              style: TextStyle(color: Colors.white),
-                                            )),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            );
-                    }),
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.horizontal(
+                          left: Radius.circular(20),
+                          right: Radius.circular(25))),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          child: Icon(
+                            Icons.tag_faces,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: TextField(
+                          controller: _editingController,
+                          decoration: InputDecoration(
+                            hintText: "Type a message",
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        child: Icon(
+                          Icons.attach_file,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          child: Icon(
+                            Icons.camera_alt,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.horizontal(
-                              left: Radius.circular(20),
-                              right: Radius.circular(25))),
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              child: Icon(
-                                Icons.tag_faces,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              controller: _editingController,
-                              decoration: InputDecoration(
-                                hintText: "Type a message",
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            child: Icon(
-                              Icons.attach_file,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              child: Icon(
-                                Icons.camera_alt,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+              Container(
+                margin: EdgeInsets.only(right: 5),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).primaryColor),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.send,
+                    color: Colors.white,
                   ),
-                  Container(
-                    margin: EdgeInsets.only(right: 5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme.of(context).primaryColor),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                      ),
-                      onPressed: () async {
-                        await _ref.add({
-                          'senderid': widget.conversationid,
-                          'aliciID': widget.aliciID,
-                          'message': _editingController.text,
-                          'timeStamp': DateTime.now(),
+                  onPressed: () async {
+                    String saat,dakika;
+                    saat = DateTime.now().hour.toString();
+                    dakika =  DateTime.now().minute.toString();
+                    lastMessageTime = saat+":"+dakika;
+                    _addFeatures();
+                                        await _ref.add({
+                                          'senderid': widget.conversationid,
+                                          'aliciID': widget.aliciID,
+                                          'message': _editingController.text,
+                                          'time': DateTime.now(),
+                                          
+                                        });
+                                        lastMessage = _editingController.text;
+                                        await _ref2.add({
+                                          'senderid': widget.conversationid,
+                                          'aliciID': widget.aliciID,
+                                          'message': _editingController.text,
+                                          'time':  DateTime.now(),
+                                        });
+                                        _editingController.text = "";
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                    
+                      void _addMembers() async {
+                        final snapShot = await Firestore.instance
+                            .collection('chat')
+                            .document("${widget.conversationid}")
+                            .get();
+                    
+                        final snapShot2 = await Firestore.instance
+                            .collection('chat')
+                            .document("${widget.aliciID}")
+                            .get();
+                    
+                        debugPrint("snapshot exist : " + snapShot.exists.toString());
+                        debugPrint("snapshot null : " + snapShot.toString());
+                    
+                        if (snapShot != null) {
+                          _firestore
+                              .collection("chat")
+                              .document("${widget.conversationid}")
+                              .collection("yeni")
+                              .document("${widget.aliciID}")
+                              .setData({
+                            "members": [widget.conversationid, widget.aliciID],
+                      
+                          }, merge: true);
+                        }
+                    
+                        debugPrint("snapshot exist 2 : " + snapShot2.exists.toString());
+                        debugPrint("snapshot null 2 : " + snapShot2.toString());
+                        if (snapShot2 != null) {
+                          _firestore
+                              .collection("chat")
+                              .document("${widget.aliciID}")
+                              .collection("yeni")
+                              .document("${widget.conversationid}")
+                              .setData({
+                            "members": [widget.conversationid, widget.aliciID],
+           
+                          }, merge: true);
+                        }
+                      }
+                    
+                      void _getInfo() async {
+                        DocumentSnapshot documentSnapshot =
+                            await _firestore.document("kullanicilar/${widget.aliciID}").get();
+                    
+                        setState(() {
+                          adSoyad = documentSnapshot.data['adSoyad'];
+                          profilResmi = documentSnapshot.data['profilResmi'];
                         });
-                        await _ref2.add({
-                          'senderid': widget.conversationid,
-                          'aliciID': widget.aliciID,
-                          'message': _editingController.text,
-                          'timeStamp': DateTime.now(),
+                    
+                          DocumentSnapshot documentSnapshot2 =
+                            await _firestore.document("kullanicilar/${widget.conversationid}").get();
+                    
+                        setState(() {
+                          benAdSoyad = documentSnapshot2.data['adSoyad'];
+                          benProfilResmi = documentSnapshot2.data['profilResmi'];
                         });
-                        _editingController.text = "";
-                      },
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        );
-      }
-    
-      void _addMembers() async {
-        final snapShot = await Firestore.instance
-            .collection('chat')
-            .document("${widget.conversationid}")
-            .get();
-    
-        final snapShot2 = await Firestore.instance
-            .collection('chat')
-            .document("${widget.aliciID}")
-            .get();
-    
-            debugPrint("snapshot exist : "+snapShot.exists.toString());
-          debugPrint("snapshot null : "+snapShot.toString());
-    
-        if (snapShot != null) {
-          
-          _firestore
-              .collection("chat")
-              .document("${widget.conversationid}")
-              .collection("yeni")
-              .document("${widget.aliciID}")
-              .setData({
-            "members": [widget.conversationid, widget.aliciID],
-          }, merge: true);
-        }
-    
-        debugPrint("snapshot exist 2 : "+snapShot2.exists.toString());
-          debugPrint("snapshot null 2 : "+snapShot2.toString());
-        if (snapShot2 != null) {
-          _firestore
-              .collection("chat")
-              .document("${widget.aliciID}")
-              .collection("yeni")
-              .document("${widget.conversationid}")
-              .setData({
-            "members": [widget.conversationid, widget.aliciID],
-          }, merge: true);
-        }
-      }
-    
-      void _getInfo() async {
-          DocumentSnapshot documentSnapshot =
-        await _firestore.document("kullanicilar/${widget.aliciID}").get();
+                        debugPrint("alici id : ${widget.aliciID}");
+                        debugPrint("conversa id : ${widget.conversationid}");
 
-    setState(() {
-      adSoyad = documentSnapshot.data['adSoyad'];
-      profilResmi = documentSnapshot.data['profilResmi'];
-     
-    });
-      }
+                        debugPrint("ad : " +adSoyad);
+                        debugPrint("ben ad : " +benAdSoyad);
+                      }
+                    
+                      void _addFeatures() async {
+                          final snapShot = await Firestore.instance
+                            .collection('chat')
+                            .document("${widget.conversationid}")
+                            .get();
+                    
+                        final snapShot2 = await Firestore.instance
+                            .collection('chat')
+                            .document("${widget.aliciID}")
+                            .get();
+                    
+                        if (snapShot != null) {
+                          _firestore
+                              .collection("chat")
+                              .document("${widget.conversationid}")
+                              .collection("yeni")
+                              .document("${widget.aliciID}")
+                              .setData({
+                            "adSoyad": adSoyad,
+                            "profilResmi" : profilResmi,
+                            "lastMessage" : lastMessage,
+                            "lastMessageTime" : lastMessageTime,
+                          }, merge: true);
+                        }
+                    
+                        if (snapShot2 != null) {
+                          _firestore
+                              .collection("chat")
+                              .document("${widget.aliciID}")
+                              .collection("yeni")
+                              .document("${widget.conversationid}")
+                              .setData({
+                            "adSoyad" : benAdSoyad,
+                            "profilResmi" : benProfilResmi,
+                            "lastMessage" : lastMessage,
+                            "lastMessageTime" : lastMessageTime,
+                          }, merge: true);
+                        }
+                      }
 }
