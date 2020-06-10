@@ -13,15 +13,15 @@
 =======
 ++14-Anasayfaya Tabbar yapýlmasý				-> fatih
 >>>>>>> 5adaaebdd2e115f5d60c653ad87b05efa8d6106f
+++1-mesajlasma database olusturulmasi				->addi
+++2-mesajlasma sayfa tasarimi					->fatih
+++3-mesajlar entegrasyon					->addi-fatih
 
-  		1. ÖNCELIKLI TASKLAR
-  1-mesajlasma database olusturulmasi				->addi
-  2-mesajlasma sayfa tasarimi					->fatih
-  3-mesajlar entegrasyon					->addi-fatih
-
-
-		2. ÖNCELIKLI TASKLAR
-  4-bildirim sayfasinin tasarlanmasi				-> fatih
-  9-sifremi unuttum sayfasinin tasarlanmasi			-> fatih
-  10-Sayfalarin tasarimlarinin düzenlenmesi			-> fatih-addi
-  11-kullanicilara nasil puan verileceginin tasarlanmasi	-> fatih-addi
+			TASKS
+  1-bildirim sayfasinin tasarlanmasi				-> fatih
+  2-bildirim veritabanina baglanmasi				-> addi
+  2-filtreleme 							-> addi
+  3-sifremi unuttum sayfasinin tasarlanmasi			-> fatih
+  4-Sayfalarin tasarimlarinin düzenlenmesi			-> fatih-addi
+  5-kullanicilara nasil puan verileceginin tasarlanmasi		-> fatih-addi
+  
