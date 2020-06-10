@@ -1,6 +1,6 @@
 import 'package:deneme/ui/ilanVer.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:deneme/Classes/notificationHandler.dart';
 
 class Bildirim extends StatefulWidget {
   @override
@@ -10,22 +10,11 @@ class Bildirim extends StatefulWidget {
 }
 
 class BildirimState extends State<Bildirim> {
-  final FirebaseMessaging _fcm = FirebaseMessaging();
 
   @override
   void initState() {
     super.initState();
-    _fcm.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
+   NotificationHandler().initializeFCMNotification(context);
   }
 
   @override
@@ -82,7 +71,7 @@ class BildirimState extends State<Bildirim> {
           //isThreeLine: true,
           //title: Text("bildirim ${index}"),
           subtitle: Text(
-            "1-Fatih Öztemir Size mesaj attı. (Bildirim ${index}). 2- Fatih Öztemir size x puan verdi. " +
+            "1-Fatih Öztemir Size mesaj attı. (Bildirim $index). 2- Fatih Öztemir size x puan verdi. " +
                 "3-Fatih Öztemir Sizin Profilinize Baktı(?). 4-Naşka neler olabılır düşün ",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),

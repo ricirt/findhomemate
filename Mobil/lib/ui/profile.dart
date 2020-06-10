@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:deneme/Classes/kisi.dart';
 import 'package:deneme/Classes/kisiNitelikleri.dart';
-import 'package:deneme/ui/loading.dart';
 import 'package:deneme/ui/profiliDuzenle.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

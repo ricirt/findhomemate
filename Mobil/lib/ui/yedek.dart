@@ -68,7 +68,7 @@ class BildirimState extends State<Bildirim> {
           //isThreeLine: true,
           //title: Text("bildirim ${index}"),
           subtitle: Text(
-            "1-Fatih Öztemir Size mesaj attı. (Bildirim ${index}). 2- Fatih Öztemir size x puan verdi. " +
+            "1-Fatih Öztemir Size mesaj attı. (Bildirim $index). 2- Fatih Öztemir size x puan verdi. " +
                 "3-Fatih Öztemir Sizin Profilinize Baktı(?). 4-Naşka neler olabılır düşün ",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),

@@ -1,8 +1,5 @@
-import 'package:deneme/Classes/evSahibi.dart';
 import 'package:deneme/ui/anasayfa.dart';
 import 'package:deneme/ui/bildirim.dart';
-import 'package:deneme/ui/mesajlar.dart';
-import 'package:deneme/ui/mesajlarDetay.dart';
 import 'package:deneme/ui/profiliDuzenle.dart';
 import 'package:flutter/material.dart';
 import 'ui/loginScreen.dart';

@@ -1,4 +1,4 @@
-import 'package:deneme/Classes/evSahibi.dart';
+
 import 'package:flutter/material.dart';
 import 'anasayfa.dart';
 import 'profile.dart';
