@@ -38,6 +38,7 @@ class _MesajlarState extends State<Mesajlar> {
               .collection('chat')
               .document('$userid')
               .collection('yeni')
+              .orderBy("lastMessageTime",descending: true)
               .snapshots(),
               
           builder:

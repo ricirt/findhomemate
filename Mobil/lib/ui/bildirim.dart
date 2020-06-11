@@ -1,6 +1,5 @@
 import 'package:deneme/ui/ilanVer.dart';
 import 'package:flutter/material.dart';
-import 'package:deneme/Classes/notificationHandler.dart';
 
 class Bildirim extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class BildirimState extends State<Bildirim> {
   @override
   void initState() {
     super.initState();
-   NotificationHandler().initializeFCMNotification(context);
+   
   }
 
   @override
