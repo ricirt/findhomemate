@@ -18,10 +18,10 @@
 ++3-mesajlar entegrasyon					->addi-fatih
 
 			TASKS
-  1-bildirim sayfasinin tasarlanmasi				-> fatih
-  2-bildirim veritabanina baglanmasi				-> addi
+++1-bildirim sayfasinin tasarlanmasi				-> fatih
+++2-bildirim veritabanina baglanmasi				-> addi
   2-filtreleme 							-> addi
   3-sifremi unuttum sayfasinin tasarlanmasi			-> fatih
-  4-Sayfalarin tasarimlarinin düzenlenmesi			-> fatih-addi
+  4-Anasayfa ve Profil düzenlenmesi				-> fatih-addi
   5-kullanicilara nasil puan verileceginin tasarlanmasi		-> fatih-addi
   

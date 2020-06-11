@@ -197,7 +197,7 @@ class _MesajDetayState extends State<MesajDetay> {
                       if(token != null){
                         print("girdi");
                          await _bildirimGondermeServis.bildirimGonder(
-                        lastMessage, widget.conversationid, token,benAdSoyad);
+                        lastMessage, widget.aliciID, token,benAdSoyad);
                         print("çıktı");
                       }
                    

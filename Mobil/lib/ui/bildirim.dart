@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deneme/ui/ilanVer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Bildirim extends StatefulWidget {
@@ -9,73 +11,89 @@ class Bildirim extends StatefulWidget {
 }
 
 class BildirimState extends State<Bildirim> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final Firestore _firestore = Firestore.instance;
+  String userid;
 
   @override
   void initState() {
     super.initState();
-   
+    _getID();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Bildirimler"),
+      ),
       body: Container(
-        padding: EdgeInsets.only(top: 40),
-        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
         color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            Text(
-              "BİLDİRİMLER",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 29,
-                  fontWeight: FontWeight.bold),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: 15,
-                  itemBuilder: (BuildContext ctxt, int index) =>
-                      _anasayfaGridKisi(ctxt, index)),
-            ),
-          ],
+        child: StreamBuilder(
+          //Fire baseye messaages bolumu eklendıkten sonra revize edilecek.
+
+          stream: Firestore.instance
+              .collection('bildirim')
+              .document('$userid')
+              .collection('notes')
+              .snapshots(),
+
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            /// eger snapshotta hata varsa
+
+            if (snapshot.hasError ||
+                snapshot.connectionState == ConnectionState.waiting) {
+              /// Gif koyulabılır
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            double c_width = MediaQuery.of(context).size.width * 0.8;
+            return ListView(
+              children: snapshot.data.documents
+                  .map((doc) => Card(
+                    margin: EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            width: c_width,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Text(doc['time'] == null ? "" : doc['time'],
+                                    textAlign: TextAlign.left),
+                                    Divider(
+                                      indent: 2,
+                                      color: Colors.grey,
+                                    ),
+                                Text(doc['note'] == null ? "" : doc['note'],
+                                    textAlign: TextAlign.left),
+                              ],
+                            ),
+                          ),
+                          onTap: () {},
+                        ),
+                      ))
+                  .toList(),
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _anasayfaGridKisi(BuildContext ctxt, int index) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-            bottomLeft: Radius.circular(20)),
-      ),
-      elevation: 15.0,
-      child: Container(
-        child: ListTile(
-          onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return IlanVer();
-            }));
-          },
+  Future _getID() async {
+    final FirebaseUser user = await _auth.currentUser();
+    final String uid = user.uid;
 
-          enabled: true,
-          //////// bildirime sebep olan kişinin fotoğrafı
-          leading: FlutterLogo(),
-          //selected: true,
-          //isThreeLine: true,
-          //title: Text("bildirim ${index}"),
-          subtitle: Text(
-            "1-Fatih Öztemir Size mesaj attı. (Bildirim $index). 2- Fatih Öztemir size x puan verdi. " +
-                "3-Fatih Öztemir Sizin Profilinize Baktı(?). 4-Naşka neler olabılır düşün ",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    );
+    if (user != null) {
+      DocumentSnapshot documentSnapshot =
+          await _firestore.document("kullanicilar/$uid").get();
+
+      setState(() {
+        userid = documentSnapshot.data['uid'].toString();
+      });
+    }
   }
 }
