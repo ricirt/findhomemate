@@ -42,6 +42,7 @@ class AnasayfaState extends State<Anasayfa>
   @override
   void initState() {
     super.initState();
+    debugPrint("başlıyorr");
     NotificationHandler().initializeFCMNotification(context);
     _getAll();
   }

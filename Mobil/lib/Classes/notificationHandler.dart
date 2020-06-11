@@ -51,6 +51,7 @@ class NotificationHandler {
 
     _fcm.onTokenRefresh.listen((newToken) async {
       FirebaseUser _currentUser = await FirebaseAuth.instance.currentUser();
+      print("token : " + newToken);
       await Firestore.instance
           .document("tokens/" + _currentUser.uid)
           .setData({"token": newToken});

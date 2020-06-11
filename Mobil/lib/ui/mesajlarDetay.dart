@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:deneme/Services/bildirimGondermeServis.dart';
 
 class MesajDetay extends StatefulWidget {
   final String conversationid;
@@ -12,6 +13,7 @@ class MesajDetay extends StatefulWidget {
 }
 
 class _MesajDetayState extends State<MesajDetay> {
+  BildirimGondermServis _bildirimGondermeServis = BildirimGondermServis();
   final TextEditingController _editingController = TextEditingController();
   CollectionReference _ref, _ref2;
   final Firestore _firestore = Firestore.instance;
@@ -21,6 +23,7 @@ class _MesajDetayState extends State<MesajDetay> {
   String benProfilResmi;
   String lastMessage;
   String lastMessageTime;
+  Map<String, String> kullaniciToken = Map<String, String>();
 
   @override
   void initState() {
@@ -161,12 +164,14 @@ class _MesajDetayState extends State<MesajDetay> {
                     dakika = DateTime.now().minute.toString();
                     lastMessageTime = saat + ":" + dakika;
                     _addFeatures();
+
                     await _ref.add({
                       'senderid': widget.conversationid,
                       'aliciID': widget.aliciID,
                       'message': _editingController.text,
                       'time': DateTime.now(),
                     });
+
                     lastMessage = _editingController.text;
                     await _ref2.add({
                       'senderid': widget.conversationid,
@@ -175,6 +180,27 @@ class _MesajDetayState extends State<MesajDetay> {
                       'time': DateTime.now(),
                     });
                     _editingController.text = "";
+                     
+                    var token = "";
+                    if (kullaniciToken.containsKey(widget.aliciID)) {
+                 
+
+                      token = kullaniciToken[widget.aliciID];
+                      print("Localden geldi : "+token);
+                    } else {
+                       print("else girdim");
+                      token = await tokenGetir(widget.aliciID);
+                      if(token != null)
+                      kullaniciToken[widget.aliciID] = token;
+                      print("Veritabanından geldi : "+token);
+                    }
+                      if(token != null){
+                        print("girdi");
+                         await _bildirimGondermeServis.bildirimGonder(
+                        lastMessage, widget.conversationid, token,benAdSoyad);
+                        print("çıktı");
+                      }
+                   
                   },
                 ),
               ),
@@ -286,5 +312,12 @@ class _MesajDetayState extends State<MesajDetay> {
         "lastMessageTime": lastMessageTime,
       }, merge: true);
     }
+  }
+
+  Future<String> tokenGetir(String aliciID) async {
+    DocumentSnapshot _token =  await _firestore.document("tokens/"+aliciID).get();
+    if(_token != null)
+    return _token.data['token'].toString();
+    else return null;
   }
 }
