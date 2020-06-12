@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:deneme/Classes/kisi.dart';
 import 'package:deneme/Classes/kisiNitelikleri.dart';
+import 'package:deneme/ui/loading.dart';
 import 'package:deneme/ui/profiliDuzenle.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
+bool loading = true;
 class _ProfileState extends State<Profile> {
   final Firestore _firestore = Firestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -29,6 +31,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+    
     _getInfo();
     _getFeatures();
 
@@ -53,6 +56,13 @@ class _ProfileState extends State<Profile> {
           await _firestore.document("kullanicilar/$uid").get();
 
       setState(() {
+         kisi.adSoyad = documentSnapshot.data['adSoyad'].toString();
+        kisi.email = documentSnapshot.data['email'].toString();
+        kisi.meslek = documentSnapshot.data['meslek'].toString();
+        kisi.cinsiyet = documentSnapshot.data['cinsiyet'].toString();
+        kisi.profilResmi = documentSnapshot.data['profilResmi'].toString();
+        kisi.evSahibimi = documentSnapshot.data['evSahibi'];
+        kisi.uid= documentSnapshot.data['uid'].toString();
         kisi.yas = documentSnapshot.data['dogumYili'].toString();
         kisi.puan = documentSnapshot.data['puan'].toString();
         kisi.oylayan = documentSnapshot.data['oylayan'].toString();
@@ -65,6 +75,7 @@ class _ProfileState extends State<Profile> {
         sonuc = puan / oylayan;
       });
     }
+    loading = false;
   }
 
   Future _getFeatures() async {
@@ -84,6 +95,8 @@ class _ProfileState extends State<Profile> {
         kisiNitelikler.cinsiyetTercih = documentSnapshot.data['cinsiyetTercih'];
       });
     }
+    loading = false;
+
   }
 }
 
@@ -99,7 +112,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Container(

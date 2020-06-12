@@ -22,6 +22,11 @@
 ++2-bildirim veritabanina baglanmasi				-> addi
   2-filtreleme 							-> addi
   3-sifremi unuttum sayfasinin tasarlanmasi			-> fatih
-  4-Anasayfa ve Profil düzenlenmesi				-> fatih-addi
+++4-Anasayfa ve Profil düzenlenmesi				-> fatih-addi
   5-kullanicilara nasil puan verileceginin tasarlanmasi		-> fatih-addi
-  
+  6-profildeki iconlar renkli olacak(kirmizi,yesil) 		-> fatih
+  7-ilan ver buton rengi degistir(ilan ver yazmasina gerek yok) -> addi
+++8-anasayfa resim üzerindeki butonlari kaldir			-> addi
+  9-anasayfaya tabbar eklenmesi 				-> fatih
+  10-tabbarin kullanici tarafinin database baglanmasi 		-> addi
+  11- Sorular öncesi sayfasinin arayüzü degistirilmesi		-> fatih

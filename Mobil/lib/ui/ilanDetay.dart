@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
         return Center(chil)
       }
     }*/
-
+bool loading;
 Ev ev = Ev();
 //EvSahibi evSahibi = EvSahibi();
 EvSahibiNitelikleri evSahibiNitelikleri = EvSahibiNitelikleri();
@@ -68,7 +68,7 @@ class _IlanDetayState extends State<IlanDetay> {
                 alignment: Alignment.center,
                 fit: BoxFit.cover,
                 placeholder: "assets/loading.gif",
-                image: ev.url),
+                image: ev.url == null ? "assets/loading.gif" : ev.url),
           ),
           Container(
             margin: EdgeInsets.only(top: screenHeight * 0.5),
@@ -113,6 +113,7 @@ class _IlanDetayState extends State<IlanDetay> {
                       children: <Widget>[
                         RaisedButton(
                           onPressed: () {
+                            loading = true;
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (buildContext) => MesajDetay(conversationid:userid,aliciID: gelenId,),
@@ -356,7 +357,7 @@ class _IlanDetayState extends State<IlanDetay> {
 
   Future _getHomeInfos() async {
     DocumentSnapshot documentSnapshot =
-        await _firestore.document("kullanicilar/$gelenId/ev/ozellik").get();
+        await _firestore.document("ev/$gelenId").get();
 
     setState(() {
       ev.depozito = documentSnapshot.data['depozito'];

@@ -12,4 +12,5 @@ class Ev{
   String kat;
   String konum;
   String url;
+  String uid;
 }

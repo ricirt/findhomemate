@@ -36,6 +36,7 @@ class BildirimState extends State<Bildirim> {
               .collection('bildirim')
               .document('$userid')
               .collection('notes')
+              .orderBy("time")
               .snapshots(),
 
           builder:

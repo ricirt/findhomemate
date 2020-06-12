@@ -199,6 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               "puan": "5",
               "oylayan": "1",
               "uid": firebaseUser.user.uid,
+              "profilResmi" : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg",
             });
             
             Fluttertoast.showToast(

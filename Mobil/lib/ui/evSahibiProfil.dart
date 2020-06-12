@@ -54,9 +54,7 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
               SizedBox(
                 height: 16,
               ),
-              Text(
-                "Durum",
-              ),
+              title('Durum'),
               SizedBox(
                 height: 4,
               ),
@@ -64,9 +62,7 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
               SizedBox(
                 height: 16,
               ),
-              Text(
-                "Meslek",
-              ),
+              title('Meslek'),
               SizedBox(
                 height: 4,
               ),
@@ -74,9 +70,7 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
               SizedBox(
                 height: 16,
               ),
-              Text(
-                "Cinsiyet",
-              ),
+              title('Cinsiyet'),
               SizedBox(
                 height: 4,
               ),
@@ -184,7 +178,7 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
   Widget title(String baslik) {
     return Text(
       baslik,
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+      style: TextStyle(fontWeight: FontWeight.bold),
     );
   }
 
@@ -306,7 +300,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       ],
                     ),
                     Text(
-                      puan.toString(),
+                     "${puan.toString()}/5",
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],

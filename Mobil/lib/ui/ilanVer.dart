@@ -37,17 +37,6 @@ class _IlanVerState extends State<IlanVer> {
         body: SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          SizedBox(
-            height: 25,
-          ),
-          Text(
-            "Sorular",
-            style: TextStyle(
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 40),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 50),
             child: Column(
@@ -56,9 +45,11 @@ class _IlanVerState extends State<IlanVer> {
                   child: Container(
                     height: 200,
                     width: 200,
-                    child: _secilenResim == null
-                        ? Text("Resim Seçilmedi")
-                        : Image.file(_secilenResim),
+                    child: Center(
+                      child: _secilenResim == null
+                          ? Text("Resim Seçilmedi")
+                          : Image.file(_secilenResim),
+                    ),
                   ),
                 ),
                 RaisedButton(
@@ -459,14 +450,13 @@ class _IlanVerState extends State<IlanVer> {
     ozellik["esya"] = radioEsya;
     ozellik["garaj"] = radioGaraj;
     ozellik["dogalgaz"] = radioDogalgaz;
+    ozellik["uid"] = uid.toString();
 
     if (user != null) {
       debugPrint("uid = $uid");
       _firestore
-          .collection('kullanicilar')
+          .collection('ev')
           .document("$uid")
-          .collection("ev")
-          .document("ozellik")
           .setData(ozellik, merge: true);
     }
     StorageReference ref = FirebaseStorage.instance
@@ -482,10 +472,8 @@ class _IlanVerState extends State<IlanVer> {
 
     if (user != null) {
       _firestore
-          .collection('kullanicilar')
+          .collection('ev')
           .document("$uid")
-          .collection("ev")
-          .document("ozellik")
           .setData({"url": url}, merge: true);
     }
   }
