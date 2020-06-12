@@ -17,6 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _adSoyadController = TextEditingController();
   final _dogumYiliController = TextEditingController();
   final _meslekController = TextEditingController();
+  final _sehirController = TextEditingController();
   String mesaj = "";
   int selectedRadio;
 
@@ -94,6 +95,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hintText: "Doğum Yılı(Örn: 1996)",
                     ),
                   ),
+                   TextFormField(
+                    controller: _sehirController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.card_travel),
+                      hintText: "Şehir",
+                    ),
+                  ),
                   TextFormField(
                     controller: _meslekController,
                     decoration: InputDecoration(
@@ -149,6 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String _checkPassword = _checkPasswordController.text;
     String _dogumYili = _dogumYiliController.text;
     String _meslek = _meslekController.text;
+    String _sehir = _sehirController.text;
     String _cinsiyet = "";
     bool _soruDurum = false;
     int yas;
@@ -167,7 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _mail != "" &&
         _checkPassword != "" &&
         _dogumYili != "" &&
-        _meslek != "") {
+        _meslek != "" && _sehir != "") {
       if (_sifre.length >= 6) {
         if (_sifre == _checkPassword) {
           var firebaseUser = await _auth
@@ -200,6 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               "oylayan": "1",
               "uid": firebaseUser.user.uid,
               "profilResmi" : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg",
+              "konum" : _sehir,
             });
             
             Fluttertoast.showToast(

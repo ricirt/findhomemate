@@ -17,6 +17,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
   final _adSoyadController = TextEditingController();
   final _dogumYiliController = TextEditingController();
   final _meslekController = TextEditingController();
+  final _sehirController = TextEditingController();
   String mesaj = "";
   int selectedRadio;
 
@@ -94,6 +95,13 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
                       hintText: "Doğum Yılı(Örn: 1996)",
                     ),
                   ),
+                   TextFormField(
+                    controller: _sehirController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.card_travel),
+                      hintText: "Şehir",
+                    ),
+                  ),
                   TextFormField(
                     controller: _meslekController,
                     decoration: InputDecoration(
@@ -149,6 +157,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     String _checkPassword = _checkPasswordController.text;
     String _dogumYili = _dogumYiliController.text;
     String _meslek = _meslekController.text;
+    String _sehir = _sehirController.text;
     String _cinsiyet = "";
     int yas;
     yas = int.parse(_dogumYili);
@@ -172,6 +181,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
           "dogumYili": _dogumYili,
           "meslek": _meslek,
           "cinsiyet": _cinsiyet,
+          "konum": _sehir, 
         }, merge: true);
 
         Fluttertoast.showToast(

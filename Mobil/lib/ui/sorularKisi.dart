@@ -17,7 +17,7 @@ class _SorularKisiState extends State<SorularKisi> {
   bool radioSigara;
   bool radioAlkol;
   bool radioMisafir;
-  bool radioCinsiyetTercihi;
+  bool radioCinsiyetTercih;
   bool loading = false;
 
   @override
@@ -226,10 +226,10 @@ class _SorularKisiState extends State<SorularKisi> {
                       children: <Widget>[
                         Radio(
                             value: true,
-                            groupValue: radioCinsiyetTercihi,
+                            groupValue: radioCinsiyetTercih,
                             onChanged: (T) {
                               setState(() {
-                                radioCinsiyetTercihi = T;
+                                radioCinsiyetTercih = T;
                               });
                             }),
                         Text("Kadın"),
@@ -239,10 +239,10 @@ class _SorularKisiState extends State<SorularKisi> {
                       children: <Widget>[
                         Radio(
                             value: false,
-                            groupValue: radioCinsiyetTercihi,
+                            groupValue: radioCinsiyetTercih,
                             onChanged: (T) {
                               setState(() {
-                                radioCinsiyetTercihi = T;
+                                radioCinsiyetTercih = T;
                               });
                             }),
                         Text("Erkek"),
@@ -290,7 +290,7 @@ class _SorularKisiState extends State<SorularKisi> {
     ozellik["sigara"] = radioSigara;
     ozellik["alkol"] = radioAlkol;
     ozellik["misafir"] = radioMisafir;
-    ozellik["cinsiyetTercihi"] = radioCinsiyetTercihi;
+    ozellik["cinsiyetTercih"] = radioCinsiyetTercih;
 
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;
