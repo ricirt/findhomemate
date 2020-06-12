@@ -92,9 +92,7 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
                       Text(
                         "Sigara",
                       ),
-                      Icon(evSahibiNitelikleri.sigara == true
-                          ? Icons.check
-                          : Icons.cancel),
+                      evSahibiNitelikleri.sigara == true ? green() : red(),
                     ],
                   ),
                   Row(
@@ -102,9 +100,7 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
                       Text(
                         "Alkol",
                       ),
-                      Icon(evSahibiNitelikleri.alkol == true
-                          ? Icons.check
-                          : Icons.cancel),
+                      evSahibiNitelikleri.alkol == true ? green() : red(),
                     ],
                   ),
                   SizedBox(
@@ -115,9 +111,7 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
                       Text(
                         "Evcil Hayvan",
                       ),
-                      Icon(evSahibiNitelikleri.evcilHayvan == true
-                          ? Icons.check
-                          : Icons.cancel),
+                      evSahibiNitelikleri.evcilHayvan == true ? green() : red(),
                     ],
                   ),
                   SizedBox(
@@ -136,9 +130,7 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
                       Text(
                         "Cinsiyet Tercihi",
                       ),
-                      Icon(evSahibiNitelikleri.cinsiyetTercih == true
-                          ? Icons.face
-                          : Icons.pregnant_woman),
+                      Icon(evSahibiNitelikleri.cinsiyetTercih == true ? Icons.face : Icons.pregnant_woman),
                     ],
                   ),
                   SizedBox(
@@ -149,9 +141,7 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
                       Text(
                         "Misafir",
                       ),
-                      Icon(evSahibiNitelikleri.misafir == true
-                          ? Icons.check
-                          : Icons.cancel),
+                      evSahibiNitelikleri.misafir == true ? green() : red(),
                     ],
                   ),
                   SizedBox(
@@ -172,6 +162,20 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget green() {
+    return Icon(
+      Icons.check,
+      color: Colors.green,
+    );
+  }
+
+  Widget red() {
+    return Icon(
+      Icons.cancel,
+      color: Colors.red,
     );
   }
 
@@ -300,7 +304,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                       ],
                     ),
                     Text(
-                     "${puan.toString()}/5",
+                      "${puan.toString()}/5",
                       style: TextStyle(fontSize: 26, color: Colors.white),
                     )
                   ],

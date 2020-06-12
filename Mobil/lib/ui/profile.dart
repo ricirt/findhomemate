@@ -182,9 +182,7 @@ class ProfilePage extends StatelessWidget {
                         "Sigara",
                         style: _style(),
                       ),
-                      Icon(kisiNitelikler.sigara == true
-                          ? Icons.check
-                          : Icons.cancel),
+                      kisiNitelikler.sigara == true ? green() : red(),
                     ],
                   ),
                   SizedBox(
@@ -196,9 +194,7 @@ class ProfilePage extends StatelessWidget {
                         "Alkol",
                         style: _style(),
                       ),
-                      Icon(kisiNitelikler.alkol == true
-                          ? Icons.check
-                          : Icons.cancel),
+                      kisiNitelikler.alkol == true ? green() : red(),
                     ],
                   ),
                   SizedBox(
@@ -210,9 +206,7 @@ class ProfilePage extends StatelessWidget {
                         "Evcil Hayvan",
                         style: _style(),
                       ),
-                      Icon(kisiNitelikler.evcilHayvan == true
-                          ? Icons.check
-                          : Icons.cancel),
+                      kisiNitelikler.evcilHayvan == true ? green() : red(),
                     ],
                   ),
                   SizedBox(
@@ -232,9 +226,7 @@ class ProfilePage extends StatelessWidget {
                         "Cinsiyet Tercihi",
                         style: _style(),
                       ),
-                      Icon(kisiNitelikler.cinsiyetTercih == true
-                          ? Icons.face
-                          : Icons.pregnant_woman),
+                      Icon(kisiNitelikler.cinsiyetTercih == true ? Icons.face : Icons.pregnant_woman ),
                     ],
                   ),
                   SizedBox(
@@ -246,9 +238,7 @@ class ProfilePage extends StatelessWidget {
                         "Misafir",
                         style: _style(),
                       ),
-                      Icon(kisiNitelikler.misafir == true
-                          ? Icons.check
-                          : Icons.cancel),
+                      kisiNitelikler.misafir == true ? green() : red(),
                     ],
                   ),
                   SizedBox(
@@ -272,6 +262,19 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
+ Widget green() {
+    return Icon(
+      Icons.check,
+      color: Colors.green,
+    );
+  }
+
+  Widget red() {
+    return Icon(
+      Icons.cancel,
+      color: Colors.red,
+    );
+  }
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override

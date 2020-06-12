@@ -32,7 +32,6 @@ class _IlanDetayState extends State<IlanDetay> {
   final Firestore _firestore = Firestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-
   String adSoyad;
   String cinsiyet;
   String email;
@@ -44,7 +43,6 @@ class _IlanDetayState extends State<IlanDetay> {
   String uid;
   String gelenId;
   String userid;
-
 
   @override
   void initState() {
@@ -116,7 +114,10 @@ class _IlanDetayState extends State<IlanDetay> {
                             loading = true;
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (buildContext) => MesajDetay(conversationid:userid,aliciID: gelenId,),
+                                builder: (buildContext) => MesajDetay(
+                                  conversationid: userid,
+                                  aliciID: gelenId,
+                                ),
                               ),
                             );
                           },
@@ -165,9 +166,9 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Sigara",
                               style: _style(),
                             ),
-                            Icon(evSahibiNitelikleri.sigara == true
-                                ? Icons.check
-                                : Icons.cancel),
+                            evSahibiNitelikleri.sigara == true
+                                ? green()
+                                : red(),
                           ],
                         ),
                         SizedBox(
@@ -179,9 +180,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Alkol",
                               style: _style(),
                             ),
-                            Icon(evSahibiNitelikleri.alkol == true
-                                ? Icons.check
-                                : Icons.cancel),
+                            evSahibiNitelikleri.alkol == true ? green() : red(),
                           ],
                         ),
                         SizedBox(
@@ -193,9 +192,9 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Evcil Hayvan",
                               style: _style(),
                             ),
-                            Icon(evSahibiNitelikleri.evcilHayvan == true
-                                ? Icons.check
-                                : Icons.cancel),
+                            evSahibiNitelikleri.evcilHayvan == true
+                                ? green()
+                                : red(),
                           ],
                         ),
                         SizedBox(
@@ -209,7 +208,7 @@ class _IlanDetayState extends State<IlanDetay> {
                             ),
                             Icon(evSahibiNitelikleri.cinsiyetTercih == true
                                 ? Icons.pregnant_woman
-                                : Icons.accessibility_new),
+                                : Icons.face),
                           ],
                         ),
                         SizedBox(
@@ -229,7 +228,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Garaj",
                               style: _style(),
                             ),
-                            Icon(ev.garaj == true ? Icons.check : Icons.cancel),
+                            ev.garaj == true ? green() : red(),
                           ],
                         ),
                         SizedBox(
@@ -241,7 +240,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Wifi",
                               style: _style(),
                             ),
-                            Icon(ev.wifi == true ? Icons.check : Icons.cancel),
+                            ev.wifi == true ? green() : red(),
                           ],
                         ),
                         SizedBox(
@@ -253,7 +252,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "TV",
                               style: _style(),
                             ),
-                            Icon(ev.tv == true ? Icons.check : Icons.cancel),
+                            ev.tv == true ? green() : red(),
                           ],
                         ),
                         SizedBox(
@@ -265,8 +264,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Fatura ortaklığı",
                               style: _style(),
                             ),
-                            Icon(
-                                ev.fatura == true ? Icons.check : Icons.cancel),
+                            ev.fatura == true ? green() : red(),
                           ],
                         ),
                         SizedBox(
@@ -286,9 +284,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Doğalgaz",
                               style: _style(),
                             ),
-                            Icon(ev.dogalgaz == true
-                                ? Icons.check
-                                : Icons.cancel),
+                            ev.dogalgaz == true ? green() : red(),
                           ],
                         ),
                         SizedBox(
@@ -300,7 +296,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Eşya",
                               style: _style(),
                             ),
-                            Icon(ev.esya == true ? Icons.check : Icons.cancel),
+                            ev.esya == true ? green() : red(),
                           ],
                         ),
                         SizedBox(
@@ -312,11 +308,9 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Misafir",
                               style: _style(),
                             ),
-                            Icon(
-                              evSahibiNitelikleri.misafir == true
-                                  ? Icons.check
-                                  : Icons.cancel,
-                            ),
+                            evSahibiNitelikleri.misafir == true
+                                ? green()
+                                : red(),
                           ],
                         ),
                         SizedBox(
@@ -328,9 +322,7 @@ class _IlanDetayState extends State<IlanDetay> {
                               "Depozito",
                               style: _style(),
                             ),
-                            Icon(ev.depozito == true
-                                ? Icons.check
-                                : Icons.cancel),
+                            ev.depozito == true ? green() : red(),
                           ],
                         ),
                         SizedBox(
@@ -348,6 +340,20 @@ class _IlanDetayState extends State<IlanDetay> {
           )
         ],
       ),
+    );
+  }
+
+  Widget green() {
+    return Icon(
+      Icons.check,
+      color: Colors.green,
+    );
+  }
+
+  Widget red() {
+    return Icon(
+      Icons.cancel,
+      color: Colors.red,
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deneme/ui/loading.dart';
+import 'package:deneme/ui/registerScreen.dart';
 import 'package:deneme/ui/sorularOncesi.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +13,7 @@ class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
+
 class EmailFieldValidator {
   static String validate(String value) {
     return value.isEmpty ? 'Bu alan boş kalamaz!!' : null;
@@ -70,133 +72,162 @@ class _LoginScreenState extends State<LoginScreen> {
     return loading
         ? Loading()
         : Scaffold(
-            resizeToAvoidBottomPadding: false,
-            body: Container(
-                child: Stack(
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Container(
-                      child: Center(
-                        child: Text(
-                          "Giriş Yap",
-                          style: TextStyle(fontSize: 36, color: Colors.red),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          children: <Widget>[
-                            TextFormField(
-                              onSaved: (deger) {
-                                _mail = deger;
-                              },
-                              keyboardType: TextInputType.emailAddress,
-                              controller: _mailController,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.email),
-                                hintText: "Email giriniz",
-                              ),
+            appBar: AppBar(
+              backgroundColor: Colors.blue,
+              title: Padding(
+                padding: const EdgeInsets.only(right: 60.0),
+                child: Center(
+                  child: Text(
+                    "GİRİŞ YAP",
+                    style: TextStyle(
+                        color: Colors.white,
+                        letterSpacing: 2.0,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(20, 80, 20, 0),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            onSaved: (deger) {
+                              _mail = deger;
+                            },
+                            keyboardType: TextInputType.emailAddress,
+                            controller: _mailController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.email),
+                              hintText: "Email giriniz",
                             ),
-                            TextFormField(
-                              onSaved: (deger) {
-                                _sifre = deger;
-                              },
-                              obscureText: true,
-                              controller: _passwordController,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.lock),
-                                hintText: "Şifre giriniz",
-                              ),
+                          ),
+                          TextFormField(
+                            onSaved: (deger) {
+                              _sifre = deger;
+                            },
+                            obscureText: true,
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.lock),
+                              hintText: "Şifre giriniz",
                             ),
-                            Container(
-                              margin: EdgeInsets.only(top: 20),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    "Beni Hatırla",
-                                    style: TextStyle(fontSize: 16),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.only(),
+                                  child: Row(
+                                    children: <Widget>[
+                                      GestureDetector(
+                                        child: Checkbox(
+                                          value: _isSelected,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _isSelected = value;
+                                            });
+                                          },
+                                          activeColor: Colors.green,
+                                          checkColor: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Beni Hatırla",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
                                   ),
-                                  GestureDetector(
-                                    child: Checkbox(
-                                      value: _isSelected,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _isSelected = value;
-                                        });
-                                      },
-                                      activeColor: Colors.grey,
-                                      checkColor: Colors.black,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 50,
-                                  ),
-                                  InkWell(
+                                ),
+                                SizedBox(
+                                  width: 50,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(right: 20),
+                                  child: InkWell(
                                     child: Text("Şifremi unuttum !"),
                                     onTap: () {
                                       _sifremiUnuttum();
                                     },
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(horizontal: 50),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Container(
-                              width: double.infinity,
-                              child: RaisedButton(
-                                onPressed: () {
-                                  _emailveSifreLogin();
-                                },
-                                child: Text("Giriş Yap"),
-                                color: Colors.blueAccent,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.symmetric(horizontal: 50),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Container(
+                            width: double.infinity,
+                            child: RaisedButton(
+                              onPressed: () {
+                                _emailveSifreLogin();
+                              },
+                              child: Text(
+                                "GİRİŞ YAP",
+                                style: TextStyle(
+                                    letterSpacing: 2.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
+                              color: Colors.blue,
                             ),
-                            Container(
+                          ),
+                          Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.only(top: 20),
+                            child: RaisedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => RegisterScreen(),
+                                    ));
+                              },
+                              child: Text(
+                                "KAYIT OL",
+                                style: TextStyle(
+                                    letterSpacing: 2.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                              color: Colors.green[400],
+                            ),
+                          ),
+                          Container(
                               width: double.infinity,
                               margin: EdgeInsets.only(top: 20),
-                              child: FlatButton(
+                              child: GoogleSignInButton(
+                                text: "Google ile Giriş Yap",
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, '/registerScreen');
+                                  _googleGiris();
                                 },
-                                child: Text("Kayıt Ol"),
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.only(top: 20),
-                                child: GoogleSignInButton(
-                                  text: "Google ile Giriş Yap",
-                                  onPressed: () {
-                                    _googleGiris();
-                                  },
-                                  splashColor: Colors.white,
-                                  // setting splashColor to Colors.transparent will remove button ripple effect.
-                                )),
-                          ]),
-                    ),
-                    Text(mesaj),
-                  ],
-                ),
-              ],
-            )),
+                                splashColor: Colors.white,
+                                // setting splashColor to Colors.transparent will remove button ripple effect.
+                              )),
+                        ]),
+                  ),
+                  Text(mesaj),
+                ],
+              ),
+            ),
           );
-    
   }
 
   void _googleGiris() {

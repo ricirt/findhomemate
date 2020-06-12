@@ -49,7 +49,7 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
     super.initState();
     debugPrint("gelen id : " + widget.kullaniciID.toString());
     gelenId = widget.kullaniciID;
-     _forid();
+    _forid();
     _getInfos();
   }
 
@@ -166,9 +166,7 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
                                     "Sigara",
                                     style: _style(),
                                   ),
-                                  Icon(sigara == true
-                                      ? Icons.check
-                                      : Icons.cancel),
+                                  sigara == true ? green() : red(),
                                 ],
                               ),
                               SizedBox(
@@ -180,9 +178,7 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
                                     "Alkol",
                                     style: _style(),
                                   ),
-                                  Icon(alkol == true
-                                      ? Icons.check
-                                      : Icons.cancel),
+                                  alkol == true ? green() : red(),
                                 ],
                               ),
                               SizedBox(
@@ -194,16 +190,12 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
                                     "Evcil Hayvan",
                                     style: _style(),
                                   ),
-                                  Icon(evcilHayvan == true
-                                      ? Icons.check
-                                      : Icons.cancel),
+                                  evcilHayvan == true ? green() : red(),
                                 ],
                               ),
                               SizedBox(
                                 height: 4,
                               ),
-                            
-                             
                             ],
                           ),
                           SizedBox(
@@ -221,17 +213,13 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
                                     "Misafir",
                                     style: _style(),
                                   ),
-                                  Icon(
-                                    misafir == true
-                                        ? Icons.check
-                                        : Icons.cancel,
-                                  ),
+                                  misafir == true ? green() : red()
                                 ],
                               ),
                               SizedBox(
                                 height: 4,
                               ),
-                                Row(
+                              Row(
                                 children: <Widget>[
                                   Text(
                                     "Cinsiyet Tercihi",
@@ -242,7 +230,6 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
                                       : Icons.accessibility_new),
                                 ],
                               ),
-                              
                             ],
                           ),
                           Divider(
@@ -256,6 +243,20 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
               ],
             ),
           );
+  }
+
+  Widget green() {
+    return Icon(
+      Icons.check,
+      color: Colors.green,
+    );
+  }
+
+  Widget red() {
+    return Icon(
+      Icons.cancel,
+      color: Colors.red,
+    );
   }
 
   TextStyle _style() {
@@ -272,7 +273,7 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
 
       setState(() {
         userid = documentSnapshot.data['uid'].toString();
-        print("userid : " +userid.toString());
+        print("userid : " + userid.toString());
       });
     }
   }
@@ -288,13 +289,13 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
       cinsiyetTercih = documentSnapshot2.data['cinsiyetTercih'];
       evcilHayvan = documentSnapshot2.data['hayvan'];
       misafir = documentSnapshot2.data['misafir'];
+      if (alkol == true) {}
 
-
-      print("alkol : " +alkol.toString());
-      print("sigara : " +sigara.toString());
-      print("cinsiyetTercih : " +cinsiyetTercih.toString());
-      print("evcilHayvan : " +evcilHayvan.toString());
-      print("misafir : " +misafir.toString());
+      print("alkol : " + alkol.toString());
+      print("sigara : " + sigara.toString());
+      print("cinsiyetTercih : " + cinsiyetTercih.toString());
+      print("evcilHayvan : " + evcilHayvan.toString());
+      print("misafir : " + misafir.toString());
     });
 
     DocumentSnapshot documentSnapshot3 =
@@ -310,14 +311,14 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
       puan = documentSnapshot3.data['puan'];
       yas = documentSnapshot3.data['dogumYili'];
       konum = documentSnapshot3.data['konum'];
-      print("adSoyad : "+adSoyad);
-      print("cinsiyet : "+cinsiyet);
-      print("email : "+email);
-      print("meslek : "+meslek);
-      print("oylayan : "+oylayan);
-      print("puan : "+puan);
-      print("yas : "+yas);
-      print("konum : "+konum);
+      print("adSoyad : " + adSoyad);
+      print("cinsiyet : " + cinsiyet);
+      print("email : " + email);
+      print("meslek : " + meslek);
+      print("oylayan : " + oylayan);
+      print("puan : " + puan);
+      print("yas : " + yas);
+      print("konum : " + konum);
     });
   }
 }

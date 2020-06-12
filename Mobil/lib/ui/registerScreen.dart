@@ -37,23 +37,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        backgroundColor: Colors.green[400],
+        title: Padding(
+          padding: const EdgeInsets.only(right: 50.0),
+          child: Center(
+            child: Text(
+              "KAYIT OL",
+              style: TextStyle(
+                  color: Colors.white,
+                  letterSpacing: 2.0,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+     
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(top: 60),
-              child: Center(
-                child: Text(
-                  "Kayıt Ol",
-                  style: TextStyle(fontSize: 36, color: Colors.teal),
-                ),
-              ),
-            ),
-            SizedBox(height: 60,),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: Column(
                 children: <Widget>[
                   TextFormField(
@@ -95,10 +101,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hintText: "Doğum Yılı(Örn: 1996)",
                     ),
                   ),
-                   TextFormField(
+                  TextFormField(
                     controller: _sehirController,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.card_travel),
+                      prefixIcon: Icon(Icons.location_city),
                       hintText: "Şehir",
                     ),
                   ),
@@ -109,36 +115,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hintText: "Meslek",
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Kadın"),
-                      Radio(
-                        groupValue: selectedRadio,
-                        value: 1,
-                        onChanged: (val) {
-                          setSelectedRadio(val);
-                        },
-                      ),
-                      Text("Erkek"),
-                      Radio(
-                        groupValue: selectedRadio,
-                        value: 2,
-                        onChanged: (val) {
-                          setSelectedRadio(val);
-                        },
-                      ),
-                    ],
+                  Container(
+                    margin: EdgeInsets.only(top:10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Radio(
+                          groupValue: selectedRadio,
+                          value: 1,
+                          onChanged: (val) {
+                            setSelectedRadio(val);
+                          },
+                        ),
+                        Text("Kadın"),
+                        Radio(
+                          groupValue: selectedRadio,
+                          value: 2,
+                          onChanged: (val) {
+                            setSelectedRadio(val);
+                          },
+                        ),
+                        Text("Erkek"),
+                      ],
+                    ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 20),
+                    margin: EdgeInsets.only(top: 10),
                     width: 300,
                     child: FlatButton(
                       onPressed: () {
                         _emailveSifreCreateUser();
                       },
-                      child: Text("Kayıt Ol"),
-                      color: Colors.grey,
+                      child: Text(
+                        "KAYIT OL",
+                        style: TextStyle(
+                            color: Colors.white,
+                            letterSpacing: 2.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.green[400],
                     ),
                   ),
                 ],
@@ -161,9 +176,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String _cinsiyet = "";
     bool _soruDurum = false;
     int yas;
-      yas = int.parse(_dogumYili);
-        yas = 2020 - yas;
-      _dogumYili = yas.toString();
+    yas = int.parse(_dogumYili);
+    yas = 2020 - yas;
+    _dogumYili = yas.toString();
 
     if (selectedRadio == 1) {
       _cinsiyet = "kadın";
@@ -176,7 +191,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _mail != "" &&
         _checkPassword != "" &&
         _dogumYili != "" &&
-        _meslek != "" && _sehir != "") {
+        _meslek != "" &&
+        _sehir != "") {
       if (_sifre.length >= 6) {
         if (_sifre == _checkPassword) {
           var firebaseUser = await _auth
@@ -208,10 +224,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               "puan": "5",
               "oylayan": "1",
               "uid": firebaseUser.user.uid,
-              "profilResmi" : "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg",
-              "konum" : _sehir,
+              "profilResmi":
+                  "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg",
+              "konum": _sehir,
             });
-            
+
             Fluttertoast.showToast(
               msg: "Kayıt Başarılı",
               toastLength: Toast.LENGTH_SHORT,
@@ -249,14 +266,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
       } else {
         Fluttertoast.showToast(
-        msg: "Şifre 6 karakterden az olamaz",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 2,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+          msg: "Şifre 6 karakterden az olamaz",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 2,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
       }
     } else {
       Fluttertoast.showToast(

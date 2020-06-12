@@ -451,6 +451,7 @@ class _IlanVerState extends State<IlanVer> {
     ozellik["garaj"] = radioGaraj;
     ozellik["dogalgaz"] = radioDogalgaz;
     ozellik["uid"] = uid.toString();
+    ozellik["tarih"] = DateTime.now();
 
     if (user != null) {
       debugPrint("uid = $uid");

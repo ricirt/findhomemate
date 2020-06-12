@@ -26,12 +26,14 @@ class AnasayfaState extends State<Anasayfa>
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleAuth = GoogleSignIn();
   final Firestore _firestore = Firestore.instance;
+  final List<DropdownMenuItem<int>> listDrop = [];
   String userid;
   String adSoyad;
   String profilResmi;
   String ilanSahibiID;
   String mesaj = "";
   bool evSahibimi;
+  int filter;
   TabController tabController;
   @override
   void initState() {
@@ -43,34 +45,37 @@ class AnasayfaState extends State<Anasayfa>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight),
-          child: Container(
-            color: Colors.blue,
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Expanded(child: Container()),
-                  TabBar(
-                    tabs: [Icon(Icons.home), Icon(Icons.people)],
-                  ),
-                ],
+    return Container(
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(kToolbarHeight),
+            child: Container(
+              color: Colors.blue,
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    Expanded(child: Container()),
+                    TabBar(
+                      tabs: [Icon(Icons.home), Icon(Icons.people)],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        body: TabBarView(
-          children: <Widget>[homePage(), homePageKisi()],
+          body: TabBarView(
+            children: <Widget>[homePage(), homePageKisi()],
+          ),
         ),
       ),
     );
   }
 
   Widget homePage() {
-    bool ilan = true;
+    _loadData();
+    bool ilan = false;
     loading = false;
     return loading
         ? Loading()
@@ -85,15 +90,24 @@ class AnasayfaState extends State<Anasayfa>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "Uygun Ev ilanları ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
+                        Container(
+                          child: DropdownButton(
+                              items: listDrop,
+                              hint: Text(
+                                "Filtrele",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  filter = value;
+                                });
+                              }),
                         ),
                         Visibility(
-                          visible: evSahibimi == true ? ilan : false,
+                          visible: evSahibimi == false ? ilan : true,
                           replacement: Text(""),
                           child: FloatingActionButton(
+                            backgroundColor: Colors.amber,
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) {
@@ -115,7 +129,15 @@ class AnasayfaState extends State<Anasayfa>
                     width: double.infinity,
                     height: 400,
                     child: StreamBuilder(
-                        stream: Firestore.instance.collection('ev').snapshots(),
+                        stream: filter == 1
+                            ? Firestore.instance
+                                .collection('ev')
+                                .orderBy('fiyat')
+                                .snapshots()
+                            : Firestore.instance
+                                .collection('ev')
+                                .orderBy('tarih', descending: true)
+                                .snapshots(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (snapshot.hasError ||
@@ -215,7 +237,7 @@ class AnasayfaState extends State<Anasayfa>
         ? Loading()
         : Container(
             margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-            child:Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
@@ -231,7 +253,8 @@ class AnasayfaState extends State<Anasayfa>
                             shape: BoxShape.circle,
                             color: Colors.purple,
                             image: DecorationImage(
-                              image: NetworkImage(profilResmi == null ? "" : profilResmi),
+                              image: NetworkImage(
+                                  profilResmi == null ? "" : profilResmi),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -266,7 +289,10 @@ class AnasayfaState extends State<Anasayfa>
                     ),
                   ],
                 ),
-                Divider(indent: 5,color: Colors.black,),
+                Divider(
+                  indent: 5,
+                  color: Colors.black,
+                ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Row(
@@ -280,7 +306,9 @@ class AnasayfaState extends State<Anasayfa>
                     ],
                   ),
                 ),
-                Divider(indent: 5,),
+                Divider(
+                  indent: 5,
+                ),
                 Expanded(
                   child: Container(
                     width: double.infinity,
@@ -418,5 +446,17 @@ class AnasayfaState extends State<Anasayfa>
       });
     }
     loading = false;
+  }
+
+  void _loadData() {
+    listDrop.clear();
+    listDrop.add(new DropdownMenuItem(
+      child: new Text("Fiyata göre"),
+      value: 1,
+    ));
+    listDrop.add(new DropdownMenuItem(
+      child: new Text("Tarihe Göre"),
+      value: 2,
+    ));
   }
 }

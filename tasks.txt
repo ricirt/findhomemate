@@ -20,11 +20,11 @@
 			TASKS
 ++1-bildirim sayfasinin tasarlanmasi				-> fatih
 ++2-bildirim veritabanina baglanmasi				-> addi
-  2-filtreleme 							-> addi
+++2-filtreleme 							-> addi
   3-sifremi unuttum sayfasinin tasarlanmasi			-> fatih
 ++4-Anasayfa ve Profil düzenlenmesi				-> fatih-addi
-  5-kullanicilara nasil puan verileceginin tasarlanmasi		-> fatih-addi
-  6-profildeki iconlar renkli olacak(kirmizi,yesil) 		-> fatih
+  5-kullanicilara nasil puan verileceginin tasarlanmasi		-> fatih
+++6-profildeki iconlar renkli olacak(kirmizi,yesil) 		-> addi
 ++7-ilan ver buton rengi degistir(ilan ver yazmasina gerek yok) -> addi
 ++8-anasayfa resim üzerindeki butonlari kaldir			-> addi
 ++9-anasayfaya tabbar eklenmesi 				-> fatih

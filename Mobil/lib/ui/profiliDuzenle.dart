@@ -37,23 +37,29 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        backgroundColor: Colors.blue[400],
+        title: Padding(
+          padding: const EdgeInsets.only(right: 50.0),
+          child: Center(
+            child: Text(
+              "PROFİL DÜZENLE",
+              style: TextStyle(
+                  color: Colors.white,
+                  letterSpacing: 2.0,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(top: 60),
-              child: Center(
-                child: Text(
-                  "Profili Güncelle",
-                  style: TextStyle(fontSize: 36, color: Colors.teal),
-                ),
-              ),
-            ),
-            SizedBox(height: 60,),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: Column(
                 children: <Widget>[
                   TextFormField(
@@ -95,10 +101,10 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
                       hintText: "Doğum Yılı(Örn: 1996)",
                     ),
                   ),
-                   TextFormField(
+                  TextFormField(
                     controller: _sehirController,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.card_travel),
+                      prefixIcon: Icon(Icons.location_city),
                       hintText: "Şehir",
                     ),
                   ),
@@ -109,36 +115,45 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
                       hintText: "Meslek",
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Kadın"),
-                      Radio(
-                        groupValue: selectedRadio,
-                        value: 1,
-                        onChanged: (val) {
-                          setSelectedRadio(val);
-                        },
-                      ),
-                      Text("Erkek"),
-                      Radio(
-                        groupValue: selectedRadio,
-                        value: 2,
-                        onChanged: (val) {
-                          setSelectedRadio(val);
-                        },
-                      ),
-                    ],
+                  Container(
+                    margin: EdgeInsets.only(top:10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Radio(
+                          groupValue: selectedRadio,
+                          value: 1,
+                          onChanged: (val) {
+                            setSelectedRadio(val);
+                          },
+                        ),
+                        Text("Kadın"),
+                        Radio(
+                          groupValue: selectedRadio,
+                          value: 2,
+                          onChanged: (val) {
+                            setSelectedRadio(val);
+                          },
+                        ),
+                        Text("Erkek"),
+                      ],
+                    ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 20),
-                    width: double.infinity,
+                    margin: EdgeInsets.only(top: 10),
+                    width: 300,
                     child: FlatButton(
                       onPressed: () {
                         _emailveSifreCreateUser();
                       },
-                      child: Text("Güncelle"),
-                      color: Colors.grey,
+                      child: Text(
+                        "GÜNCELLE",
+                        style: TextStyle(
+                            color: Colors.white,
+                            letterSpacing: 2.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.blue[400],
                     ),
                   ),
                 ],
