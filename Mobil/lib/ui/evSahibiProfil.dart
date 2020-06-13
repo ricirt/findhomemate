@@ -386,13 +386,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                         ),
                                       ],
                                     ),
-                                    Row(
+                               
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                       Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: <Widget>[
                                         Column(
                                           children: <Widget>[
                                             Container(
                                               child: DropdownButton(
+                                                elevation:10,
+                                                focusColor: Colors.black,
                                                   items: listDrop,
                                                   hint: Text(
                                                     "Puan Ver",
@@ -429,9 +435,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                           width: 16,
                                         )
                                       ],
-                                    ),
-                                    SizedBox(
-                                      height: 8,
                                     ),
                                   ],
                                 ),
