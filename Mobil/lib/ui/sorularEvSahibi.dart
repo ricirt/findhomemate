@@ -22,21 +22,21 @@ class _SorularEvSahibiState extends State<SorularEvSahibi> {
         ? Loading()
         : Scaffold(
             body: Container(
-              height : MediaQuery.of(context).size.height,
-              width: double.infinity,
-              color: Colors.white,
-              child: SingleChildScrollView(
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            color: Colors.white,
+            child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
                   SizedBox(
                     height: 25,
                   ),
-                  
                   Text(
-                    "Öncelikle Soruları cevaplayınız...",
+                    "Lütfen Soruları Eksiksiz Cevaplayınız...",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.blue,
-                      fontSize: 21,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -163,7 +163,9 @@ class _SorularEvSahibiState extends State<SorularEvSahibi> {
                       )
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Text(
                     "Evde misafir getirilebilir mi?",
                     style: TextStyle(
@@ -204,7 +206,9 @@ class _SorularEvSahibiState extends State<SorularEvSahibi> {
                       )
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Text(
                     "Ev arkadaşınızın cinsiyeti ne olmalı?",
                     style: TextStyle(
@@ -245,39 +249,33 @@ class _SorularEvSahibiState extends State<SorularEvSahibi> {
                       )
                     ],
                   ),
-                  SizedBox(height: 15,),
-                  Center(
-                    child: RaisedButton(
-                      onPressed: () {
-                        _ozellikEkle();
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return MainPageScreen();
-                        }));
-                      },
-                      textColor: Colors.white,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: <Color>[
-                              Color(0xFF0D47A1),
-                              Color(0xFF1976D2),
-                              Color(0xFF42A5F5),
-                            ],
-                          ),
-                        ),
-                        padding: const EdgeInsets.all(10.0),
-                        child: const Text('Devam Et ',
-                            style: TextStyle(fontSize: 20)),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    child: Center(
+                      child: RaisedButton(
+                        onPressed: () {
+                          _ozellikEkle();
+                          loading = true;
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return MainPageScreen();
+                          }));
+                        },
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                        child:
+                            Text('Devam Et ', style: TextStyle(fontSize: 20)),
                       ),
                     ),
                   ),
                   SizedBox(height: 20),
                 ],
               ),
-          ),
-            ));
+            ),
+          ));
   }
 
   void _ozellikEkle() async {

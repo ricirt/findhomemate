@@ -1,7 +1,10 @@
 import 'package:deneme/Classes/evSahibi.dart';
 import 'package:deneme/Classes/evSahibiNitelikleri.dart';
+import 'package:deneme/Services/bildirimGondermeServis.dart';
+import 'package:deneme/ui/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:core';
 
 //EvSahibi evSahibi = EvSahibi();
 String uid;
@@ -36,7 +39,8 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
           widget.evSahibi.yas,
           widget.evSahibi.puan,
           widget.evSahibi.oylayan,
-          widget.evSahibi.adSoyad),
+          widget.evSahibi.adSoyad,
+          widget.evSahibi.uid),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16),
@@ -130,7 +134,9 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
                       Text(
                         "Cinsiyet Tercihi",
                       ),
-                      Icon(evSahibiNitelikleri.cinsiyetTercih == true ? Icons.face : Icons.pregnant_woman),
+                      Icon(evSahibiNitelikleri.cinsiyetTercih == true
+                          ? Icons.face
+                          : Icons.pregnant_woman),
                     ],
                   ),
                   SizedBox(
@@ -207,14 +213,28 @@ class _EvSahibiProfileState extends State<EvSahibiProfile> {
   }
 }
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  @override
-  Size get preferredSize => Size(double.infinity, 320);
-  String resimUrl, yas, puan, oylayan, adSoyad;
-  CustomAppBar(this.resimUrl, this.yas, this.puan, this.oylayan, this.adSoyad);
+final List<DropdownMenuItem<int>> listDrop = [];
+int point;
+
+class CustomAppBar extends StatefulWidget with PreferredSizeWidget {
+  String resimUrl, yas, puan, oylayan, adSoyad, profilUid;
+  CustomAppBar(this.resimUrl, this.yas, this.puan, this.oylayan, this.adSoyad,
+      this.profilUid);
 
   @override
+  _CustomAppBarState createState() => _CustomAppBarState();
+
+  @override
+  Size get preferredSize => Size(double.infinity, 320);
+}
+
+final Firestore _firestore = Firestore.instance;
+BildirimGondermServis _bildirimGondermeServis = BildirimGondermServis();
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  @override
   Widget build(BuildContext context) {
+    loadData();
     return ClipPath(
       clipper: MyClipper(),
       child: Container(
@@ -222,148 +242,292 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         decoration: BoxDecoration(color: Colors.blueAccent, boxShadow: [
           BoxShadow(color: Colors.red, blurRadius: 20, offset: Offset(0, 0))
         ]),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {},
-                ),
-                Text(
-                  "Profile",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.settings,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {},
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(resimUrl))),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      adSoyad,
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    )
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      "Yaş",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      yas.toString(),
-                      style: TextStyle(fontSize: 26, color: Colors.white),
-                    )
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Text(
-                          "Puan",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                      ],
-                    ),
-                    Text(
-                      "${puan.toString()}/5",
-                      style: TextStyle(fontSize: 26, color: Colors.white),
-                    )
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      "Oylayan",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      oylayan.toString(),
-                      style: TextStyle(fontSize: 26, color: Colors.white),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Text(
-                      "",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      "",
-                      style: TextStyle(color: Colors.white, fontSize: 24),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  width: 32,
-                ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      "",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text("",
-                        style: TextStyle(color: Colors.white, fontSize: 24))
-                  ],
-                ),
-                SizedBox(
-                  width: 16,
-                )
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),
-          ],
+        child: Expanded(
+          child: Container(
+            width: double.infinity,
+            height: 400,
+            child: StreamBuilder(
+                stream: Firestore.instance
+                    .collection('kullanicilar')
+                    .where("uid", isEqualTo: widget.profilUid)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError ||
+                      snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ListView(
+                    children: snapshot.data.documents
+                        .map((doc) => Card(
+                              child: Container(
+                                color: Colors.blueAccent,
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.arrow_back,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {},
+                                        ),
+                                        Text(
+                                          "Profile",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.settings,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {},
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            InkWell(
+                                              child: Container(
+                                                width: 100,
+                                                height: 100,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.white,
+                                                    image: DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: NetworkImage(doc[
+                                                            'profilResmi']))),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 16,
+                                            ),
+                                            Text(
+                                              doc['adSoyad'],
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20),
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          children: <Widget>[
+                                            Text(
+                                              "Yaş",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            Text(
+                                              doc['dogumYili'],
+                                              style: TextStyle(
+                                                  fontSize: 26,
+                                                  color: Colors.white),
+                                            )
+                                          ],
+                                        ),
+                                        InkWell(
+                                          child: Column(
+                                            children: <Widget>[
+                                              Row(
+                                                children: <Widget>[
+                                                  Text(
+                                                    "Puan",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                  Icon(
+                                                    Icons.star,
+                                                    color: Colors.amber,
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                doc['oylayan'] == 0
+                                                    ? "0/5"
+                                                    : (doc['puan'] /
+                                                                doc['oylayan'])
+                                                            .round()
+                                                            .toString() +
+                                                        "/5",
+                                                style: TextStyle(
+                                                    fontSize: 26,
+                                                    color: Colors.white),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Column(
+                                          children: <Widget>[
+                                            Text(
+                                              "Oylayan",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            Text(
+                                              doc['oylayan'].toString(),
+                                              style: TextStyle(
+                                                  fontSize: 26,
+                                                  color: Colors.white),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Container(
+                                              child: DropdownButton(
+                                                  items: listDrop,
+                                                  hint: Text(
+                                                    "Puan Ver",
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Colors.white),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      point = value;
+                                                    });
+                                                    _puanArtir(point);
+                                                  }),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: 32,
+                                        ),
+                                        Column(
+                                          children: <Widget>[
+                                            Text(
+                                              "",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            Text("",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 24))
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: 16,
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                  );
+                }),
+          ),
         ),
       ),
     );
   }
+
+  void loadData() {
+    listDrop.clear();
+    listDrop.add(new DropdownMenuItem(
+      child:
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        Text("1"),
+        Icon(
+          Icons.star,
+          color: Colors.amber,
+        )
+      ]),
+      value: 1,
+    ));
+    listDrop.add(new DropdownMenuItem(
+      child:
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        Text("2"),
+        Icon(
+          Icons.star,
+          color: Colors.amber,
+        )
+      ]),
+      value: 2,
+    ));
+    listDrop.add(new DropdownMenuItem(
+      child:
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        Text("3"),
+        Icon(
+          Icons.star,
+          color: Colors.amber,
+        )
+      ]),
+      value: 3,
+    ));
+    listDrop.add(new DropdownMenuItem(
+      child:
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        Text("4"),
+        Icon(
+          Icons.star,
+          color: Colors.amber,
+        )
+      ]),
+      value: 4,
+    ));
+    listDrop.add(new DropdownMenuItem(
+      child:
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        Text("5"),
+        Icon(
+          Icons.star,
+          color: Colors.amber,
+        )
+      ]),
+      value: 5,
+    ));
+  }
+
+  void _puanArtir(int point) async {
+    _firestore.document("kullanicilar/${widget.profilUid}").updateData({
+      "puan": FieldValue.increment(point),
+    }).then((v) => debugPrint("puan verilde"));
+    print("point : " + point.toString());
+    _firestore.document("kullanicilar/${widget.profilUid}").updateData({
+      "oylayan": FieldValue.increment(1),
+    }).then((v) => debugPrint("oylayann arttı"));
+
+    var token = "";
+    token = await tokenGetir(widget.profilUid);
+    await _bildirimGondermeServis.bildirimGonderr(
+        widget.profilUid, token, kisi.adSoyad);
+  }
+}
+
+Future<String> tokenGetir(String aliciID) async {
+  DocumentSnapshot _token =
+      await _firestore.document("tokens/" + aliciID).get();
+  if (_token != null)
+    return _token.data['token'].toString();
+  else
+    return null;
 }
 
 class MyClipper extends CustomClipper<Path> {

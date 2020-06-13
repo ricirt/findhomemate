@@ -5,9 +5,9 @@
 ++7-evler tablosunun olusturulmasi				-> addi
 ++8-profile kullanici fotografinin cekilmesi 			-> addi
 ++12-resizeavoid registere eklenilecek				-> fatih
-++13-beni hatirla 					-> addi
+++13-beni hatirla 						-> addi
 <<<<<<< HEAD
-++14-profil entegrasyonu				-> fatih
+++14-profil entegrasyonu					-> fatih
 ++15-Anasayfaya Tabbar yapýlmasý				-> fatih
 ++16-anasayfada hangi ilana tiklanirsa ilandetayda o açilacak ->addi 
 =======
@@ -23,10 +23,14 @@
 ++2-filtreleme 							-> addi
   3-sifremi unuttum sayfasinin tasarlanmasi			-> fatih
 ++4-Anasayfa ve Profil düzenlenmesi				-> fatih-addi
-  5-kullanicilara nasil puan verileceginin tasarlanmasi		-> fatih
+++5-kullanicilara nasil puan verileceginin tasarlanmasi		-> fatih
 ++6-profildeki iconlar renkli olacak(kirmizi,yesil) 		-> addi
 ++7-ilan ver buton rengi degistir(ilan ver yazmasina gerek yok) -> addi
 ++8-anasayfa resim üzerindeki butonlari kaldir			-> addi
 ++9-anasayfaya tabbar eklenmesi 				-> fatih
 ++10-tabbarin kullanici tarafinin database baglanmasi 		-> addi
-  11- Sorular öncesi sayfasinin arayüzü degistirilmesi		-> fatih
+++11-Sorular öncesi sayfasinin arayüzü degistirilmesi		-> fatih
+  12-Anasayfaya SearchBar eklenecek				-> fatih
+  13-kullaniciDetay sayfa tasarimi düzenlenmesi 		-> fatih
+  14-puan ver button yeri degistirme, düzenleme 		-> fatih
+  15-tüm sayfalarin tasarimlarinin düzenlenmesi 		-> fatih 

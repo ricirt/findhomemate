@@ -306,9 +306,9 @@ class _KullaniciDetayState extends State<KullaniciDetay> {
       cinsiyet = documentSnapshot3.data['cinsiyet'];
       email = documentSnapshot3.data['email'];
       meslek = documentSnapshot3.data['meslek'];
-      oylayan = documentSnapshot3.data['oylayan'];
+      oylayan = documentSnapshot3.data['oylayan'].toString();
       profilResmi = documentSnapshot3.data['profilResmi'];
-      puan = documentSnapshot3.data['puan'];
+      puan = documentSnapshot3.data['puan'].toString();
       yas = documentSnapshot3.data['dogumYili'];
       konum = documentSnapshot3.data['konum'];
       print("adSoyad : " + adSoyad);

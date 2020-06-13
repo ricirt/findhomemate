@@ -35,13 +35,15 @@ class _SorularKisiState extends State<SorularKisi> {
                 SizedBox(
                   height: 25,
                 ),
-                Text(
-                  "Sorular",
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
+              Text(
+                    "Lütfen Soruları Eksiksiz Cevaplayınız...",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
                 SizedBox(height: 40),
                 Text(
                   "Evcil hayvaniniz var mı?",
@@ -250,31 +252,22 @@ class _SorularKisiState extends State<SorularKisi> {
                     )
                   ],
                 ),
-                Center(
-                  child: RaisedButton(
-                    onPressed: () {
-                      _ozellikEkle();
-                      loading = true;
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return MainPageScreen();
-                      }));
-                    },
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.all(0.0),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: <Color>[
-                            Color(0xFF0D47A1),
-                            Color(0xFF1976D2),
-                            Color(0xFF42A5F5),
-                          ],
-                        ),
-                      ),
-                      padding: const EdgeInsets.all(10.0),
-                      child: const Text('Devam Et ',
-                          style: TextStyle(fontSize: 20)),
+                Container(
+                  margin: EdgeInsets.only(top:40),
+                  child: Center(
+                    child: RaisedButton(
+                      onPressed: () {
+                        _ozellikEkle();
+                        loading = true;
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return MainPageScreen();
+                        }));
+                      },
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      child:  Text('Devam Et ',
+                            style: TextStyle(fontSize: 20)),
                     ),
                   ),
                 ),

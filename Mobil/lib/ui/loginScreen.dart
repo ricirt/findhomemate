@@ -75,7 +75,6 @@ class _LoginScreenState extends State<LoginScreen> {
             appBar: AppBar(
               backgroundColor: Colors.blue,
               title: Padding(
-                padding: const EdgeInsets.only(right: 60.0),
                 child: Center(
                   child: Text(
                     "GİRİŞ YAP",

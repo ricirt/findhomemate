@@ -4,6 +4,8 @@ import 'package:deneme/ui/ilanDetay.dart';
 import 'package:deneme/ui/ilanVer.dart';
 import 'package:deneme/ui/kullaniciDetay.dart';
 import 'package:deneme/ui/loading.dart';
+import 'package:deneme/ui/loginScreen.dart';
+import 'package:deneme/ui/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -28,11 +30,8 @@ class AnasayfaState extends State<Anasayfa>
   final Firestore _firestore = Firestore.instance;
   final List<DropdownMenuItem<int>> listDrop = [];
   String userid;
-  String adSoyad;
-  String profilResmi;
   String ilanSahibiID;
   String mesaj = "";
-  bool evSahibimi;
   int filter;
   TabController tabController;
   @override
@@ -94,7 +93,7 @@ class AnasayfaState extends State<Anasayfa>
                           child: DropdownButton(
                               items: listDrop,
                               hint: Text(
-                                "Filtrele",
+                                "Sırala",
                                 style: TextStyle(fontSize: 20),
                               ),
                               onChanged: (value) {
@@ -104,7 +103,7 @@ class AnasayfaState extends State<Anasayfa>
                               }),
                         ),
                         Visibility(
-                          visible: evSahibimi == false ? ilan : true,
+                          visible: kisi.evSahibimi == false ? ilan : true,
                           replacement: Text(""),
                           child: FloatingActionButton(
                             backgroundColor: Colors.amber,
@@ -254,7 +253,7 @@ class AnasayfaState extends State<Anasayfa>
                             color: Colors.purple,
                             image: DecorationImage(
                               image: NetworkImage(
-                                  profilResmi == null ? "" : profilResmi),
+                                  kisi.profilResmi == null ? "" : kisi.profilResmi),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -262,7 +261,7 @@ class AnasayfaState extends State<Anasayfa>
                         Padding(
                           padding: EdgeInsets.only(left: 10),
                           child: Text(
-                            adSoyad.toString(),
+                            kisi.adSoyad.toString(),
                             style:
                                 TextStyle(fontSize: 15.0, color: Colors.black),
                           ),
@@ -419,7 +418,11 @@ class AnasayfaState extends State<Anasayfa>
         setState(() {});
         _googleAuth.signOut();
         loading = true;
-        Navigator.pushNamed(context, "/loginScreen");
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LoginScreen(),
+            ));
       }).catchError((hata) {
         mesaj += "\nÇıkış yaparken hata oluştu $hata";
       });
@@ -440,9 +443,9 @@ class AnasayfaState extends State<Anasayfa>
 
       setState(() {
         userid = documentSnapshot.data['uid'].toString();
-        adSoyad = documentSnapshot.data['adSoyad'].toString();
-        evSahibimi = documentSnapshot.data['evSahibi'];
-        profilResmi = documentSnapshot.data['profilResmi'].toString();
+        kisi.adSoyad = documentSnapshot.data['adSoyad'].toString();
+        kisi.evSahibimi = documentSnapshot.data['evSahibi'];
+        kisi.profilResmi = documentSnapshot.data['profilResmi'].toString();
       });
     }
     loading = false;

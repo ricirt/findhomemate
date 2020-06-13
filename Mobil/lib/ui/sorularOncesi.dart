@@ -3,6 +3,7 @@ import 'package:deneme/ui/sorularKisi.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SorularOncesi extends StatefulWidget {
   @override
@@ -41,34 +42,9 @@ class _SorularOncesiState extends State<SorularOncesi> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 20),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(70),
-                    color: Colors.blue.shade100),
-                padding: EdgeInsets.only(left: 10),
-                child: Expanded(
-                  child: Center(
-                    child: Text(
-                      "Merhaba " +
-                          _isim +
-                          ", Bizi Tercih Ettiğin İçin Teşekkürler! Şimdi Seni Biraz Tanımak İçin Sorular Soracağiz.Lütfen Soruları eksiksiz Cevaplayın !",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 100),
             Text(
-              "Nasıl bir arkadaş arıyorsun ?",
+              "Ev mi, Arkadaş mı Arıyorsun ?",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             Expanded(
@@ -78,9 +54,23 @@ class _SorularOncesiState extends State<SorularOncesi> {
                   Row(
                     children: <Widget>[
                       Radio(
-                        ///////////// Evine arkadaş arıyor
                         groupValue: selectedRadio,
                         value: 1,
+                        onChanged: (val) {
+                          setSelectedRadio(val);
+                        },
+                      ),
+                      Text(
+                        "Ev arıyorum",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Radio(
+                        groupValue: selectedRadio,
+                        value: 2,
                         onChanged: (val) {
                           setSelectedRadio(val);
                         },
@@ -91,40 +81,15 @@ class _SorularOncesiState extends State<SorularOncesi> {
                       ),
                     ],
                   ),
-                  Row(
-                    children: <Widget>[
-                      Radio(
-                        //////////////////////////  kalabileceği bir ev arıyor
-                        groupValue: selectedRadio,
-                        value: 2,
-                        onChanged: (val) {
-                          setSelectedRadio(val);
+                  Container(
+                    margin: EdgeInsets.only(top: 100),
+                    child: Center(
+                      child: RaisedButton(
+                        onPressed: () {
+                          _yonlendir();
                         },
-                      ),
-                      Text(
-                        "Yanında kalabileceğim ev arkadaşı arıyorum",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Center(
-                    child: RaisedButton(
-                      onPressed: () {
-                        _yonlendir();
-                      },
-                      textColor: Colors.white,
-                      padding: const EdgeInsets.all(0.0),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: <Color>[
-                              Color(0xFF0D47A1),
-                              Color(0xFF1976D2),
-                              Color(0xFF42A5F5),
-                            ],
-                          ),
-                        ),
-                        padding: const EdgeInsets.all(10.0),
+                        color: Colors.blue,
+                        textColor: Colors.white,
                         child: const Text('Devam Et ',
                             style: TextStyle(fontSize: 20)),
                       ),
@@ -154,9 +119,7 @@ class _SorularOncesiState extends State<SorularOncesi> {
   void _yonlendir() async {
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;
-
     if (selectedRadio == 1) {
-     
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (BuildContext context) {
         return SorularEvSahibi();
@@ -170,6 +133,16 @@ class _SorularOncesiState extends State<SorularOncesi> {
           .push(MaterialPageRoute(builder: (BuildContext context) {
         return SorularKisi();
       }));
+    } else {
+      Fluttertoast.showToast(
+        msg: "Lütfen bir seçim yapın",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 }

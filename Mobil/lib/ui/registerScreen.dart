@@ -1,3 +1,4 @@
+import 'package:deneme/ui/loginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -40,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(
         backgroundColor: Colors.green[400],
         title: Padding(
-          padding: const EdgeInsets.only(right: 50.0),
+          padding: const EdgeInsets.only(right: 80),
           child: Center(
             child: Text(
               "KAYIT OL",
@@ -53,7 +54,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ),
       ),
-     
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -116,7 +116,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top:10),
+                    margin: EdgeInsets.only(top: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -221,8 +221,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               "meslek": _meslek,
               "cinsiyet": _cinsiyet,
               "soruDurum": _soruDurum,
-              "puan": "5",
-              "oylayan": "1",
+              "puan": 5,
+              "oylayan": 1,
               "uid": firebaseUser.user.uid,
               "profilResmi":
                   "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg",
@@ -239,7 +239,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               fontSize: 16.0,
             );
 
-            Navigator.pushNamed(context, "/loginScreen");
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginScreen(),
+                ));
             debugPrint(
                 "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email} mailOnayi : ${firebaseUser.user.isEmailVerified}");
           } else {

@@ -378,6 +378,7 @@ class _IlanDetayState extends State<IlanDetay> {
       ev.wifi = documentSnapshot.data['wifi'];
       ev.url = documentSnapshot.data['url'];
     });
+    print("deneme 1");
 
     DocumentSnapshot documentSnapshot2 = await _firestore
         .document("kullanicilar/$gelenId/kullanici/ozellik")
@@ -398,6 +399,9 @@ class _IlanDetayState extends State<IlanDetay> {
     debugPrint(evSahibiNitelikleri.evcilHayvan.toString());
     debugPrint(evSahibiNitelikleri.misafir.toString());
 
+    print("deneme 2");
+
+
     DocumentSnapshot documentSnapshot3 =
         await _firestore.document("kullanicilar/$gelenId").get();
 
@@ -406,24 +410,13 @@ class _IlanDetayState extends State<IlanDetay> {
       cinsiyet = documentSnapshot3.data['cinsiyet'];
       email = documentSnapshot3.data['email'];
       meslek = documentSnapshot3.data['meslek'];
-      oylayan = documentSnapshot3.data['oylayan'];
+      oylayan = documentSnapshot3.data['oylayan'].toString();
       profilResmi = documentSnapshot3.data['profilResmi'];
-      puan = documentSnapshot3.data['puan'];
+      puan = documentSnapshot3.data['puan'].toString();
       yas = documentSnapshot3.data['dogumYili'];
-      //uid = documentSnapshot3.data['uid'];
-      //yas = int.parse(evSahibi.yas);
-      //yas = 2020 - yas;
-      // evSahibi.yas = yas.toString();
-      //debugPrint("yasssss : " + evSahibi.yas);
     });
-    /*debugPrint(evSahibi.adSoyad.toString());
-        debugPrint(evSahibi.cinsiyet.toString());
-        debugPrint(evSahibi.email.toString());
-        debugPrint(evSahibi.oylayan.toString());
-        debugPrint(evSahibi.profilResmi.toString());
-        debugPrint(evSahibi.puan.toString());
-        debugPrint(evSahibi.yas.toString());
-        debugPrint(evSahibi.uid.toString());*/
+    print("deneme 3");
+
   }
 
   void _forid() async {
