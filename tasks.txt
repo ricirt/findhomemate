@@ -30,7 +30,7 @@
 ++9-anasayfaya tabbar eklenmesi 				-> fatih
 ++10-tabbarin kullanici tarafinin database baglanmasi 		-> addi
 ++11-Sorular öncesi sayfasinin arayüzü degistirilmesi		-> fatih
-  12-Anasayfaya SearchBar eklenecek				-> fatih
+++12-Anasayfaya SearchBar eklenecek				-> fatih
   13-kullaniciDetay sayfa tasarimi düzenlenmesi 		-> fatih
   14-puan ver button yeri degistirme, düzenleme 		-> fatih
   15-tüm sayfalarin tasarimlarinin düzenlenmesi 		-> fatih 

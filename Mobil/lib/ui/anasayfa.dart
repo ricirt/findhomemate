@@ -34,6 +34,8 @@ class AnasayfaState extends State<Anasayfa>
   String mesaj = "";
   int filter;
   TabController tabController;
+  final _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -86,36 +88,44 @@ class AnasayfaState extends State<Anasayfa>
                 Padding(
                   padding: EdgeInsets.only(top: 0),
                   child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
                       children: <Widget>[
-                        Container(
-                          child: DropdownButton(
-                              items: listDrop,
-                              hint: Text(
-                                "Sırala",
-                                style: TextStyle(fontSize: 20),
+                        _searchBar(),
+                         SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              child: DropdownButton(
+                                  items: listDrop,
+                                  hint: Text(
+                                    "Sırala",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      filter = value;
+                                    });
+                                  }),
+                            ),
+                            Visibility(
+                              visible: kisi.evSahibimi == false ? ilan : true,
+                              replacement: Text(""),
+                              child: FloatingActionButton(
+                                backgroundColor: Colors.amber,
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return IlanVer();
+                                  }));
+                                },
+                                child: Icon(Icons.add),
                               ),
-                              onChanged: (value) {
-                                setState(() {
-                                  filter = value;
-                                });
-                              }),
+                            ),
+                          ],
                         ),
-                        Visibility(
-                          visible: kisi.evSahibimi == false ? ilan : true,
-                          replacement: Text(""),
-                          child: FloatingActionButton(
-                            backgroundColor: Colors.amber,
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                return IlanVer();
-                              }));
-                            },
-                            child: Icon(Icons.add),
-                          ),
-                        ),
+                       
+                        
                       ],
                     ),
                   ),
@@ -252,8 +262,9 @@ class AnasayfaState extends State<Anasayfa>
                             shape: BoxShape.circle,
                             color: Colors.purple,
                             image: DecorationImage(
-                              image: NetworkImage(
-                                  kisi.profilResmi == null ? "" : kisi.profilResmi),
+                              image: NetworkImage(kisi.profilResmi == null
+                                  ? ""
+                                  : kisi.profilResmi),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -461,5 +472,22 @@ class AnasayfaState extends State<Anasayfa>
       child: new Text("Tarihe Göre"),
       value: 2,
     ));
+  }
+
+  Widget _searchBar() {
+    return TextFormField(
+      /* onSaved: (deger) {
+                               = deger;
+                            },*/
+                            
+                            
+      controller: _searchController,
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.search),
+        hintText: "Aradığınız evin konumunu giriniz...",
+        focusColor: Colors.black,
+        border: OutlineInputBorder(borderSide:BorderSide(color: Colors.orange))
+      ),
+    );
   }
 }
