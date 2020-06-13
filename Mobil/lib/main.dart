@@ -13,7 +13,7 @@ void main() {
     MaterialApp(
       initialRoute: "/",
       routes: {
-        '/': (context) => SorularOncesi(),
+        '/': (context) => LoginScreen(),
         '/bildirim': (context) => Bildirim(),
         '/editProfile': (context) => ProfilDuzenle(),
         '/registerScreen': (context) => RegisterScreen(),

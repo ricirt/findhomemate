@@ -74,16 +74,14 @@ class _LoginScreenState extends State<LoginScreen> {
         : Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.blue,
-              title: Padding(
-                child: Center(
-                  child: Text(
-                    "GİRİŞ YAP",
-                    style: TextStyle(
-                        color: Colors.white,
-                        letterSpacing: 2.0,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
+              title: Center(
+                child: Text(
+                  "GİRİŞ YAP",
+                  style: TextStyle(
+                      color: Colors.white,
+                      letterSpacing: 2.0,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
