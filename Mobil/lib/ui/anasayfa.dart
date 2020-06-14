@@ -21,6 +21,8 @@ class Anasayfa extends StatefulWidget {
   }
 }
 
+String ara;
+
 List<Kisi> kisiList;
 
 class AnasayfaState extends State<Anasayfa>
@@ -33,6 +35,8 @@ class AnasayfaState extends State<Anasayfa>
   String ilanSahibiID;
   String mesaj = "";
   int filter;
+  int sira;
+  int depo;
   TabController tabController;
   final _searchController = TextEditingController();
 
@@ -42,7 +46,24 @@ class AnasayfaState extends State<Anasayfa>
     debugPrint("başlıyorr");
     NotificationHandler().initializeFCMNotification(context);
     _getID();
+    filter = 2;
   }
+
+  changeFilter(value) {
+    setState(() {
+      filter = value;
+      print("filter fonk :" + filter.toString());
+    });
+  }
+
+  changeSira(value) {
+    setState(() {
+      sira = value;
+      print("sira :" + sira.toString());
+    });
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +111,23 @@ class AnasayfaState extends State<Anasayfa>
                   child: Center(
                     child: Column(
                       children: <Widget>[
-                        _searchBar(),
-                         SizedBox(height: 10,),
+                        TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.search),
+                              onPressed: () {
+                                depo = 3;
+                                changeFilter(3);
+                                changeSira(2);
+                              },
+                            ),
+                            hintText: "Aradığınız evin konumunu giriniz...",
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -103,9 +139,12 @@ class AnasayfaState extends State<Anasayfa>
                                     style: TextStyle(fontSize: 20),
                                   ),
                                   onChanged: (value) {
-                                    setState(() {
-                                      filter = value;
-                                    });
+                                    print("depo :" + depo.toString());
+                                    if (depo == 3) {
+                                      changeSira(value);
+                                    } else {
+                                      changeFilter(value);
+                                    }
                                   }),
                             ),
                             Visibility(
@@ -124,8 +163,6 @@ class AnasayfaState extends State<Anasayfa>
                             ),
                           ],
                         ),
-                       
-                        
                       ],
                     ),
                   ),
@@ -143,10 +180,27 @@ class AnasayfaState extends State<Anasayfa>
                                 .collection('ev')
                                 .orderBy('fiyat')
                                 .snapshots()
-                            : Firestore.instance
-                                .collection('ev')
-                                .orderBy('tarih', descending: true)
-                                .snapshots(),
+                            : filter == 2
+                                ? Firestore.instance
+                                    .collection('ev')
+                                    .orderBy('tarih', descending: true)
+                                    .snapshots()
+                                : filter == 3 && _searchController.text != "" && sira == 1
+                                    ? Firestore.instance
+                                        .collection('ev')
+                                        .where('konum', isEqualTo: _searchController.text)
+                                        .orderBy('fiyat')
+                                        .snapshots()
+                                    : filter == 3 && _searchController.text != "" && sira == 2
+                                        ? Firestore.instance
+                                            .collection('ev')
+                                            .where('konum', isEqualTo: _searchController.text)
+                                            .orderBy('tarih', descending: true)
+                                            .snapshots()
+                                        : Firestore.instance
+                                            .collection('ev')
+                                            .orderBy('tarih', descending: true)
+                                            .snapshots(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (snapshot.hasError ||
@@ -472,22 +526,5 @@ class AnasayfaState extends State<Anasayfa>
       child: new Text("Tarihe Göre"),
       value: 2,
     ));
-  }
-
-  Widget _searchBar() {
-    return TextFormField(
-      /* onSaved: (deger) {
-                               = deger;
-                            },*/
-                            
-                            
-      controller: _searchController,
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.search),
-        hintText: "Aradığınız evin konumunu giriniz...",
-        focusColor: Colors.black,
-        border: OutlineInputBorder(borderSide:BorderSide(color: Colors.orange))
-      ),
-    );
   }
 }

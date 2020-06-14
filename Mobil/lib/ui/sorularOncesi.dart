@@ -119,12 +119,12 @@ class _SorularOncesiState extends State<SorularOncesi> {
   void _yonlendir() async {
     final FirebaseUser user = await _auth.currentUser();
     final String uid = user.uid;
-    if (selectedRadio == 1) {
+    if (selectedRadio == 2) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (BuildContext context) {
         return SorularEvSahibi();
       }));
-    } else if (selectedRadio == 2) {
+    } else if (selectedRadio == 1) {
       _firestore
           .collection("kullanicilar")
           .document("$uid")
