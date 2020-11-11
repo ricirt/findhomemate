@@ -43,7 +43,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
           padding: const EdgeInsets.only(right: 50.0),
           child: Center(
             child: Text(
-              "PROFİL DÜZENLE",
+              "Profil Düzenle",
               style: TextStyle(
                   color: Colors.white,
                   letterSpacing: 2.0,
@@ -74,7 +74,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
                     controller: _mailController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.email),
-                      hintText: "Email",
+                      hintText: "E-mail",
                     ),
                   ),
                   TextFormField(

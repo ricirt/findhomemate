@@ -44,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           padding: const EdgeInsets.only(right: 80),
           child: Center(
             child: Text(
-              "KAYIT OL",
+              "Kayıt ol",
               style: TextStyle(
                   color: Colors.white,
                   letterSpacing: 2.0,
@@ -74,7 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _mailController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.email),
-                      hintText: "Email",
+                      hintText: "E-mail",
                     ),
                   ),
                   TextFormField(

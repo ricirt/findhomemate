@@ -32,7 +32,7 @@ class _SorularEvSahibiState extends State<SorularEvSahibi> {
                     height: 25,
                   ),
                   Text(
-                    "Lütfen Soruları Eksiksiz Cevaplayınız...",
+                    "Lütfen Soruları Eksiksiz Cevaplayınız....",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.blue,
@@ -42,7 +42,7 @@ class _SorularEvSahibiState extends State<SorularEvSahibi> {
                   ),
                   SizedBox(height: 40),
                   Text(
-                    "Evcil hayvan kabul eder misiniz?",
+                    "Evcil hayvan kabul eder misiniz ?",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),

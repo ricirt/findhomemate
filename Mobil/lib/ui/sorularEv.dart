@@ -32,7 +32,7 @@ class _SorularEvState extends State<SorularEv> {
             height: 25,
           ),
           Text(
-            "Sorular",
+            "SORULAR",
             style: TextStyle(
               fontSize: 36,
               fontWeight: FontWeight.bold,

@@ -19,6 +19,7 @@ class _MesajlarState extends State<Mesajlar> {
 
   @override
   void initState() {
+
     super.initState();
     _getID();
   }
@@ -73,7 +74,7 @@ class _MesajlarState extends State<Mesajlar> {
                                     color: Theme.of(context).accentColor),
                                 child: Center(
                                   child: Text(
-                                    "2",
+                                    "TEST",
                                     textScaleFactor: 0.8,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,

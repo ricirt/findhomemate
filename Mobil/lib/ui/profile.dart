@@ -118,7 +118,7 @@ class ProfilePage extends StatelessWidget {
                       height: 16,
                     ),
                     Text(
-                      "Email",
+                      "E-mail",
                       style: _style(),
                     ),
                     SizedBox(

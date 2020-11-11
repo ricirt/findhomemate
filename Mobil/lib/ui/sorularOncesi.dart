@@ -44,7 +44,7 @@ class _SorularOncesiState extends State<SorularOncesi> {
           children: <Widget>[
             SizedBox(height: 100),
             Text(
-              "Ev mi, Arkadaş mı Arıyorsun ?",
+              "Ev mi arıyorsun ? Ev arkadaş mı Arıyorsun ?",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             Expanded(

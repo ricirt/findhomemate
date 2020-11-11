@@ -36,7 +36,7 @@ class _SorularKisiState extends State<SorularKisi> {
                   height: 25,
                 ),
               Text(
-                    "Lütfen Soruları Eksiksiz Cevaplayınız...",
+                    "Lütfen Soruları Eksiksiz Cevaplayınız....",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.blue,
